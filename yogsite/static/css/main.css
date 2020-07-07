@@ -1,0 +1,15 @@
+html {
+	overflow-y: unset;
+}
+
+.background-transition {
+	transition: background 0.2s, background-color 0.2s;
+}
+
+input[type=range].slider::-webkit-slider-runnable-track {
+	transition: background 0.2s;
+}
+
+[v-cloak] {
+	display: none;
+}

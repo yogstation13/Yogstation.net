@@ -7,8 +7,13 @@
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="{{ request.url }}" />
 
-		<link rel="stylesheet" href="/static/bulma.min.css" />
-		<link rel="stylesheet" href="/static/main.css" />
+		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+		<link rel="stylesheet" href="/static/css/main.css" />
+
+		<link rel="stylesheet" href="/static/css/bulma.min.css" />
+		<link rel="stylesheet" href="/static/css/bulma-slider.min.css" />
+		
 
 		<script src="/static/js/vue.js"></script>
 		<script src="/static/js/main.js"></script>
@@ -20,7 +25,7 @@
 	</head>
 
 	<body>
-		<nav id="navbar" class="navbar" role="navigation">
+		<nav id="navbar" class="navbar is-dark" role="navigation">
 			<div class="navbar-brand">
 				<a class="navbar-item" href="/">Yogstation 13</a>
 
@@ -28,7 +33,7 @@
 					v-on:click="nav_open = !nav_open"
 					v-bind:class="{ 'is-active' : nav_open }"
 				>
-					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span> <!-- magic to make the burger button appear -->
 					<span aria-hidden="true"></span>
 					<span aria-hidden="true"></span>
 				</a>
@@ -48,12 +53,16 @@
 			</div>
 		</nav>
 
-		<div id="content">
+		<section class="section" id="content">
+			{% block content %}
 
-		</div>
+			{% endblock %}
+		</section>
 
-		<footer>
-			Yogstation website made with &lt;3 by <a href="https://github.com/qwertyquerty" style="color:#cccccc;">qwerty</a>
+		<footer class="footer">
+			<div class="has-text-centered">
+				<strong>YogStation</strong> website made with &lt;3 by <a href="https://github.com/qwertyquerty">qwerty</a>
+			</div>
 		</footer>
 	</body>
 </html>
