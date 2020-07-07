@@ -7,7 +7,11 @@
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="{{ request.url }}" />
 
+		<link rel="stylesheet" href="/static/bulma.min.css" />
 		<link rel="stylesheet" href="/static/main.css" />
+
+		<script src="/static/js/vue.js"></script>
+		<script src="/static/js/main.js"></script>
 
 		{% block head %}
 
@@ -16,15 +20,33 @@
 	</head>
 
 	<body>
-		<div id="nav">
-			<a class="nav-item">Yogstation 13</a>
-			<a class="nav-item" href="/forums">Forums</a>
-			<a class="nav-item" href="/wiki">Wiki</a>
-			<a class="nav-item" href="/bans">Ban List</a>
-			<a class="nav-item" href="/rounds">Round List</a>
-			<a class="nav-item" href="/library">Library</a>
-			<a class="nav-item" href="/donate">Donate</a>
-		</div>
+		<nav id="navbar" class="navbar" role="navigation">
+			<div class="navbar-brand">
+				<a class="navbar-item" href="/">Yogstation 13</a>
+
+				<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar-links"
+					v-on:click="nav_open = !nav_open"
+					v-bind:class="{ 'is-active' : nav_open }"
+				>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+				</a>
+			</div>
+			
+			<div id="navbar-links" class="navbar-menu"
+				v-bind:class="{ 'is-active' : nav_open }"
+			>
+				<div class="navbar-end">
+					<a class="navbar-item" href="/forums">Forums</a>
+					<a class="navbar-item" href="/wiki">Wiki</a>
+					<a class="navbar-item" href="/bans">Ban List</a>
+					<a class="navbar-item" href="/rounds">Round List</a>
+					<a class="navbar-item" href="/library">Library</a>
+					<a class="navbar-item" href="/donate">Donate</a>
+				</div>
+			</div>
+		</nav>
 
 		<div id="content">
 
