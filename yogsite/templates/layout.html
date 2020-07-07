@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<title>Yogstation - {% block title %}{% endblock %}</title>
+
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="{{ request.url }}" />
+
+		<link rel="stylesheet" href="/static/main.css" />
+
+		{% block head %}
+
+		{% endblock %}
+
+	</head>
+
+	<body>
+		<div id="nav">
+			<a class="nav-item">Yogstation 13</a>
+			<a class="nav-item" href="/forums">Forums</a>
+			<a class="nav-item" href="/wiki">Wiki</a>
+			<a class="nav-item" href="/bans">Ban List</a>
+			<a class="nav-item" href="/rounds">Round List</a>
+			<a class="nav-item" href="/library">Library</a>
+			<a class="nav-item" href="/donate">Donate</a>
+		</div>
+
+		<div id="content">
+
+		</div>
+
+		<footer>
+			Yogstation website made with &lt;3 by <a href="https://github.com/qwertyquerty" style="color:#cccccc;">qwerty</a>
+		</footer>
+	</body>
+</html>
