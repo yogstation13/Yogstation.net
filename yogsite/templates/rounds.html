@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% from 'macros.html' import pagination with context %}
+
+{% block title %}Rounds{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+	<div class="columns is-centered">
+		<div class="column is-four-fifths">
+
+			{{ pagination(page, page_count) }}
+
+			<table class="table is-striped is-hoverable is-fullwidth">
+				<thead>
+					<tr>
+						<th>Round ID</th>
+						<th width="200px">Start Time</th>
+						<th>Duration</th>
+						<th>Game Mode</th>
+						<th>Map Name</th>
+						<th width="300px">Station Name</th>
+						<th>Tools</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for round in rounds %}
+						<tr>
+							<td>{{ round.id }}</td>
+
+							<td><time datetime="{{ round.start_datetime }}">{{ round.start_datetime }}</time></td>
+
+							<td>{{ round.end_datetime - round.start_datetime }}</td>
+							
+							<td>{{ round.game_mode }}</td>
+
+							<td>{{ round.map_name }}</td>
+
+							<td>{{ round.station_name }}</td>
+
+							<td>
+								<a class="button">Replay</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

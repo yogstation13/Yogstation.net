@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% from 'macros.html' import pagination with context %}
+
+{% block title %}Library{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+	<div class="columns is-centered">
+		<div class="column is-four-fifths">
+
+			{{ pagination(page, page_count) }}
+
+			<table class="table is-striped is-hoverable is-fullwidth">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Author</th>
+						<th>Category</th>
+						<th>Date Written</th>
+						<th>Tools</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for book in books %}
+						<tr>
+							<td>{{ book.title }}</td>
+
+							<td>{{ book.author }}</td>
+							
+							<td>{{ book.category }}</td>
+							
+							<td><time datetime="{{ book.datetime }}">{{ util.readable_time_delta(book.datetime) }}</time></td>
+
+							<td>
+								<a class="button">View</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

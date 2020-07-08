@@ -121,6 +121,27 @@ class Book(Base):
 	deleted				= Column('deleted',				SmallInteger())
 	round_id_created	= Column('round_id_created',	Integer())
 
+
+class Round(Base):
+	__tablename__ = 'erro_round'
+
+	id					= Column('id',					Integer(), primary_key=True)
+	initialize_datetime	= Column('initialize_datetime',	DateTime())
+	start_datetime		= Column('start_datetime',		DateTime())
+	shutdown_datetime	= Column('shutdown_datetime',	DateTime())
+	end_datetime		= Column('end_datetime',		DateTime())
+	server_ip			= Column('server_ip',			Integer())
+	server_port			= Column('server_port',			SmallInteger())
+	commit_hash			= Column('commit_hash',			String(40))
+	game_mode			= Column('game_mode',			String(32))
+	game_mode_result	= Column('game_mode_result',	String(64))
+	end_state			= Column('end_state',			String(64))
+	shuttle_name		= Column('shuttle_name',		String(64))
+	map_name			= Column('map_name',			String(32))
+	station_name		= Column('station_name',		String(80))
+
+
+
 game_db_engine = create_engine("mysql://{username}:{password}@{host}:{port}/{db}".format(
 	username	= cfg.db.game.user,
 	password	= cfg.db.game.password,

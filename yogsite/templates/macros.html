@@ -23,13 +23,15 @@
 
 			<li><span class="pagination-ellipsis">&hellip;</span></li>
 
-			{% if center_page - 1 > 1 %}
+			{% if center_page - 1 > 1 and center_page -1 < page_count %}
 				<li><a class="pagination-link {% if current_page == center_page - 1 %}is-current{% endif %}" href="?page={{ center_page - 1 }}">{{ center_page - 1 }}</a></li>
 			{% endif %}
 
+			{% if center_page > 1 and center_page < page_count %}
 			<li><a class="pagination-link {% if current_page == center_page %}is-current{% endif %}" href="?page={{ center_page }}">{{ center_page }}</a></li>
+			{% endif %}
 
-			{% if center_page + 1 < page_count %}
+			{% if center_page + 1 > 1 and center_page + 1 < page_count %}
 				<li><a class="pagination-link {% if current_page == center_page + 1 %}is-current{% endif %}" href="?page={{ center_page + 1 }}">{{ center_page + 1}}</a></li>
 			{% endif %}
 

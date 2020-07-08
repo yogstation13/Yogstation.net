@@ -14,7 +14,7 @@ blueprint = Blueprint("bans", __name__)
 def page_bans():
 	page = request.args.get('page', type=int, default=1)
 
-	bans = db.game_db.query(db.Ban).limit(cfg.items_per_page).offset((page - 1) * cfg.items_per_page)
+	bans = db.game_db.query(db.Ban).order_by(db.Ban.id.desc()).limit(cfg.items_per_page).offset((page - 1) * cfg.items_per_page)
 
 	page_count = math.ceil(db.game_db.query(db.Ban.id).count() / cfg.items_per_page) # Selecting only the id on a count is faster than selecting the entire row
 
