@@ -6,3 +6,5 @@ db:
     port: 3306
 
     dbname: "yogstation"
+
+items_per_page: 25

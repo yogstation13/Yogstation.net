@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
+{% from 'macros.html' import pagination with context %}
+
 {% block title %}Donate{% endblock %}
 
 {% block head %}
@@ -7,22 +9,12 @@
 {% endblock %}
 
 {% block content %}
-	<nav class="pagination is-centered" role="navigation" aria-label="pagination">
-		<a class="pagination-previous">Previous</a>
-		<a class="pagination-next">Next</a>
-		<ul class="pagination-list">
-			<li><a class="pagination-link">1</a></li>
-			<li><span class="pagination-ellipsis">&hellip;</span></li>
-			<li><a class="pagination-link">45</a></li>
-			<li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-			<li><a class="pagination-link">47</a></li>
-			<li><span class="pagination-ellipsis">&hellip;</span></li>
-		<li><a class="pagination-link">86</a></li>
-		</ul>
-	</nav>
 	<div class="columns is-centered">
-		<div class="column">
-			<table class="table is-striped is-hoverable">
+		<div class="column is-four-fifths">
+
+			{{ pagination(page, page_count) }}
+
+			<table class="table is-striped is-hoverable is-fullwidth">
 				<thead>
 					<tr>
 						<th>CKEY</th>
@@ -36,7 +28,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for ban in db.game_db.query(db.Ban).all() %}
+					{% for ban in bans %}
 					<tr>
 						<td>{{ ban.ckey }}</td>
 						<td>{{ ban.role }}</td>

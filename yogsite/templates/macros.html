@@ -1,0 +1,41 @@
+{% macro pagination(current_page, page_count) %}
+	<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+
+		{# I hate this but it's to make the center 3 pagination buttons be right #}
+		{% if current_page >= page_count - 1 %}
+			{% set center_page = page_count - 2 %}
+		{% elif current_page <= 2 %}
+			{% set center_page = 3 %}
+		{% else %}
+			{% set center_page = current_page %}
+		{% endif %}
+
+		{% if current_page > 1 %}
+			<a class="pagination-previous" href="?page={{ current_page - 1 }}">Previous</a>
+		{% endif %}
+
+		{% if current_page < page_count %}
+			<a class="pagination-next" href="?page={{ current_page + 1 }}">Next</a>
+		{% endif %}
+
+		<ul class="pagination-list">
+			<li><a class="pagination-link  {% if current_page == 1 %}is-current{% endif %}"  href="?page=1">1</a></li>
+
+			<li><span class="pagination-ellipsis">&hellip;</span></li>
+
+			{% if center_page - 1 > 1 %}
+				<li><a class="pagination-link {% if current_page == center_page - 1 %}is-current{% endif %}" href="?page={{ center_page - 1 }}">{{ center_page - 1 }}</a></li>
+			{% endif %}
+
+			<li><a class="pagination-link {% if current_page == center_page %}is-current{% endif %}" href="?page={{ center_page }}">{{ center_page }}</a></li>
+
+			{% if center_page + 1 < page_count %}
+				<li><a class="pagination-link {% if current_page == center_page + 1 %}is-current{% endif %}" href="?page={{ center_page + 1 }}">{{ center_page + 1}}</a></li>
+			{% endif %}
+
+			<li><span class="pagination-ellipsis">&hellip;</span></li>
+
+		<li><a class="pagination-link {% if current_page == page_count %}is-current{% endif %}" href="?page={{ page_count }}">{{ page_count }}</a></li>
+		</ul>
+	</nav>
+{% endmacro %}
