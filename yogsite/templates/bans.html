@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}Donate{% endblock %}
+
+{% block head %}
+	<script src="/static/js/donate.js"></script>
+{% endblock %}
+
+{% block content %}
+	<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+		<a class="pagination-previous">Previous</a>
+		<a class="pagination-next">Next</a>
+		<ul class="pagination-list">
+			<li><a class="pagination-link">1</a></li>
+			<li><span class="pagination-ellipsis">&hellip;</span></li>
+			<li><a class="pagination-link">45</a></li>
+			<li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
+			<li><a class="pagination-link">47</a></li>
+			<li><span class="pagination-ellipsis">&hellip;</span></li>
+		<li><a class="pagination-link">86</a></li>
+		</ul>
+	</nav>
+	<div class="columns is-centered">
+		<div class="column">
+			<table class="table is-striped is-hoverable">
+				<thead>
+					<tr>
+						<th>CKEY</th>
+						<th>Type</th>
+						<th>Reason</th>
+						<th>Ban Date</th>
+						<th>Expire Date</th>
+						<th>Admin</th>
+						<th>Status</th>
+						<th>Unbanner</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for ban in db.game_db.query(db.Ban).all() %}
+					<tr>
+						<td>{{ ban.ckey }}</td>
+						<td>{{ ban.role }}</td>
+						<td>{{ ban.reason }}</td>
+						<td><time datetime="{{ ban.bantime }}">{{ ban.bantime }}</time></td>
+						<td><time datetime="{{ ban.expiration_time }}">{{ ban.expiration_time }}</time></td>
+						<td>{{ ban.a_ckey }}</td>
+						<td>
+							{% if ban.unbanned_datetime %}
+								<div class="tag is-success is-medium has-text-centered">Unbanned</div>
+							{% elif ban.expiration_time and datetime.utcnow() > ban.expiration_time %}
+								<div class="tag is-primary is-medium has-text-centered">Expired</div>
+							{% else %}
+								<div class="tag is-danger is-medium has-text-centered">Active</div>
+							{% endif %}
+						</td>
+						<td>{{ ban.unbanned_ckey if ban.unbanned_ckey else "N/A" }}</td>
+					</tr>
+
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

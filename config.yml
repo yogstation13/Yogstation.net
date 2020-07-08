@@ -1,0 +1,8 @@
+db:
+  game:
+    host: "localhost"
+    user: "root"
+    password: "passwd"
+    port: 3306
+
+    dbname: "yogstation"
