@@ -8,3 +8,5 @@ db:
     dbname: "yogstation"
 
 items_per_page: 20
+
+secret_key: "change this later"

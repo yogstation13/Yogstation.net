@@ -13,6 +13,8 @@ app = Flask(__name__)
 
 app.url_map.strict_slashes = False
 
+app.secret_key = cfg.secret_key # Used for signing sessions
+
 @app.context_processor
 def context_processor():
 	return dict(datetime=datetime, cfg=cfg, db=db, util=util, session=session)
