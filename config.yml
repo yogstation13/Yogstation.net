@@ -7,4 +7,4 @@ db:
 
     dbname: "yogstation"
 
-items_per_page: 25
+items_per_page: 20

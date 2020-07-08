@@ -95,7 +95,6 @@ class Ban(Base):
 	unbanned_ckey		= Column('unbanned_ckey',		String(32))
 	unbanned_round_id	= Column('unbanned_round_id',	Integer())
 
-
 class Connection(Base):
 	__tablename__ = "erro_connection_log"
 

@@ -2,7 +2,7 @@
 
 {% from 'macros.html' import pagination with context %}
 
-{% block title %}Donate{% endblock %}
+{% block title %}Bans{% endblock %}
 
 {% block head %}
 	<script src="/static/js/donate.js"></script>
@@ -20,8 +20,8 @@
 						<th>CKEY</th>
 						<th>Type</th>
 						<th>Reason</th>
-						<th>Ban Date</th>
-						<th>Expire Date</th>
+						<th width="150px">Ban Date</th>
+						<th width="150px">Expire Date</th>
 						<th>Admin</th>
 						<th>Status</th>
 						<th>Unbanner</th>
@@ -31,11 +31,21 @@
 					{% for ban in bans %}
 					<tr>
 						<td>{{ ban.ckey }}</td>
+
 						<td>{{ ban.role }}</td>
+
 						<td>{{ ban.reason }}</td>
-						<td><time datetime="{{ ban.bantime }}">{{ ban.bantime }}</time></td>
-						<td><time datetime="{{ ban.expiration_time }}">{{ ban.expiration_time }}</time></td>
+
+						<td><time datetime="{{ ban.bantime }}">{{ util.readable_time_delta(ban.bantime) }}</time></td>
+						
+						{% if ban.expiration_time %}
+							<td><time datetime="{{ ban.expiration_time }}">{{ util.readable_time_delta(ban.expiration_time) }}</time></td>
+						{% else %}
+							<td>Never</td>
+						{% endif %}
+
 						<td>{{ ban.a_ckey }}</td>
+
 						<td>
 							{% if ban.unbanned_datetime %}
 								<div class="tag is-success is-medium has-text-centered">Unbanned</div>
@@ -45,6 +55,7 @@
 								<div class="tag is-danger is-medium has-text-centered">Active</div>
 							{% endif %}
 						</td>
+
 						<td>{{ ban.unbanned_ckey if ban.unbanned_ckey else "N/A" }}</td>
 					</tr>
 
