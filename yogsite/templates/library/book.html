@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}Library - {{ book.title }}{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+	<div class="columns is-centered">
+		<div class="column is-four-fifths">
+			<a class="button" href="javascript:history.back()">Back</a>
+			<br/><br/>
+			<div class="columns">
+				<div class="column is-two-thirds">
+					<h2 class="title is-2">{{ book.title }}</h2>
+					<h3 class="subtitle is-4">Written By: {{ book.author }}</h3>
+				</div>
+				<div class="column is-one-third">
+					<div class="container is-pulled-right">
+						{% if book.deleted %}
+							<div class="tag is-large is-danger">Deleted</div>
+						{% endif %}
+						<div class="tag is-large is-primary">{{ book.category }}</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="box">
+				{{ book.content | safe }}
+			</div>
+		</div>
+	</div>
+{% endblock %}

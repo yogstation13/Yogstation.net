@@ -30,12 +30,12 @@
 
 							<td>{{ book.author }}</td>
 							
-							<td>{{ book.category }}</td>
+							<td><div class="tag is-medium is-primary">{{ book.category }}</div></td>
 							
 							<td><time datetime="{{ book.datetime }}">{{ util.readable_time_delta(book.datetime) }}</time></td>
 
 							<td>
-								<a class="button">View</a>
+								<a class="button" href="/library/{{ book.id }}">View</a>
 							</td>
 						</tr>
 					{% endfor %}

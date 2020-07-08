@@ -121,6 +121,12 @@ class Book(Base):
 	deleted				= Column('deleted',				SmallInteger())
 	round_id_created	= Column('round_id_created',	Integer())
 
+	@classmethod
+	def from_id(cls, id):
+		try:
+			return game_db.query(cls).filter(cls.id == id).one()
+		except NoResultFound:
+			return None
 
 class Round(Base):
 	__tablename__ = 'erro_round'
