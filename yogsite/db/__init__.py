@@ -1,5 +1,6 @@
 from .game import game_db
 
+from .game import Admin
 from .game import Ban
 from .game import Book
 from .game import Connection

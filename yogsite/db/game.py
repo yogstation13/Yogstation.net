@@ -1,3 +1,5 @@
+from hashlib import sha256
+
 from sqlalchemy import BigInteger
 from sqlalchemy import create_engine
 from sqlalchemy import Column
@@ -17,6 +19,7 @@ from sqlalchemy.orm import sessionmaker
 from yogsite.config import cfg
 
 Base = declarative_base()
+
 
 class Player(Base):
 	__tablename__ = 'erro_player'
@@ -50,7 +53,7 @@ class Player(Base):
 			return game_db.query(cls).filter(cls.ckey == ckey).one()
 		except NoResultFound:
 			return None
-	
+
 	def get_connection_count(self):
 		return game_db.query(Connection).filter(Connection.ckey == self.ckey).count()
 	
@@ -146,6 +149,27 @@ class Round(Base):
 	map_name			= Column('map_name',			String(32))
 	station_name		= Column('station_name',		String(80))
 
+
+class Admin(Base):
+	__tablename__ = 'erro_admin'
+
+	ckey		= Column('ckey',		String(32), primary_key=True)
+	rank		= Column('rank',		String(32))
+	password	= Column('password',	String(64))
+
+	@classmethod
+	def from_ckey(cls, ckey):
+		try:
+			return game_db.query(cls).filter(cls.ckey == ckey).one()
+		except NoResultFound:
+			return None
+	
+	def check_password(self, passwd): # MAKE SURE THIS IS SECUREEEE
+		hash = sha256()
+		hash.update(passwd.encode())
+		hex_hash = hash.hexdigest()
+
+		return self.password == hex_hash
 
 
 game_db_engine = create_engine("mysql://{username}:{password}@{host}:{port}/{db}".format(

@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
+from functools import wraps
 import humanize
+from flask import redirect, session
 
 class Struct():
     def __init__(self, d):
@@ -16,3 +18,15 @@ def readable_time_delta(dt):
         return humanize.naturaltime(dt, future=True)
     
     return humanize.naturaltime(dt)
+
+# Decorator to block someone from viewing a page unless they are logged in as an admin
+def login_required(view):
+    @wraps(view)
+
+    def decorated_function(*args, **kwargs):
+        if "ckey" not in session:
+            return redirect("/login")
+
+        return view(*args, **kwargs)
+
+    return decorated_function

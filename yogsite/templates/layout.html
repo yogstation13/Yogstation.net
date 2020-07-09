@@ -62,6 +62,12 @@
 		<footer class="footer">
 			<div class="has-text-centered">
 				<strong>YogStation</strong> website made with &lt;3 by <a href="https://github.com/qwertyquerty">qwerty</a>
+				<br/>
+				{% if not "ckey" in session %}
+					<a href="/login">Admin Login</a>
+				{% else %}
+					<a href="/logout">Logout</a>
+				{% endif %}
 			</div>
 		</footer>
 	</body>

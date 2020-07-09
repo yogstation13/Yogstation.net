@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+	<h2 class="title is-2 has-text-centered">Admin Login</h2>
+
+	<div class="columns is-centered">
+		<div class="column is-half">
+			<div class="box">
+
+				{% if request.args.get("failure") %}
+					<p class="notification is-danger has-text-centered is-fullwidth pt-2 pb-2">Received Invalid Credentials</p>
+				{% endif %}
+
+				<form id="login-form" method="POST">
+					<div class="field">
+						<div class="label">CKEY</div>
+						<div class="control has-icons-left">
+							<input name="ckey" class="input" type="text" maxlength="32" placeholder="Enter your CKEY here..." />
+
+							<span class="icon is-small is-left">
+								<i class="fas fa-user"></i>
+							</span>
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="label">Password</div>
+						<div class="control has-icons-left">
+							<input name="password" class="input" type="password" maxlength="32" placeholder="Enter your password..." />
+
+							<span class="icon is-small is-left">
+								<i class="fas fa-key"></i>
+							</span>
+						</div>
+					</div>
+
+					<div class="control">
+						<button class="button is-primary is-fullwidth">Login</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}
