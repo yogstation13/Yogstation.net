@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% from 'macros.html' import pagination with context %}
+{% from 'macros.html' import pagination, search_form with context %}
 
 {% block title %}Rounds{% endblock %}
 
@@ -10,6 +10,8 @@
 {% block content %}
 	<div class="columns is-centered">
 		<div class="column is-four-fifths">
+
+			{{ search_form(search_query, "Search by round id, gamemode, or map...") }}
 
 			{{ pagination(page, page_count) }}
 

@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% from 'macros.html' import pagination with context %}
+{% from 'macros.html' import pagination, search_form with context %}
 
 {% block title %}Library{% endblock %}
 
@@ -10,6 +10,8 @@
 {% block content %}
 	<div class="columns is-centered">
 		<div class="column is-four-fifths">
+
+			{{ search_form(search_query, "Search for books...") }}
 
 			{{ pagination(page, page_count) }}
 
