@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+
+{% from 'macros.html' import pagination, search_form with context %}
+
+{% block title %}Bans - {{ ban.id }} - Edit{% endblock %}
+
+{% block head %}
+	<script src="/static/js/bans/edit_ban.js"></script>
+{% endblock %}
+
+{% block content %}
+
+	<h2 class="title is-2 has-text-centered">Editing Ban #{{ ban.id }}</h2>
+
+	<div class="columns is-centered">
+		<div class="column is-four-fifths">
+			<form id="edit-ban-form">
+				<div class="columns">
+
+					<div class="column is-half">
+						
+						<div class="field">
+							<div class="label">CKEY</div>
+							<div class="control has-icons-left">
+								<input name="ckey" class="input is-fullwidth" type="text" value="{{ ban.ckey }}" placeholder="Enter the CKEY of the user..." />
+
+								<span class="icon is-small is-left">
+									<i class="fas fa-user"></i>
+								</span>
+							</div>
+						</div>
+
+						<div class="field">
+							<div class="label">Ban Reason</div>
+							<div class="control">
+								<textarea name="reason" class="textarea is-fullwidth" rows="7" placeholder="Enter the reason for the ban...">{{ ban.reason }}</textarea>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="column is-half">
+
+						<div class="field">
+							<div class="label">Expiration Time</div>
+							<div class="control has-icons-left">
+								<input name="expiration_time" class="input is-fullwidth" type="datetime-local" value="{{ ban.expiration_time.isoformat(sep='T', timespec='auto') if ban.expiration_time else "Never" }}" />
+
+								<span class="icon is-small is-left">
+									<i class="fas fa-clock"></i>
+								</span>
+							</div>
+						</div>
+
+						<div class="field">
+							<div class="label">Ban Role</div>
+							<div class="control">
+								<div class="select is-fullwidth">
+									<select name="role">
+										{% for role_name in cfg.roles %}
+											<option value="{{ role_name }}" {% if role_name == ban.role %}selected{% endif %}>
+												{{ role_name }}
+											</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="columns">
+							<div class="column is-half">
+								<div class="label">IP</div>
+								<div class="field has-addons">
+									<div class="control is-expanded has-icons-left">
+										<input id="input-ip" name="ip" class="input" type="text" value="{{ util.IPAddress(ban.ip) }}" placeholder="IP Address (optional)" />
+
+										<span class="icon is-small is-left">
+											<i class="fas fa-server"></i>
+										</span>
+									</div>
+
+									<p class="control">
+										<a id="get-recent-ip-button" class="button is-info">
+											<span class="icon is-small">
+												<i class="fas fa-history"></i>
+											</span>
+										</a>
+									</p>
+								</div>
+
+
+							</div>
+
+							<div class="column is-half">
+								<div class="label">CID</div>
+								<div class="field has-addons">
+									<div class="control is-expanded has-icons-left">
+										<input id="input-computerid" name="computerid" class="input" type="text" value="{{ ban.computerid }}" placeholder="Computer ID (optional)" />
+
+										<span class="icon is-small is-left">
+											<i class="fas fa-address-card"></i>
+										</span>
+									</div>
+
+									<p class="control">
+										<a id="get-recent-computerid-button" class="button is-info">
+											<span class="icon is-small">
+												<i class="fas fa-history"></i>
+											</span>
+										</a>
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="columns">
+							<div class="column is-half">
+								<div class="control">
+									<a class="button is-danger is-fullwidth is-pulled-left">Discard Edits</a>
+								</div>
+							</div>
+
+							<br/>
+
+							<div class="column is-half">
+								<div class="control">
+									<button class="button is-primary is-fullwidth is-pulled-right">Submit Edits</button>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}

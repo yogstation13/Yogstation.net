@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from functools import wraps
-import humanize
 from flask import redirect, session
+import humanize
+from netaddr import IPAddress
 
 class Struct():
     def __init__(self, d):

@@ -41,6 +41,14 @@
 
 							<td>
 								<a class="button" href="/library/{{ book.id }}">View</a>
+
+								{% if admin_perms.can_manage_books() %}
+									{% if book.deleted %}
+										<a class="button is-success" href="/library/{{ book.id }}?action=restore">Restore</a>
+									{% else %}
+										<a class="button is-danger" href="/library/{{ book.id }}?action=delete">Delete</a>
+									{% endif %}
+								{% endif %}
 							</td>
 						</tr>
 					{% endfor %}

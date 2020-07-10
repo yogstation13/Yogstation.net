@@ -27,4 +27,15 @@ def page_bans():
 
 	displayed_bans = bans_query.limit(cfg.items_per_page).offset((page - 1) * cfg.items_per_page)
 
-	return render_template("bans.html", bans=displayed_bans, page=page, page_count=page_count, search_query=search_query)
+	return render_template("bans/bans.html", bans=displayed_bans, page=page, page_count=page_count, search_query=search_query)
+
+
+@blueprint.route("/bans/<int:ban_id>/edit", methods=["GET", "POST"])
+def page_ban_edit(ban_id):
+
+	if request.method == "POST":
+		print(request.form)
+
+	ban = db.Ban.from_id(ban_id)
+
+	return render_template("bans/edit.html", ban=ban)

@@ -47,6 +47,9 @@
 
 							<td>
 								<a class="button" href="https://yogstation13.github.io/demo-viewer/?roundid={{ round.id }}" target="_blank">Replay</a>
+								{% if admin_perms.can_view_logs() %}
+									<a class="button" href="/rounds/{{ round.id }}/logs">Logs</a>
+								{% endif %}
 							</td>
 						</tr>
 					{% endfor %}

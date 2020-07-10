@@ -17,6 +17,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker
 
 from yogsite.config import cfg
+from yogsite.const import *
 
 Base = declarative_base()
 
@@ -98,6 +99,14 @@ class Ban(Base):
 	unbanned_ckey		= Column('unbanned_ckey',		String(32))
 	unbanned_round_id	= Column('unbanned_round_id',	Integer())
 
+	@classmethod
+	def from_id(cls, id):
+		try:
+			return game_db.query(cls).filter(cls.id == id).one()
+		except NoResultFound:
+			return None
+
+
 class Connection(Base):
 	__tablename__ = "erro_connection_log"
 
@@ -157,6 +166,8 @@ class Admin(Base):
 	rank		= Column('rank',		String(32))
 	password	= Column('password',	String(64))
 
+	perms		= relationship('AdminRank',	primaryjoin = 'Admin.rank == AdminRank.rank')
+
 	@classmethod
 	def from_ckey(cls, ckey):
 		try:
@@ -170,6 +181,17 @@ class Admin(Base):
 		hex_hash = hash.hexdigest()
 
 		return self.password == hex_hash
+
+
+class AdminRank(Base):
+	__tablename__ = 'erro_admin_ranks'
+
+	rank			= Column('rank',			String(32), ForeignKey('erro_admin.rank'), primary_key=True)
+	flags			= Column('flags',			Integer())
+	exclude_flags	= Column('exclude_flags',	Integer())
+	can_edit_flags	= Column('can_edit_flags',	Integer())
+
+
 
 
 game_db_engine = create_engine("mysql://{username}:{password}@{host}:{port}/{db}".format(

@@ -14,8 +14,9 @@
 		<link rel="stylesheet" href="/static/css/bulma.min.css" />
 		<link rel="stylesheet" href="/static/css/bulma-slider.min.css" />
 		
-
+		<script src="/static/js/jquery.min.js"></script>
 		<script src="/static/js/vue.min.js"></script>
+		
 		<script src="/static/js/main.js"></script>
 
 		{% block head %}
@@ -63,7 +64,7 @@
 			<div class="has-text-centered">
 				<strong>YogStation</strong> website made with &lt;3 by <a href="https://github.com/qwertyquerty">qwerty</a>
 				<br/>
-				{% if not "ckey" in session %}
+				{% if not admin_account %}
 					<a href="/login">Admin Login</a>
 				{% else %}
 					<a href="/logout">Logout</a>
