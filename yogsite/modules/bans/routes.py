@@ -6,7 +6,9 @@ import math
 
 from yogsite.config import cfg
 from yogsite import db
+from yogsite import util
 
+from .forms import BanEditForm
 
 blueprint = Blueprint("bans", __name__)
 
@@ -33,9 +35,23 @@ def page_bans():
 @blueprint.route("/bans/<int:ban_id>/edit", methods=["GET", "POST"])
 def page_ban_edit(ban_id):
 
-	if request.method == "POST":
-		print(request.form)
-
 	ban = db.Ban.from_id(ban_id)
 
-	return render_template("bans/edit.html", ban=ban)
+	form_ban_edit = BanEditForm(request.form, prefix="form_ban_edit")
+
+	if request.method == "POST":
+		if form_ban_edit.validate():
+			print("VALID", request.form, form_ban_edit)
+		else:
+			print("INVALID")
+	else:
+		# this absolute bs makes it so it only sets default values on the first get, and then every time you update with a post
+		# it populates them with the new values from the post
+		form_ban_edit.ckey.data = ban.ckey
+		form_ban_edit.reason.data = ban.reason
+		form_ban_edit.role.data = ban.role
+		form_ban_edit.expiration_time.data = ban.expiration_time
+		form_ban_edit.ip.data = util.IPAddress(ban.ip)
+		form_ban_edit.computerid.data = ban.computerid
+
+	return render_template("bans/edit.html", ban=ban, form=form_ban_edit)

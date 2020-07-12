@@ -62,3 +62,15 @@
 		</div>
 	<form>
 {% endmacro %}
+
+{% macro form_errors(form) %}
+	{% if form.errors %}
+		<ul class=errors>
+			{% for field, errors in form.errors.items() %}
+				{% for error in errors %}
+					{{ error }}
+				{% endfor %}
+			{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
