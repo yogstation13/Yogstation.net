@@ -1,4 +1,8 @@
+from datetime import datetime
+
 from hashlib import sha256
+
+from netaddr import IPAddress
 
 from sqlalchemy import BigInteger
 from sqlalchemy import create_engine
@@ -105,6 +109,27 @@ class Ban(Base):
 			return game_db.query(cls).filter(cls.id == id).one()
 		except NoResultFound:
 			return None
+
+
+	def apply_edit_form(self, form):
+		"""
+		Take the data from the form and update this record with it, then commit the change to the db
+		There is almost definitely a better way to do this
+		"""
+
+		self.ckey = form.ckey.data
+		self.reason = form.reason.data
+		self.role = form.role.data
+
+		if form.expiration_time.data:
+			self.expiration_time = form.expiration_time.data # yes this is parsed by the form already
+		else:
+			self.expiration_time = None
+
+		self.ip = int(IPAddress(form.ip.data))
+		self.computerid = form.computerid.data
+
+		game_db.commit()
 
 
 class Connection(Base):

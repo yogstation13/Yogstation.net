@@ -1,6 +1,8 @@
 from flask import Blueprint
+from flask import redirect
 from flask import render_template
 from flask import request
+from flask import url_for
 
 import math
 
@@ -39,11 +41,15 @@ def page_ban_edit(ban_id):
 
 	form_ban_edit = BanEditForm(request.form, prefix="form_ban_edit")
 
+
 	if request.method == "POST":
+		print(request.form)
 		if form_ban_edit.validate():
 			print("VALID", request.form, form_ban_edit)
-		else:
-			print("INVALID")
+			ban.apply_edit_form(form_ban_edit)
+
+			return redirect(url_for("page_ban_edit", ban_id=ban.id))
+
 	else:
 		# this absolute bs makes it so it only sets default values on the first get, and then every time you update with a post
 		# it populates them with the new values from the post

@@ -68,7 +68,11 @@
 		<ul class=errors>
 			{% for field, errors in form.errors.items() %}
 				{% for error in errors %}
-					{{ error }}
+					<div class="message is-danger mb-3">
+						<div class="message-body py-2 my-0">
+							{{ error }}
+						</div>
+					</div>
 				{% endfor %}
 			{% endfor %}
 		</ul>

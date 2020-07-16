@@ -15,7 +15,7 @@ class BanEditForm(FlaskForm):
 
 	reason = TextAreaField("Reason", [Optional(), Length(max=2048)])
 
-	expiration_time = DateTimeLocalField("Expiration Time", [Optional()], format="%Y-%m-%dT%H:%M:%S")
+	expiration_time = DateTimeLocalField("Expiration Time", [Optional()], format="%Y-%m-%dT%H:%M")
 
 	role = SelectField("Role", [AnyOf(cfg.roles)], choices=list(zip(cfg.roles, cfg.roles)))
 
