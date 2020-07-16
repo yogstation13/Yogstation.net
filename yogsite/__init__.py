@@ -10,18 +10,40 @@ from yogsite.modules.admin import Permissions
 from yogsite import util
 import yogsite.db
 
+from yogsite.extensions import flask_db_ext
 
-app = Flask(__name__)
 
-app.url_map.strict_slashes = False
+def register_extensions(app):
+	flask_db_ext.init_app(app)
 
-app.secret_key = cfg.secret_key # Used for signing sessions
+def create_app():
+	app = Flask(__name__)
+
+	app.url_map.strict_slashes = False
+
+	app.secret_key = cfg.secret_key # Used for signing sessions
+
+	app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://{username}:{password}@{host}:{port}/{db}".format(
+		username	= cfg.db.game.user,
+		password	= cfg.db.game.password,
+		host		= cfg.db.game.host,
+		port		= cfg.db.game.port,
+		db			= cfg.db.game.dbname
+	)
+
+	register_extensions(app)
+
+	return app
+
+app = create_app()
+
 
 @app.before_request
 def before_request():
 
 	if "ckey" in session:
-		admin_account = True #db.Admin.from_ckey(session["ckey"])
+		print(session)
+		admin_account = db.Admin.from_ckey(session["ckey"])
 	else:
 		admin_account = None
 	

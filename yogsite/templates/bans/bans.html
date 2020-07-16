@@ -67,9 +67,18 @@
 
 							{% if admin_perms.can_manage_bans() %}
 								<td>
-									<a class="button" href="/bans/{{ ban.id }}/edit">Edit</a>
+									<div class="buttons">
+										<a class="button" href="/bans/{{ ban.id }}/edit">Edit</a>
+
+										{% if ban.unbanned_datetime %}
+											<a class="button" href="/bans/{{ ban.id }}/reinstate">Reinstate</a>
+										{% else %}
+											<a class="button" href="/bans/{{ ban.id }}/revoke">Revoke</a>
+										{% endif %}
+									</div>
 								</td>
 							{% endif %}
+
 						</tr>
 					{% endfor %}
 				</tbody>

@@ -4,6 +4,8 @@ from hashlib import sha256
 
 from netaddr import IPAddress
 
+from flask_sqlalchemy import SQLAlchemy
+
 from sqlalchemy import BigInteger
 from sqlalchemy import create_engine
 from sqlalchemy import Column
@@ -16,17 +18,18 @@ from sqlalchemy import SmallInteger
 from sqlalchemy import String
 from sqlalchemy import Text
 from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker
+
 
 from yogsite.config import cfg
 from yogsite.const import *
 
-Base = declarative_base()
+from yogsite.extensions import flask_db_ext
 
+game_db = flask_db_ext.session
 
-class Player(Base):
+class Player(flask_db_ext.Model):
 	__tablename__ = 'erro_player'
 
 	ckey				= Column('ckey',				String(32), primary_key=True)
@@ -69,7 +72,7 @@ class Player(Base):
 		return game_db.query(Ban).filter(Ban.ckey == self.ckey).all()
 
 
-class Note(Base):
+class Note(flask_db_ext.Model):
 	__tablename__ = 'erro_notes'
 
 	id					= Column('id',					Integer(), primary_key=True)
@@ -82,7 +85,7 @@ class Note(Base):
 	last_editor			= Column('last_editor',			String(32))
 	edits				= Column('edits',				Text())
 
-class Ban(Base):
+class Ban(flask_db_ext.Model):
 	__tablename__ = 'erro_ban'
 
 	id					= Column('id',					Integer(), primary_key=True)
@@ -130,9 +133,27 @@ class Ban(Base):
 		self.computerid = form.computerid.data
 
 		game_db.commit()
+	
+	def revoke(self, admin_ckey):
+		"""
+		Revoke a ban by setting the unbanned datetime
+		"""
+		self.unbanned_ckey = admin_ckey
+		self.unbanned_datetime = datetime.utcnow() # Set the time of unbanning to now so the server knows that if we are past now, they should be unbanned
+
+		game_db.commit()
+
+	def reinstate(self):
+		"""
+		Reinstate a ban by clearing the unbanned datetime
+		"""
+		self.unbanned_ckey = None
+		self.unbanned_datetime = None
+
+		game_db.commit()
 
 
-class Connection(Base):
+class Connection(flask_db_ext.Model):
 	__tablename__ = "erro_connection_log"
 
 	id				= Column('id',			Integer(), primary_key=True)
@@ -145,7 +166,8 @@ class Connection(Base):
 	ip				= Column('ip',			Integer())
 	computerid		= Column('computerid',	String(45))
 
-class Book(Base):
+
+class Book(flask_db_ext.Model):
 	__tablename__ = "erro_library"
 
 	id					= Column('id',					Integer(), primary_key=True)
@@ -165,7 +187,8 @@ class Book(Base):
 		except NoResultFound:
 			return None
 
-class Round(Base):
+
+class Round(flask_db_ext.Model):
 	__tablename__ = 'erro_round'
 
 	id					= Column('id',					Integer(), primary_key=True)
@@ -184,7 +207,7 @@ class Round(Base):
 	station_name		= Column('station_name',		String(80))
 
 
-class Admin(Base):
+class Admin(flask_db_ext.Model):
 	__tablename__ = 'erro_admin'
 
 	ckey		= Column('ckey',		String(32), primary_key=True)
@@ -208,25 +231,10 @@ class Admin(Base):
 		return self.password == hex_hash
 
 
-class AdminRank(Base):
+class AdminRank(flask_db_ext.Model):
 	__tablename__ = 'erro_admin_ranks'
 
 	rank			= Column('rank',			String(32), ForeignKey('erro_admin.rank'), primary_key=True)
 	flags			= Column('flags',			Integer())
 	exclude_flags	= Column('exclude_flags',	Integer())
 	can_edit_flags	= Column('can_edit_flags',	Integer())
-
-
-
-
-game_db_engine = create_engine("mysql://{username}:{password}@{host}:{port}/{db}".format(
-	username	= cfg.db.game.user,
-	password	= cfg.db.game.password,
-	host		= cfg.db.game.host,
-	port		= cfg.db.game.port,
-	db			= cfg.db.game.dbname,
-))
-
-game_db_sessionmaker = sessionmaker(bind=game_db_engine)
-
-game_db = game_db_sessionmaker()
