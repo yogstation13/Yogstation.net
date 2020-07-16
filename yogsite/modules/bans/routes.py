@@ -1,4 +1,5 @@
 from flask import Blueprint
+from flask import g # what a terrible name
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -48,7 +49,7 @@ def page_ban_edit(ban_id):
 			print("VALID", request.form, form_ban_edit)
 			ban.apply_edit_form(form_ban_edit)
 
-			return redirect(url_for("page_ban_edit", ban_id=ban.id))
+			return redirect(url_for("bans.page_ban_edit", ban_id=ban.id))
 
 	else:
 		# this absolute bs makes it so it only sets default values on the first get, and then every time you update with a post
@@ -68,7 +69,7 @@ def page_ban_action(ban_id, action):
 	ban = db.Ban.from_id(ban_id)
 
 	if action == "revoke":
-		ban.revoke()
+		ban.revoke(g.admin_account.ckey)
 	
 	elif action == "reinstate":
 		ban.reinstate()
