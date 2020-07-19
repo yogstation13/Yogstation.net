@@ -18,7 +18,9 @@ def page_rounds():
 
 	search_query = request.args.get('query', type=str, default=None)
 
+	# This way of just shamelessly stringing together queries is probably bad and could be improved
 	if search_query:
+		# Search for rounds by either matching round id, game mode, or map name
 		rounds_query = db.game_db.query(db.Round).filter(
 			or_(
 				db.Round.id.like(search_query),

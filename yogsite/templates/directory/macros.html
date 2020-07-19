@@ -1,0 +1,43 @@
+{% macro note_listing(notes, show_ckey=True) %}
+	<table class="table is-striped is-hoverable is-fullwidth">
+		<thead>
+			<tr>
+				{% if show_ckey %}
+					<th>CKEY</th>
+				{% endif %}
+				
+				<th width="200px">Date</th>
+				<th>Text</th>
+				<th>Admin</th>
+				{% if admin_perms.can_manage_notes() %}
+					<th>Tools</th>
+				{% endif %}
+			</tr>
+		</thead>
+
+		<tbody>
+			{% for note in notes %}
+				<tr>
+					{% if show_ckey %}
+						<td>{{ note.ckey }}</td>
+					{% endif %}
+
+					<td><time datetime="{{ note.timestamp }}">{{ util.readable_time_delta(note.timestamp) }}</time></td>
+				
+					<td>{{ note.notetext }}</td>
+
+					<td>{{ note.adminckey }}</td>
+
+					{% if admin_perms.can_manage_notes() %}
+						<td>
+							<div class="buttons">
+								<a class="button" href="/notes/{{ note.id }}/edit">Edit</a>
+								<a class="button" href="/notes/{{ note.id }}/delete">Delete</a>
+							</div>
+						</td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endmacro %}

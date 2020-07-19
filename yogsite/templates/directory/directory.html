@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% from 'util/macros.html' import pagination, search_form with context %}
+
+{% block title %}Directory{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+	<h2 class="title is-2 has-text-centered">Player Directory</h2>
+
+	<div class="columns is-centered">
+		<div class="column is-four-fifths">
+
+			{{ search_form(search_query, "Search for players...") }}
+
+			{{ pagination(page, page_count) }}
+
+			<table class="table is-striped is-hoverable is-fullwidth">
+				<thead>
+					<tr>
+						<th>CKEY</th>
+						<th width="200px">First Seen</th>
+						<th width="200px">Last Seen</th>
+						<th>Antag Tokens</th>
+						<th>Credits</th>
+						<th>Tools</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for player in players %}
+						<tr>
+							<td>{{ player.ckey }}</td>
+
+							<td><time datetime="{{ player.firstseen }}">{{ player.firstseen }}</time></td>
+							
+							<td><time datetime="{{ player.lastseen }}">{{ player.lastseen }}</time></td>
+							
+							<td>{{ player.antag_tokens }}</td>
+
+							<td>{{ player.credits }}</td>
+
+							<td>
+								<a class="button" href="/players/{{ player.ckey }}">View</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			{{ pagination(page, page_count) }}
+		</div>
+	</div>
+{% endblock %}

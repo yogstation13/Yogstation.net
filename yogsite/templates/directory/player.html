@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% from 'bans/macros.html' import ban_listing with context %}
+{% from 'directory/macros.html' import note_listing with context %}
+
+{% block title %}Directory - {{ player.ckey }}{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+	<div class="columns is-centered">
+		<div class="column is-four-fifths">
+			<a class="button" href="javascript:history.back()">Back</a>
+			<br/><br/>
+			<div class="columns">
+				<div class="column is-two-thirds">
+					<h2 class="title is-2">{{ player.ckey }}</h2>
+				</div>
+				<div class="column is-one-third">
+
+				</div>
+			</div>
+			
+			<div class="columns">
+				<div class="column is-one-fourth">
+					<div class="box has-text-centered">
+						<p class="title is-4">Connections</p>
+						<p class="subtitle is-4">{{ player.get_connection_count() }}</p>
+					</div>
+				</div>
+				<div class="column is-one-fourth">
+					<div class="box has-text-centered">
+						<p class="title is-4">Deaths</p>
+						<p class="subtitle is-4">{{ 9999 }}</p> {# temporary until I get deaths table TODO: fix #}
+					</div>
+				</div>
+				<div class="column is-one-fourth">
+					<div class="box has-text-centered">
+						<p class="title is-4">Credits</p>
+						<p class="subtitle is-4">{{ player.credits }}</p>
+					</div>
+				</div>
+				<div class="column is-one-fourth">
+					<div class="box has-text-centered">
+						<p class="title is-4">Antag Tokens</p>
+						<p class="subtitle is-4">{{ player.antag_tokens }}</p>
+					</div>
+				</div>
+			</div>
+
+			{% if admin_perms.can_manage_bans() %}
+				<h2 class="title is-2 has-text-centered">Bans</h2>
+				
+				{% if player.bans %}
+					{{ ban_listing(player.bans, show_ckey=False) }}
+				{% endif %}
+			{% endif %}
+
+			{% if admin_perms.can_manage_notes() %}
+				<h2 class="title is-2 has-text-centered">Notes</h2>
+
+				{% if player.bans %}
+					{{ note_listing(player.notes, show_ckey=False) }}
+				{% endif %}
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

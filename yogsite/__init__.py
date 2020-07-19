@@ -48,7 +48,7 @@ def before_request():
 		admin_account = None
 	
 	if admin_account:
-		admin_perms = Permissions(2*32-1)
+		admin_perms = Permissions(2*32-1) # TODO: fix
 	else:
 		admin_perms = Permissions(0)
 
@@ -64,13 +64,15 @@ def context_processor():
 
 from yogsite.modules.admin import blueprint as bp_admin
 from yogsite.modules.bans import blueprint as bp_bans
-from yogsite.modules.library import blueprint as bp_library
+from yogsite.modules.directory import blueprint as bp_directory
 from yogsite.modules.donate import blueprint as bp_donate
+from yogsite.modules.library import blueprint as bp_library
 from yogsite.modules.home import blueprint as bp_home
 from yogsite.modules.rounds import blueprint as bp_rounds
 
 app.register_blueprint(bp_admin)
 app.register_blueprint(bp_bans)
+app.register_blueprint(bp_directory)
 app.register_blueprint(bp_donate)
 app.register_blueprint(bp_home)
 app.register_blueprint(bp_library)

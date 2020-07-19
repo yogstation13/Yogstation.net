@@ -49,7 +49,6 @@ class Player(flask_db_ext.Model):
 	antag_weight		= Column('antag_weight',		Integer())
 	job_whitelisted		= Column('job_whitelisted',		SmallInteger())
 
-
 	notes				= relationship('Note',	primaryjoin = 'Player.ckey == Note.ckey')
 	bans				= relationship('Ban',	primaryjoin = 'Player.ckey == Ban.ckey')
 

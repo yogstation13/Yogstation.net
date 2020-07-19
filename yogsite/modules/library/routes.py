@@ -20,15 +20,13 @@ def page_library():
 	page = request.args.get('page', type=int, default=1)
 
 	search_query = request.args.get('query', type=str, default=None)
-
-	print(g.admin_account)
-
+	
 	books_query = db.game_db.query(db.Book)
 
 	if not g.admin_perms.can_manage_books():
 		books_query = books_query.filter(db.Book.deleted.is_(None))
 
-	if search_query:
+	if search_query: # TODO: put this somewhere else
 		books_query = books_query.filter(
 			or_(
 				db.Book.title.like(f"%{search_query}%"),
