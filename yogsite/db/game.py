@@ -6,6 +6,7 @@ from netaddr import IPAddress
 
 from flask_sqlalchemy import SQLAlchemy
 
+from sqlalchemy import and_
 from sqlalchemy import BigInteger
 from sqlalchemy import create_engine
 from sqlalchemy import Column
@@ -69,7 +70,32 @@ class Player(flask_db_ext.Model):
 	
 	def get_bans(self):
 		return game_db.query(Ban).filter(Ban.ckey == self.ckey).all()
+	
+	def get_role_time(self, role):
+		try:
+			time_for_role = game_db.query(RoleTime).filter(
+				and_(RoleTime.ckey == self.ckey, RoleTime.job == role)
+			).one()
 
+			return time_for_role.minutes
+
+		except NoResultFound:
+			return None
+	
+	def get_favorite_job(self):
+		try:
+			most_played_role = game_db.query(RoleTime).filter(
+				and_(
+					RoleTime.ckey == self.ckey,
+					RoleTime.job != "Living",		# probably not the best way to do this but.... UGHHH
+					RoleTime.job != "Ghost"
+				)
+			).order_by(RoleTime.minutes.desc()).first()
+
+			return most_played_role
+
+		except NoResultFound:
+			return None
 
 class Note(flask_db_ext.Model):
 	__tablename__ = 'erro_notes'
@@ -83,6 +109,7 @@ class Note(flask_db_ext.Model):
 	secret				= Column('secret',				SmallInteger())
 	last_editor			= Column('last_editor',			String(32))
 	edits				= Column('edits',				Text())
+
 
 class Ban(flask_db_ext.Model):
 	__tablename__ = 'erro_ban'
@@ -204,6 +231,14 @@ class Round(flask_db_ext.Model):
 	shuttle_name		= Column('shuttle_name',		String(64))
 	map_name			= Column('map_name',			String(32))
 	station_name		= Column('station_name',		String(80))
+
+
+class RoleTime(flask_db_ext.Model):
+	__tablename__ = 'erro_role_time'
+
+	ckey		= Column('ckey',		String(32), primary_key=True)
+	job			= Column('job',			String(128), primary_key=True)
+	minutes	=	 Column('minutes',		Integer())
 
 
 class Admin(flask_db_ext.Model):

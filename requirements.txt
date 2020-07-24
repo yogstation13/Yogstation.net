@@ -2,6 +2,7 @@ Flask==1.1.1
 flask-wtf==0.14.3
 flask_sqlalchemy==2.4.4
 humanize==2.5.0
+mysqlclient==2.0.1
 netaddr==0.8.0
 pymysql==0.9.3
 PyYAML==5.3.1
