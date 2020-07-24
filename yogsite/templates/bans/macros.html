@@ -1,3 +1,5 @@
+{% from 'util/macros.html' import ckey_link with context %}
+
 {% macro ban_listing(bans, show_ckey=True) %}
 	<table class="table is-striped is-hoverable is-fullwidth">
 		<thead>
@@ -23,7 +25,7 @@
 			{% for ban in bans %}
 				<tr>
 					{% if show_ckey %}
-						<td>{{ ban.ckey }}</td>
+						<td>{{ ckey_link(ban.ckey) }}</td>
 					{% endif %}
 
 					<td>{{ ban.role }}</td>
@@ -38,7 +40,7 @@
 						<td>Never</td>
 					{% endif %}
 
-					<td>{{ ban.a_ckey }}</td>
+					<td>{{ ckey_link(ban.a_ckey) }}</td>
 
 					<td>
 						{% if ban.unbanned_datetime %}
@@ -50,7 +52,7 @@
 						{% endif %}
 					</td>
 
-					<td>{{ ban.unbanned_ckey if ban.unbanned_ckey else "N/A" }}</td>
+					<td>{{ ckey_link(ban.unbanned_ckey) if ban.unbanned_ckey else "N/A" }}</td>
 
 					{% if admin_perms.can_manage_bans() %}
 						<td>

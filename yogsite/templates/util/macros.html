@@ -78,3 +78,7 @@
 		</ul>
 	{% endif %}
 {% endmacro %}
+
+{% macro ckey_link(ckey) %}
+	<a href="/players/{{ ckey }}">{{ ckey }}</a>
+{% endmacro %}

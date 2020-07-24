@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% from 'util/macros.html' import pagination, search_form with context %}
+{% from 'util/macros.html' import ckey_link, pagination, search_form with context %}
 
 {% block title %}Directory{% endblock %}
 
@@ -32,7 +32,7 @@
 				<tbody>
 					{% for player in players %}
 						<tr>
-							<td>{{ player.ckey }}</td>
+							<td>{{ ckey_link(player.ckey) }}</td>
 
 							<td><time datetime="{{ player.firstseen }}">{{ player.firstseen }}</time></td>
 							
