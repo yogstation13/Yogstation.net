@@ -16,7 +16,6 @@ var category_color_classes = {
 	"manifest": "is-info is-light"
 }
 
-
 window.addEventListener("load", function () {
 
 	window.log_viewer = new Vue ({
@@ -24,7 +23,8 @@ window.addEventListener("load", function () {
 
 		data: {
 			query: "",
-			log_entries: []
+			log_entries: [],
+			enabled_categories: Object.keys(category_color_classes)
 		},
 
 		mounted: function() {
@@ -34,9 +34,14 @@ window.addEventListener("load", function () {
 		computed: {
 			filtered_log_entries() {
 				return this.log_entries.filter(entry => {
-					return entry.content.toLowerCase().includes(this.query.toLowerCase());
+					return	entry.content.toLowerCase().includes(this.query.toLowerCase()) &&
+							this.enabled_categories.includes(entry.category);
 				})
 			}
+		},
+
+		methods: {
+			format_datetime_local: format_datetime_local
 		}
 	})
 

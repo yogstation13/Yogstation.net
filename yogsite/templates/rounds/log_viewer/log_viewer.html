@@ -5,6 +5,8 @@
 {% block head %}
 	<script src="/static/js/log_viewer.js"></script>
 
+	<script src="/static/js/moment.min.js"></script>
+
 	<script>
 		window.log_viewer_round_id = {{ round.id }};
 	</script>
@@ -12,17 +14,18 @@
 {% endblock %}
 
 {% block content %}
-	<div class="columns is-centered">
+	<div id="log-viewer" class="columns is-centered">
 		<div class="column is-four-fifths">
 			<a class="button" href="javascript:history.back()">Back</a>
 			<br/><br/>
 			<div class="columns">
 				<div class="column is-two-thirds">
 					<h2 class="title is-2">Logs for Round #{{ round.id }}</h2>
+					<h4 v-cloak class="subtitle is-4">${ log_entries.length } entries (${ filtered_log_entries.length } shown)</h4>
 				</div>
 			</div>
 			
-			<div id="log-viewer" class="box">
+			<div class="box">
 
 				<div class="control has-icons-left">
 					
@@ -31,6 +34,22 @@
 					<span class="icon is-small is-left">
 						<i class="fas fa-search"></i>
 					</span>
+				</div>
+
+				<br/>
+
+				<div v-cloak class="field is-grouped is-grouped-multiline">
+					<div class="control" v-for="(classes, category, index) in category_color_classes">
+						<div class="tags has-addons">
+							<div class="tag checkbox">
+								<input v-cloak type="checkbox" v-model="enabled_categories" :value="category" />
+							</div>
+	
+							<div class="tag" v-bind:class="classes">
+								${ category }
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<br/><br/>
@@ -46,9 +65,9 @@
 			
 					<tbody>
 							<tr v-cloak v-for="entry in filtered_log_entries">
-								<td>${ entry.timestamp }</td>
+								<td>${ format_datetime_local(entry.timestamp) }</td>
 								
-								<td class="has-text-centered"><div style="width: 85px;" class="tag" v-bind:class="window.category_color_classes[entry.category]">${ entry.category }</div></td>
+								<td class="has-text-centered"><div style="width: 85px;" class="tag" v-bind:class="category_color_classes[entry.category]">${ entry.category }</div></td>
 								
 								<td>${ entry.content }</td>
 							</tr>

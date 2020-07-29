@@ -11,5 +11,5 @@ input[type=range].slider::-webkit-slider-runnable-track {
 }
 
 [v-cloak] {
-	display: none;
+	display: none !important;
 }

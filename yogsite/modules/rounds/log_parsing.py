@@ -73,25 +73,6 @@ class RoundLogs():
 
 
 class LogEntry():
-
-	category_color_classes = { # bulma classes for category tags
-		"game": "is-primary",
-		"attack": "is-warning",
-		"runtime": "is-danger",
-		"config_error": "is-danger is-light",
-		"map_errors": "is-danger is-light",
-		"telecomms": "is-success",
-		"pda": "is-success is-light",
-		"sql": "is-info",
-		"tgui": "is-link",
-		"hrefs": "is-link is-light",
-		"qdel": "is-warning is-light",
-		"job_debug": "is-warning is-light",
-		"mecha": "is-warning is-light",
-		"asset": "is-primary is-light",
-		"manifest": "is-info is-light"
-	}
-
 	def __init__(self, timestamp, category, content):
 		self.timestamp = timestamp
 		self.category = category

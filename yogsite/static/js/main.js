@@ -14,3 +14,7 @@ window.addEventListener("load", function () {
 function setTwoNumberDecimal(event) {
     this.value = parseFloat(this.value).toFixed(2);
 }
+
+function format_datetime_local(dt, format) {
+	return new moment.unix(dt).format("YYYY-MM-DD HH:mm:ss.SSS");
+}
