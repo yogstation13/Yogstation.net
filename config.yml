@@ -9,6 +9,10 @@ db:
 
 items_per_page: 20
 
+
+logs:
+  directory: "../Yogstation/data/logs/*/*/*"
+
 secret_key: "change this later"
 
 # KEEP THIS IN SYNC WITH THE GAME OR YOU WILL NOT BE ABLE TO EDIT BANS TO NEW ROLES IN GAME

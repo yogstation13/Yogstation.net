@@ -232,6 +232,12 @@ class Round(flask_db_ext.Model):
 	map_name			= Column('map_name',			String(32))
 	station_name		= Column('station_name',		String(80))
 
+	@classmethod
+	def from_id(cls, id):
+		try:
+			return game_db.query(cls).filter(cls.id == id).one()
+		except NoResultFound:
+			return None
 
 class RoleTime(flask_db_ext.Model):
 	__tablename__ = 'erro_role_time'

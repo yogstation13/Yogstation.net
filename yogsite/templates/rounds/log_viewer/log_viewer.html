@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}Round - {{ round.id }} - Logs{% endblock %}
+
+{% block head %}
+	<script src="/static/js/log_viewer.js"></script>
+
+	<script>
+		window.log_viewer_round_id = {{ round.id }};
+	</script>
+
+{% endblock %}
+
+{% block content %}
+	<div class="columns is-centered">
+		<div class="column is-four-fifths">
+			<a class="button" href="javascript:history.back()">Back</a>
+			<br/><br/>
+			<div class="columns">
+				<div class="column is-two-thirds">
+					<h2 class="title is-2">Logs for Round #{{ round.id }}</h2>
+				</div>
+			</div>
+			
+			<div id="log-viewer" class="box">
+
+				<div class="control has-icons-left">
+					
+					<input class="input" type="text" placeholder="Filter logs..." v-on:input="query = $event.target.value" />
+
+					<span class="icon is-small is-left">
+						<i class="fas fa-search"></i>
+					</span>
+				</div>
+
+				<br/><br/>
+
+				<table class="table is-striped is-hoverable is-fullwidth">
+					<thead>
+						<tr>
+							<th width="200px">Time Stamp</th>
+							<th width="110px">Category</th>
+							<th>Content</th>
+						</tr>
+					</thead>
+			
+					<tbody>
+							<tr v-cloak v-for="entry in filtered_log_entries">
+								<td>${ entry.timestamp }</td>
+								
+								<td class="has-text-centered"><div style="width: 85px;" class="tag" v-bind:class="window.category_color_classes[entry.category]">${ entry.category }</div></td>
+								
+								<td>${ entry.content }</td>
+							</tr>
+					</tbody>
+				</table>
+				
+				<div class="container is-fullwidth has-text-centered" v-if="!log_entries.length">
+					<span style="width: 40px; height: 40px; display: inline-block;" class="loader"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
