@@ -63,6 +63,7 @@ def context_processor():
 
 
 from yogsite.modules.admin import blueprint as bp_admin
+from yogsite.modules.api import blueprint as bp_api
 from yogsite.modules.bans import blueprint as bp_bans
 from yogsite.modules.directory import blueprint as bp_directory
 from yogsite.modules.donate import blueprint as bp_donate
@@ -71,6 +72,7 @@ from yogsite.modules.home import blueprint as bp_home
 from yogsite.modules.rounds import blueprint as bp_rounds
 
 app.register_blueprint(bp_admin)
+app.register_blueprint(bp_api)
 app.register_blueprint(bp_bans)
 app.register_blueprint(bp_directory)
 app.register_blueprint(bp_donate)
