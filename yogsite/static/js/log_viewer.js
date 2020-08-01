@@ -9,7 +9,6 @@ var category_color_classes = {
 	"sql": "is-info",
 	"tgui": "is-link",
 	"hrefs": "is-link is-light",
-	"qdel": "is-warning is-light",
 	"job_debug": "is-warning is-light",
 	"mecha": "is-warning is-light",
 	"asset": "is-primary is-light",

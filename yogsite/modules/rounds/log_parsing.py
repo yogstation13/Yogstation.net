@@ -22,7 +22,6 @@ class RoundLogs():
 		"map_errors.log",
 		"mecha.log",
 		"pda.log",
-		"qdel.log",
 		"runtime.log",
 		"sql.log",
 		"telecomms.log",
