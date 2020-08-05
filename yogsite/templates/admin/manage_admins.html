@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% from 'util/macros.html' import ckey_link, pagination, search_form with context %}
+
+{% block title %}Panel - Admins{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+	<h2 class="title is-2 has-text-centered">Admin Management</h2>
+
+	<div class="columns is-centered">
+		<div class="column is-four-fifths">
+
+			<table class="table is-striped is-hoverable is-fullwidth">
+				<thead>
+					<tr>
+						<th>CKEY</th>
+						<th>Rank</th>
+						<th>Status</th>
+						<th>Tools</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for admin in admins %}
+						<tr>
+							<td>{{ ckey_link(admin.ckey) }}</td>
+
+							<td>
+								<div class="dropdown is-hoverable">
+									<div class="dropdown-trigger">
+										<button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+											<span>{{ admin.rank }}</span>
+											<span class="icon is-small">
+												<i class="fas fa-angle-down"></i>
+											</span>
+										</button>
+									</div>
+
+									<div class="dropdown-menu" id="dropdown-menu" role="menu">
+										<div class="dropdown-content">
+											{% for rank in admin_ranks %}
+												<a href="/admin/admins/{{ admin.ckey }}/modify?rank={{ rank.rank }}" class="dropdown-item">
+													{{ rank.rank }}
+												</a>
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+							</td>
+
+							<td>
+								<div class="tag is-success is-medium has-text-centered">Available</div>
+							</td>
+
+							<td>
+								<a class="button">Set LOA</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<div class="box">
+				<h3 class="title is-3 has-text-centered">LOA Management</h3>
+
+				<table class="table is-striped is-hoverable is-fullwidth">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>CKEY</th>
+							<th>Start Time</th>
+							<th>Expiry Time</th>
+							<th>Reason</th>
+							<th>Tools</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for loa in loas %}
+							<tr>
+								<td>{{ loa.id }}</td>
+
+								<td>{{ ckey_link(loa.ckey) }}</td>
+
+								<td>
+									<time datetime="{{ loa.time }}">{{ loa.time }}</time>
+								</td>
+
+								<td>
+									<time datetime="{{ loa.expiry_time }}">{{ util.readable_time_delta(loa.expiry_time) }}</time>
+								</td>
+
+								<td>{{ loa.reason }}</td>
+
+								<td>
+									<div class="buttons">
+										<a class="button" href="/admin/loa/{{ loa.id }}/Revoke">Revoke</a>
+									</div>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

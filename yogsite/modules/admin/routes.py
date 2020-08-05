@@ -37,3 +37,15 @@ def page_logout():
 	session.clear()
 
 	return redirect("/")
+
+
+@blueprint.route("/admin/admins")
+def page_manage_admins():
+
+	admins = db.game_db.query(db.Admin).order_by(db.Admin.ckey) # Get admins sorted by ckey
+
+	loas = db.game_db.query(db.LOA).order_by(db.LOA.time) # Get LOAs sorted by start time
+
+	admin_ranks = db.game_db.query(db.AdminRank)
+
+	return render_template("admin/manage_admins.html", admins=admins, loas=loas, admin_ranks=admin_ranks)

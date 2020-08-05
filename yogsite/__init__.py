@@ -48,7 +48,7 @@ def before_request():
 		admin_account = None
 	
 	if admin_account:
-		admin_perms = Permissions(2*32-1) # TODO: fix
+		admin_perms = Permissions(2**32-1) # TODO: fix
 	else:
 		admin_perms = Permissions(0)
 

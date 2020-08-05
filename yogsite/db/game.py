@@ -278,3 +278,19 @@ class AdminRank(flask_db_ext.Model):
 	flags			= Column('flags',			Integer())
 	exclude_flags	= Column('exclude_flags',	Integer())
 	can_edit_flags	= Column('can_edit_flags',	Integer())
+
+
+class LOA(flask_db_ext.Model):
+	__tablename__ = 'erro_loa'
+
+	id 			= Column('id',			Integer(), primary_key=True)
+	ckey		= Column('ckey',		String(32))
+	time		= Column('time',		DateTime())
+	expiry_time	= Column('expiry_time',	DateTime())
+	revoked		= Column('revoked',		SmallInteger())
+	reason		= Column('reason',		String(2048))
+
+	def is_active(self):
+		now = datetime.utcnow()
+
+		return (now > self.time) and (now < self.expiry_time) and (not self.revoked)
