@@ -3,6 +3,7 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask import session
+from flask import url_for
 
 from sqlalchemy import or_
 
@@ -11,6 +12,8 @@ import math
 from yogsite.config import cfg
 from yogsite import db
 from yogsite.util import login_required
+
+from .forms import SetLOAForm
 
 blueprint = Blueprint("admin", __name__)
 
@@ -39,8 +42,10 @@ def page_logout():
 	return redirect("/")
 
 
-@blueprint.route("/admin/admins")
+@blueprint.route("/admin/admins", methods=["GET", "POST"])
 def page_manage_admins():
+
+	form_set_loa = SetLOAForm(request.form, prefix="form_set_loa")
 
 	admins = db.game_db.query(db.Admin).order_by(db.Admin.ckey) # Get admins sorted by ckey
 
@@ -48,4 +53,12 @@ def page_manage_admins():
 
 	admin_ranks = db.game_db.query(db.AdminRank)
 
-	return render_template("admin/manage_admins.html", admins=admins, loas=loas, admin_ranks=admin_ranks)
+	if request.method == "POST":
+		if form_set_loa.validate_on_submit():
+			print ("loa works")
+			return redirect(url_for("admin.page_manage_admins"))
+
+	return render_template("admin/manage_admins.html", 
+		admins=admins, loas=loas, admin_ranks=admin_ranks,
+		form_set_loa = form_set_loa
+	)

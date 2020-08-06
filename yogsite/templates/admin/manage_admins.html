@@ -1,13 +1,75 @@
 {% extends "layout.html" %}
 
-{% from 'util/macros.html' import ckey_link, pagination, search_form with context %}
+{% from 'util/macros.html' import ckey_link, pagination, search_form, form_errors with context %}
 
 {% block title %}Panel - Admins{% endblock %}
 
 {% block head %}
+	<script src="/static/js/admin/manage_admins.js"></script>
 {% endblock %}
 
 {% block content %}
+
+	<!-- Start set LOA form modal -->
+	<div class="modal" v-bind:class="{'is-active': loa_modal_is_active}">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Setting as Leave of Absence</p>
+				<a class="delete"
+					v-on:click="loa_modal_is_active = false"
+				></a>
+			</header>
+
+			<form id="set-loa-form" method="POST">
+
+				{{ form_set_loa.csrf_token }}
+
+				<section class="modal-card-body">
+					<div class="field">
+						<div class="label">CKEY</div>
+						<div class="control has-icons-left">
+							{{ form_set_loa.ckey(class_="input is-fullwidth", placeholder="Enter the CKEY of the admin...", **{":value": "loa_target_admin_ckey"}) }}
+
+							<span class="icon is-small is-left">
+								<i class="fas fa-user"></i>
+							</span>
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="label">Reason</div>
+						<div class="control">
+							{{ form_set_loa.reason(class_="textarea is-fullwidth", placeholder="Enter the reason for the LOA...", rows="3") }}
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="label">Expiration Time</div>
+						<div class="control has-icons-left">
+							{{ form_set_loa.expiration_time(class_="input is-fullwidth") }}
+							<span class="icon is-small is-left">
+								<i class="fas fa-clock"></i>
+							</span>
+						</div>
+					</div>
+
+					{{ form_errors(form_set_loa) }}
+
+				</section>
+
+				<footer class="modal-card-foot">
+					<a class="button is-pulled-right"
+						v-on:click="loa_modal_is_active = false"
+					>
+						Cancel
+					</a>
+					<button class="button is-success is-pulled-right">Set LOA</button>
+				</footer>
+			</form>
+		</div>
+	</div>
+	<!-- End set LOA form modal -->
 
 	<h2 class="title is-2 has-text-centered">Admin Management</h2>
 
@@ -56,7 +118,11 @@
 							</td>
 
 							<td>
-								<a class="button">Set LOA</a>
+								<a class="button"
+									v-on:click="loa_target_admin_ckey = '{{ admin.ckey }}'; loa_modal_is_active = true"
+								>
+									Set LOA
+								</a>
 							</td>
 						</tr>
 					{% endfor %}
