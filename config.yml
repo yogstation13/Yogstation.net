@@ -101,3 +101,13 @@ roles: [
   "Holoparasite",
   "Zombie"
 ]
+
+library:
+  categories: [
+    "Any",
+    "Fiction",
+    "Non-Fiction",
+    "Adult",
+    "Reference",
+    "Religion"
+  ]

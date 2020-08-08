@@ -70,7 +70,7 @@
 				{% for error in errors %}
 					<div class="message is-danger mb-3">
 						<div class="message-body py-2 my-0">
-							{{ error }}
+							{{ field | title }}: {{ error }}
 						</div>
 					</div>
 				{% endfor %}

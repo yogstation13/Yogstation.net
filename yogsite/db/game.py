@@ -213,6 +213,18 @@ class Book(flask_db_ext.Model):
 		except NoResultFound:
 			return None
 
+	def apply_edit_form(self, form):
+		"""
+		Take the data from the form and update this record with it, then commit the change to the db
+		There is almost definitely a better way to do this
+		"""
+
+		self.title = form.title.data
+		self.content = form.content.data
+		self.category = form.category.data
+
+		game_db.commit()
+
 
 class Round(flask_db_ext.Model):
 	__tablename__ = 'erro_round'
