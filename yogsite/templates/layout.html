@@ -44,8 +44,8 @@
 				v-bind:class="{ 'is-active' : nav_open }"
 			>
 				<div class="navbar-end">
-					<a class="navbar-item" href="/forums">Forums</a>
-					<a class="navbar-item" href="/wiki">Wiki</a>
+					<a class="navbar-item" href="{{ cfg.get('links.forums') }}">Forums</a>
+					<a class="navbar-item" href="{{ cfg.get('links.wiki') }}">Wiki</a>
 					<a class="navbar-item" href="/players">Directory</a>
 					<a class="navbar-item" href="/bans">Ban List</a>
 					<a class="navbar-item" href="/rounds">Round List</a>
