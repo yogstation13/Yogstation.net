@@ -24,8 +24,6 @@
 						<th>CKEY</th>
 						<th width="200px">First Seen</th>
 						<th width="200px">Last Seen</th>
-						<th>Antag Tokens</th>
-						<th>Credits</th>
 						<th>Tools</th>
 					</tr>
 				</thead>
@@ -37,10 +35,6 @@
 							<td><time datetime="{{ player.firstseen }}">{{ player.firstseen }}</time></td>
 							
 							<td><time datetime="{{ player.lastseen }}">{{ player.lastseen }}</time></td>
-							
-							<td>{{ player.antag_tokens }}</td>
-
-							<td>{{ player.credits }}</td>
 
 							<td>
 								<a class="button" href="/players/{{ player.ckey }}">View</a>
