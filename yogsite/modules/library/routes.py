@@ -42,9 +42,9 @@ def page_library():
 
 	books_query = books_query.order_by(db.Book.id.desc())
 
-	page_count = math.ceil(books_query.count() / cfg.items_per_page) # Selecting only the id on a count is faster than selecting the entire row
+	page_count = math.ceil(books_query.count() / cfg.get("items_per_page")) # Selecting only the id on a count is faster than selecting the entire row
 
-	displayed_books = books_query.limit(cfg.items_per_page).offset((page - 1) * cfg.items_per_page)
+	displayed_books = books_query.limit(cfg.get("items_per_page")).offset((page - 1) * cfg.get("items_per_page"))
 
 	return render_template("library/library.html", books=displayed_books, page=page, page_count=page_count, search_query=search_query)
 

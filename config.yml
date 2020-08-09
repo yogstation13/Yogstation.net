@@ -1,11 +1,10 @@
 db:
   game:
-    host: "localhost"
-    user: "root"
-    password: "passwd"
-    port: 3306
-
-    dbname: "yogstation"
+    host: $DB_GAME_HOST
+    user: $DB_GAME_USER
+    pass: $DB_GAME_PASS
+    port: $DB_GAME_PORT
+    name: $DB_GAME_NAME
 
 items_per_page: 20
 
@@ -25,7 +24,7 @@ servers:
 logs:
   directory: "../Yogstation/data/logs/*/*/*"
 
-secret_key: "change this later"
+secret_key: $FLASK_SECRET_KEY
 
 # KEEP THIS IN SYNC WITH THE GAME OR YOU WILL NOT BE ABLE TO EDIT BANS TO NEW ROLES IN GAME
 roles: [

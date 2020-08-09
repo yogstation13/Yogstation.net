@@ -18,7 +18,7 @@ blueprint = Blueprint("api", __name__)
 def page_api_stats():
 	server_stats_list = []
 
-	for server in cfg.servers:
+	for server in cfg.get("servers"):
 		server_stats = query_server_status(server)
 		server_stats["server"] = server.__dict__
 

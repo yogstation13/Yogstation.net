@@ -1,8 +1,3 @@
-from yogsite.util import Struct
+from envyaml import EnvYAML
 
-import yaml
-
-with open("config.yml") as config_file:
-	config_dict = yaml.full_load(config_file)
-
-cfg = Struct(config_dict)
+cfg = EnvYAML("config.yml")

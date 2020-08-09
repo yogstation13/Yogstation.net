@@ -38,9 +38,9 @@ def page_rounds():
 	
 	rounds_query = rounds_query.order_by(db.Round.id.desc())
 
-	page_count = math.ceil(rounds_query.count() / cfg.items_per_page) # Selecting only the id on a count is faster than selecting the entire row
+	page_count = math.ceil(rounds_query.count() / cfg.get("items_per_page")) # Selecting only the id on a count is faster than selecting the entire row
 
-	displayed_rounds = rounds_query.limit(cfg.items_per_page).offset((page - 1) * cfg.items_per_page)
+	displayed_rounds = rounds_query.limit(cfg.get("items_per_page")).offset((page - 1) * cfg.get("items_per_page"))
 
 	return render_template("rounds/rounds.html", rounds=displayed_rounds, page=page, page_count=page_count, search_query=search_query)
 

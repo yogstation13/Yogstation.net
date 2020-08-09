@@ -17,7 +17,7 @@ class BanEditForm(FlaskForm):
 
 	expiration_time = DateTimeLocalField("Expiration Time", [Optional()], format="%Y-%m-%dT%H:%M")
 
-	role = SelectField("Role", [AnyOf(cfg.roles)], choices=list(zip(cfg.roles, cfg.roles)))
+	role = SelectField("Role", [AnyOf(cfg.get("roles"))], choices=list(zip(cfg.get("roles"), cfg.get("roles"))))
 
 	ip = TextField("IP", [Optional(), IPAddress()])
 

@@ -15,4 +15,4 @@ class BookEditForm(FlaskForm):
 
 	content = TextAreaField("Content", [Optional(), Length(max=16777215)])
 
-	category = SelectField("Category", [AnyOf(cfg.library.categories)], choices=list(zip(cfg.library.categories, cfg.library.categories)))
+	category = SelectField("Category", [AnyOf(cfg.get("library.categories"))], choices=list(zip(cfg.get("library.categories"), cfg.get("library.categories"))))

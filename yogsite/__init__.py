@@ -12,6 +12,8 @@ import yogsite.db
 
 from yogsite.extensions import flask_db_ext
 
+import os
+
 
 def register_extensions(app):
 	flask_db_ext.init_app(app)
@@ -21,14 +23,14 @@ def create_app():
 
 	app.url_map.strict_slashes = False
 
-	app.secret_key = cfg.secret_key # Used for signing sessions
+	app.secret_key = cfg.get("secret_key") # Used for signing sessions
 
 	app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://{username}:{password}@{host}:{port}/{db}".format(
-		username	= cfg.db.game.user,
-		password	= cfg.db.game.password,
-		host		= cfg.db.game.host,
-		port		= cfg.db.game.port,
-		db			= cfg.db.game.dbname
+		username	= cfg.get("db.game.user"),
+		password	= cfg.get("db.game.pass"),
+		host		= cfg.get("db.game.host"),
+		port		= cfg.get("db.game.port"),
+		db			= cfg.get("db.game.name")
 	)
 
 	register_extensions(app)

@@ -34,9 +34,9 @@ def page_directory():
 
 	players_query = players_query.order_by(db.Player.credits.desc())
 
-	page_count = math.ceil(players_query.count() / cfg.items_per_page) # Selecting only the id on a count is faster than selecting the entire row
+	page_count = math.ceil(players_query.count() / cfg.get("items_per_page")) # Selecting only the id on a count is faster than selecting the entire row
 
-	displayed_players = players_query.limit(cfg.items_per_page).offset((page - 1) * cfg.items_per_page)
+	displayed_players = players_query.limit(cfg.get("items_per_page")).offset((page - 1) * cfg.get("items_per_page"))
 
 	return render_template("directory/directory.html", players=displayed_players, page=page, page_count=page_count, search_query=search_query)
 
