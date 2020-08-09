@@ -32,7 +32,7 @@ def page_directory():
 			)
 		)
 
-	players_query = players_query.order_by(db.Player.credits.desc())
+	players_query = players_query.order_by(db.Player.ckey.asc())
 
 	page_count = math.ceil(players_query.count() / cfg.get("items_per_page")) # Selecting only the id on a count is faster than selecting the entire row
 
