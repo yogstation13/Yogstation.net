@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint
 from flask import redirect
 from flask import render_template
@@ -5,7 +7,7 @@ from flask import request
 from flask import session
 from flask import url_for
 
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 
 import math
 
@@ -49,7 +51,12 @@ def page_manage_admins():
 
 	admins = db.game_db.query(db.Admin).order_by(db.Admin.ckey) # Get admins sorted by ckey
 
-	loas = db.game_db.query(db.LOA).order_by(db.LOA.time) # Get LOAs sorted by start time
+	loas = db.game_db.query(db.LOA).filter(
+		and_(
+			db.LOA.revoked == None,
+			db.LOA.expiry_time > datetime.utcnow()
+		)
+	).order_by(db.LOA.time) # Get LOAs sorted by start time
 
 	admin_ranks = db.game_db.query(db.AdminRank)
 
