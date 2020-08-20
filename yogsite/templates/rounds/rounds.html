@@ -37,8 +37,12 @@
 
 							<td><time datetime="{{ round.start_datetime }}">{{ round.start_datetime }}</time></td>
 
-							<td>{{ round.end_datetime - round.start_datetime }}</td>
-							
+							{% if round.end_datetime %}
+								<td>{{ round.end_datetime - round.start_datetime }}</td>
+							{% else %}
+								<td>In Progress</td>
+							{% endif %}
+
 							<td>{{ round.game_mode }}</td>
 
 							<td>{{ round.map_name }}</td>
