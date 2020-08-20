@@ -80,8 +80,14 @@ class Player(flask_db_ext.Model):
 			return time_for_role.minutes
 
 		except NoResultFound:
-			return None
+			return 0
 	
+	def get_total_playtime(self):
+		living_time = self.get_role_time("Living")
+		ghost_time = self.get_role_time("Ghost")
+
+		return living_time + ghost_time
+
 	def get_favorite_job(self):
 		try:
 			most_played_role = game_db.query(RoleTime).filter(

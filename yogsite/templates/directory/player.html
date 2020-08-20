@@ -47,7 +47,7 @@
 				<div class="column is-one-fourth">
 					<div class="box has-text-centered">
 						<p class="title is-4">Total</p>
-						<p class="subtitle is-4">{{ ((player.get_role_time("Living") + player.get_role_time("Ghost")) / 60) | round | int }} hours</p> {# TODO: optimize #}
+						<p class="subtitle is-4">{{ (player.get_total_playtime() / 60) | round | int }} hours</p> {# TODO: optimize #}
 					</div>
 				</div>
 				<div class="column is-one-fourth">
@@ -68,7 +68,13 @@
 
 						{% set favorite_job = player.get_favorite_job() %}
 
-						<p class="subtitle is-4">{{  favorite_job.job | title }} ({{ (favorite_job.minutes / 60) | round | int }}h)</p>
+						<p class="subtitle is-4">
+							{% if favorite_job %}
+								{{  favorite_job.job | title }} ({{ (favorite_job.minutes / 60) | round | int }}h)
+							{% else %}
+								None
+							{% endif %}
+						</p>
 					</div>
 				</div>
 			</div>
