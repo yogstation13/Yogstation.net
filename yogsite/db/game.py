@@ -315,7 +315,16 @@ class LOA(flask_db_ext.Model):
 	revoked		= Column('revoked',		SmallInteger())
 	reason		= Column('reason',		String(2048))
 
-	def is_active(self):
-		now = datetime.utcnow()
+	@classmethod
+	def from_id(cls, id):
+		try:
+			return game_db.query(cls).filter(cls.id == id).one()
+		except NoResultFound:
+			return None
 
-		return (now > self.time) and (now < self.expiry_time) and (not self.revoked)
+	def set_revoked(self, revoked):
+		"""
+		Set the revoked status of an LOA
+		"""
+		self.revoked = int(revoked) # so we can pass bools
+		game_db.commit()

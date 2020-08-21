@@ -63,7 +63,7 @@ def page_ban_edit(ban_id):
 
 	return render_template("bans/edit.html", ban=ban, form=form_ban_edit)
 
-@blueprint.route("/bans/<int:ban_id>/<string:action>", methods=["GET"])
+@blueprint.route("/bans/<int:ban_id>/<string:action>")
 def page_ban_action(ban_id, action):
 
 	ban = db.Ban.from_id(ban_id)

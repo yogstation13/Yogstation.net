@@ -37,6 +37,7 @@ def page_login():
 
 	return render_template("admin/login.html")
 
+
 @blueprint.route("/logout")
 def page_logout():
 	session.clear()
@@ -53,7 +54,10 @@ def page_manage_admins():
 
 	loas = db.game_db.query(db.LOA).filter(
 		and_(
-			db.LOA.revoked == None,
+			or_(
+				db.LOA.revoked == 0,
+				db.LOA.revoked == None # don't ask me why it has to be done like this, I, don't know.
+			),
 			db.LOA.expiry_time > datetime.utcnow()
 		)
 	).order_by(db.LOA.time) # Get LOAs sorted by start time
@@ -69,3 +73,14 @@ def page_manage_admins():
 		admins=admins, loas=loas, admin_ranks=admin_ranks,
 		form_set_loa = form_set_loa
 	)
+
+
+@blueprint.route("/admin/loa/<int:loa_id>/<string:action>")
+def page_loa_action(loa_id, action):
+
+	loa = db.LOA.from_id(loa_id)
+
+	if action == "revoke":
+		loa.set_revoked(True)
+	
+	return redirect(request.referrer)
