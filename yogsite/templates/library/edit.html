@@ -15,8 +15,11 @@
 			<form method="POST">
 				{{ form.csrf_token }}
 
-				<a class="button" href="javascript:history.back()">Back</a>
-				<br/><br/>
+				<div class="buttons">
+					<a class="button" href="javascript:history.back()">Discard Edits</a>
+					<button class="button is-primary">Submit Edits</button>
+				</div>
+
 				<div class="columns">
 					<div class="column is-two-thirds">
 
@@ -26,20 +29,25 @@
 								{{ form.title(class_="input is-fullwidth", placeholder="Enter the title of the book") }}
 
 								<span class="icon is-small is-left">
-									<i class="fas fa-user"></i>
+									<i class="fas fa-book"></i>
 								</span>
 							</div>
 						</div>
 
-						<h3 class="subtitle is-4">Written By: {{ book.author }}</h3>
+						<div class="field">
+							<div class="label">Author</div>
+							<div class="control has-icons-left">
+								{{ form.author(class_="input is-fullwidth", placeholder="Enter the author of the book") }}
+
+								<span class="icon is-small is-left">
+									<i class="fas fa-user"></i>
+								</span>
+							</div>
+						</div>
 					</div>
 
 					<div class="column is-one-third">
-						<div class="container is-pulled-right">
-							{% if book.deleted %}
-								<div class="tag is-large is-danger">Deleted</div>
-							{% endif %}
-							
+						<div class="container is-pulled-right">							
 							<div class="field">
 								<div class="label">Category</div>
 								<div class="control">

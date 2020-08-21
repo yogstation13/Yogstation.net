@@ -40,15 +40,19 @@
 							<td><time datetime="{{ book.datetime }}">{{ util.readable_time_delta(book.datetime) }}</time></td>
 
 							<td>
-								<a class="button" href="/library/{{ book.id }}">View</a>
+								<div class="buttons">
+									<a class="button" href="/library/{{ book.id }}">View</a>
 
-								{% if admin_perms.can_manage_books() %}
-									{% if book.deleted %}
-										<a class="button is-success" href="/library/{{ book.id }}?action=restore">Restore</a>
-									{% else %}
-										<a class="button is-danger" href="/library/{{ book.id }}?action=delete">Delete</a>
+									<a class="button" href="/library/{{ book.id }}/edit">Edit</a>
+
+									{% if admin_perms.can_manage_books() %}
+										{% if book.deleted %}
+											<a class="button is-success" href="/library/{{ book.id }}/restore">Restore</a>
+										{% else %}
+											<a class="button is-danger" href="/library/{{ book.id }}/delete">Delete</a>
+										{% endif %}
 									{% endif %}
-								{% endif %}
+								</div>
 							</td>
 						</tr>
 					{% endfor %}

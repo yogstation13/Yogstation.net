@@ -226,11 +226,18 @@ class Book(flask_db_ext.Model):
 		"""
 
 		self.title = form.title.data
+		self.author = form.author.data
 		self.content = form.content.data
 		self.category = form.category.data
 
 		game_db.commit()
 
+	def set_deleted(self, deleted):
+		"""
+		Mark a book as deleted, or not
+		"""
+		self.deleted = int(deleted) # int so we can pass bools
+		game_db.commit()
 
 class Round(flask_db_ext.Model):
 	__tablename__ = 'erro_round'

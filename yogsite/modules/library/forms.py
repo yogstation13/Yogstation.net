@@ -13,6 +13,8 @@ from yogsite.util import validator_is_ckey
 class BookEditForm(FlaskForm):
 	title = TextField("Title", [InputRequired(), Length(max=45)])
 
+	author = TextField("Author", [InputRequired(), Length(max=45)])
+
 	content = TextAreaField("Content", [Optional(), Length(max=16777215)])
 
 	category = SelectField("Category", [AnyOf(cfg.get("library.categories"))], choices=list(zip(cfg.get("library.categories"), cfg.get("library.categories"))))

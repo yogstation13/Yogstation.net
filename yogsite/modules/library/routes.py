@@ -48,6 +48,7 @@ def page_library():
 
 	return render_template("library/library.html", books=displayed_books, page=page, page_count=page_count, search_query=search_query)
 
+
 @blueprint.route("/library/<string:book_id>")
 def page_book(book_id):
 
@@ -57,6 +58,20 @@ def page_book(book_id):
 		return abort(404)
 	
 	return render_template("library/book.html", book=book)
+
+
+@blueprint.route("/library/<string:book_id>/<string:action>")
+def page_book_action(book_id, action):
+
+	book = db.Book.from_id(book_id)
+
+	if action == "delete":
+		book.set_deleted(True)
+
+	elif action == "restore":
+		book.set_deleted(False)
+
+	return redirect(request.referrer)
 
 
 @blueprint.route("/library/<int:book_id>/edit", methods=["GET", "POST"])
@@ -70,15 +85,15 @@ def page_book_edit(book_id):
 	if request.method == "POST":
 		print(request.form)
 		if form_book_edit.validate():
-			print("VALID", request.form, form_book_edit)
 			book.apply_edit_form(form_book_edit)
 
-			return redirect(url_for("library.page_book_edit", book_id=book.id))
+			return redirect(url_for("library.page_book", book_id=book.id))
 
 	else:
 		# this absolute bs makes it so it only sets default values on the first get, and then every time you update with a post
 		# it populates them with the new values from the post
 		form_book_edit.title.data = book.title
+		form_book_edit.author.data = book.author
 		form_book_edit.content.data = book.content
 		form_book_edit.category.data = book.category
 
