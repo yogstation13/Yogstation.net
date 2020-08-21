@@ -22,7 +22,13 @@
 						<td>{{ note.ckey }}</td>
 					{% endif %}
 
-					<td><time datetime="{{ note.timestamp }}">{{ util.readable_time_delta(note.timestamp) }}</time></td>
+					<td>
+						{% if note.timestamp %}
+							<time datetime="{{ note.timestamp }}">{{ util.readable_time_delta(note.timestamp) }}</time>
+						{% else %}
+							None
+						{% endif %}
+					</td>
 				
 					<td>{{ note.notetext }}</td>
 
