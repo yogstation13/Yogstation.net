@@ -37,7 +37,9 @@
 							<td><time datetime="{{ player.lastseen }}">{{ player.lastseen }}</time></td>
 
 							<td>
-								<a class="button" href="/players/{{ player.ckey }}">View</a>
+								<div class="buttons">
+									<a class="button" href="/players/{{ player.ckey }}">View</a>
+								</div>
 							</td>
 						</tr>
 					{% endfor %}
