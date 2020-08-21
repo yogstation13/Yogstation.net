@@ -322,6 +322,11 @@ class LOA(flask_db_ext.Model):
 		except NoResultFound:
 			return None
 
+	def is_active(self):
+		now = datetime.utcnow()
+
+		return (now > self.time) and (now < self.expiry_time) and (not self.revoked)
+	
 	def set_revoked(self, revoked):
 		"""
 		Set the revoked status of an LOA
