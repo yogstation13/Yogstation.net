@@ -50,8 +50,8 @@ class Player(flask_db_ext.Model):
 	antag_weight		= Column('antag_weight',		Integer())
 	job_whitelisted		= Column('job_whitelisted',		SmallInteger())
 
-	notes				= relationship('Note',	primaryjoin = 'Player.ckey == Note.ckey')
-	bans				= relationship('Ban',	primaryjoin = 'Player.ckey == Ban.ckey')
+	notes				= relationship('Note',	primaryjoin = 'Player.ckey == Note.ckey', order_by="desc(Note.timestamp)")
+	bans				= relationship('Ban',	primaryjoin = 'Player.ckey == Ban.ckey', order_by="desc(Ban.bantime)")
 
 	_connections		= relationship('Connection',	primaryjoin = 'Player.ckey == Connection.ckey')
 
