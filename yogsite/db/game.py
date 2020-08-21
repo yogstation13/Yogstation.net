@@ -68,6 +68,10 @@ class Player(flask_db_ext.Model):
 	def get_death_count(self):
 		return game_db.query(Death).filter(Death.byondkey == self.ckey).count()
 	
+	def get_round_count(self):
+		# We have to only query the round_id so the distinct thing will work because haha sqlalchemy
+		return game_db.query(Connection.round_id).filter(Connection.ckey == self.ckey).distinct(Connection.round_id).count()
+
 	def get_bans(self):
 		return game_db.query(Ban).filter(Ban.ckey == self.ckey).all()
 	
