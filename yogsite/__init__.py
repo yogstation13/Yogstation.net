@@ -43,8 +43,9 @@ app = create_app()
 @app.before_request
 def before_request():
 
+	session.permanent = True # this is here so the session cookies don't get cleared when the browser is closed
+
 	if "ckey" in session:
-		print(session)
 		admin_account = db.Admin.from_ckey(session["ckey"])
 	else:
 		admin_account = None
@@ -60,7 +61,6 @@ def before_request():
 
 @app.context_processor
 def context_processor():
-
 	return dict(datetime=datetime, cfg=cfg, db=db, util=util, admin_account=g.admin_account, admin_perms=g.admin_perms)
 
 
