@@ -15,9 +15,7 @@
 				<th>Admin</th>
 				<th>Status</th>
 				<th>Unbanner</th>
-				{% if admin_perms.can_manage_bans() %}
-					<th>Tools</th>
-				{% endif %}
+				<th>Tools</th>
 			</tr>
 		</thead>
 
@@ -54,19 +52,17 @@
 
 					<td>{{ ckey_link(ban.unbanned_ckey) if ban.unbanned_ckey else "N/A" }}</td>
 
-					{% if admin_perms.can_manage_bans() %}
-						<td>
-							<div class="buttons">
-								<a class="button" href="/bans/{{ ban.id }}/edit">Edit</a>
+					<td>
+						<div class="buttons">
+							<a class="button" href="/bans/{{ ban.id }}/edit">Edit</a>
 
-								{% if ban.unbanned_datetime %}
-									<a class="button" href="/bans/{{ ban.id }}/reinstate">Reinstate</a>
-								{% else %}
-									<a class="button" href="/bans/{{ ban.id }}/revoke">Revoke</a>
-								{% endif %}
-							</div>
-						</td>
-					{% endif %}
+							{% if ban.unbanned_datetime %}
+								<a class="button" href="/bans/{{ ban.id }}/reinstate">Reinstate</a>
+							{% else %}
+								<a class="button" href="/bans/{{ ban.id }}/revoke">Revoke</a>
+							{% endif %}
+						</div>
+					</td>
 				</tr>
 			{% endfor %}
 		</tbody>

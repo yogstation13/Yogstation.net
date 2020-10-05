@@ -4,6 +4,8 @@ from hashlib import sha256
 
 from netaddr import IPAddress
 
+from flask_login import UserMixin
+
 from flask_sqlalchemy import SQLAlchemy
 
 from sqlalchemy import and_
@@ -22,6 +24,8 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker
 
+from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash
 
 from yogsite.config import cfg
 from yogsite.const import *
@@ -276,7 +280,7 @@ class RoleTime(flask_db_ext.Model):
 	minutes	=	 Column('minutes',		Integer())
 
 
-class Admin(flask_db_ext.Model):
+class Admin(UserMixin, flask_db_ext.Model):
 	__tablename__ = 'erro_admin'
 
 	ckey		= Column('ckey',		String(32), primary_key=True)
@@ -298,7 +302,17 @@ class Admin(flask_db_ext.Model):
 		hex_hash = hash.hexdigest()
 
 		return self.password == hex_hash
-
+	
+	def set_password(self, passwd):
+		self.password = generate_password_hash(passwd)
+		game_db.commit()
+	
+	def check_password(self, passwd):
+		return check_password_hash(self.password, passwd)
+	
+	# Override so flask_login knows what we identify with
+	def get_id(self):
+		return self.ckey
 
 class AdminRank(flask_db_ext.Model):
 	__tablename__ = 'erro_admin_ranks'

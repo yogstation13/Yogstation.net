@@ -52,26 +52,15 @@
 					<a class="navbar-item" href="/library">Library</a>
 					<a class="navbar-item" href="/donate">Donate</a>
 					
-					{% if admin_account %}
+					{% if current_user.is_authenticated %}
 						<div class="navbar-item has-dropdown is-hoverable">
 							<a class="navbar-link">Admin</a>
 
 							<div class="navbar-dropdown">
-								{% if admin_perms.can_manage_admins() %}
-									<a class="navbar-item" href="/admin/admins">Admins</a>
-								{% endif %}
-
-								{% if admin_perms.can_manage_donors() %}
-									<a class="navbar-item" href="/admin/donors">Donors</a>
-								{% endif %}
-
-								{% if admin_perms.can_manage_mentors() %}
-									<a class="navbar-item" href="/admin/mentors">Mentors</a>
-								{% endif %}
-
-								{% if admin_perms.can_view_activity_log() %}
-									<a class="navbar-item" href="/admin/activity">Activity</a>
-								{% endif %}
+								<a class="navbar-item" href="/admin/admins">Admins</a>
+								<a class="navbar-item" href="/admin/donors">Donors</a>
+								<a class="navbar-item" href="/admin/mentors">Mentors</a>
+								<a class="navbar-item" href="/admin/activity">Activity</a>
 							</div>
 						</div>
 					{% endif %}
@@ -89,7 +78,7 @@
 			<div class="has-text-centered">
 				<strong>YogStation</strong> website made with &lt;3 by <a href="https://github.com/qwertyquerty">qwerty</a>
 				<br/>
-				{% if not admin_account %}
+				{% if not current_user.is_authenticated %}
 					<a href="/login">Admin Login</a>
 				{% else %}
 					<a href="/logout">Logout</a>

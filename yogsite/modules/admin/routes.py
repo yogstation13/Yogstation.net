@@ -1,19 +1,25 @@
 from datetime import datetime
 
+from flask import abort
 from flask import Blueprint
+from flask import flash
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
 
+from flask_login import login_required
+from flask_login import login_user
+from flask_login import logout_user
+
 from sqlalchemy import or_, and_
 
 import math
 
-from yogsite.config import cfg
 from yogsite import db
-from yogsite.util import login_required
+from yogsite.config import cfg
+from yogsite.util import is_safe_redirect
 
 from .forms import SetLOAForm
 
@@ -28,20 +34,26 @@ def page_login():
 		admin_account = db.Admin.from_ckey(login_ckey)
 
 		if admin_account and admin_account.check_password(login_pass):
-			session["ckey"] = admin_account.ckey
-			session["rank"] = admin_account.rank
+			login_user(admin_account, remember=True)
 
-			return redirect("/")
+			flash("Successfully Logged In")
+
+			redirect_url = request.args.get('next')
+
+			if not is_safe_redirect(redirect_url):
+				return abort(400)
+			
+			return redirect(redirect_url or "/")
+
 		else:
-			return redirect("/login?failure=1")
+			flash("Received Invalid Credentials")
 
 	return render_template("admin/login.html")
 
 
 @blueprint.route("/logout")
 def page_logout():
-	session.clear()
-
+	logout_user()
 	return redirect("/")
 
 

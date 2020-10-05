@@ -9,9 +9,7 @@
 				<th width="200px">Date</th>
 				<th>Text</th>
 				<th>Admin</th>
-				{% if admin_perms.can_manage_notes() %}
-					<th>Tools</th>
-				{% endif %}
+				<th>Tools</th>
 			</tr>
 		</thead>
 
@@ -34,14 +32,12 @@
 
 					<td>{{ note.adminckey }}</td>
 
-					{% if admin_perms.can_manage_notes() %}
-						<td>
-							<div class="buttons">
-								<a class="button" href="/notes/{{ note.id }}/edit">Edit</a>
-								<a class="button" href="/notes/{{ note.id }}/delete">Delete</a>
-							</div>
-						</td>
-					{% endif %}
+					<td>
+						<div class="buttons">
+							<a class="button" href="/notes/{{ note.id }}/edit">Edit</a>
+							<a class="button" href="/notes/{{ note.id }}/delete">Delete</a>
+						</div>
+					</td>
 				</tr>
 			{% endfor %}
 		</tbody>

@@ -5,18 +5,20 @@ from flask import g
 from flask import session
 from flask import send_from_directory
 
+from flask_login import current_user
+
 from yogsite.config import cfg
 from yogsite.modules.admin import Permissions
 from yogsite import util
 import yogsite.db
 
-from yogsite.extensions import flask_db_ext
+from yogsite.extensions import flask_db_ext, login_manager
 
 import os
 
-
 def register_extensions(app):
 	flask_db_ext.init_app(app)
+	login_manager.init_app(app)
 
 def create_app():
 	app = Flask(__name__)
@@ -40,28 +42,18 @@ def create_app():
 app = create_app()
 
 
-@app.before_request
-def before_request():
+@app.route("/ses")
+def debug_ses():
+	return str(current_user.__dict__)
 
-	session.permanent = True # this is here so the session cookies don't get cleared when the browser is closed
-
-	if "ckey" in session:
-		admin_account = db.Admin.from_ckey(session["ckey"])
-	else:
-		admin_account = None
-	
-	if admin_account:
-		admin_perms = Permissions(2**32-1) # TODO: fix
-	else:
-		admin_perms = Permissions(0)
-
-	g.admin_account = admin_account
-	g.admin_perms = admin_perms
+@login_manager.user_loader
+def load_user(user_ckey):
+    return db.Admin.from_ckey(user_ckey)
 
 
 @app.context_processor
 def context_processor():
-	return dict(datetime=datetime, cfg=cfg, db=db, util=util, admin_account=g.admin_account, admin_perms=g.admin_perms)
+	return dict(datetime=datetime, cfg=cfg, db=db, util=util)
 
 
 from yogsite.modules.admin import blueprint as bp_admin

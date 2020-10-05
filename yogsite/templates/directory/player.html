@@ -87,32 +87,28 @@
 				</div>
 			</div>
 
-			{% if admin_perms.can_manage_bans() %}
-				<br/>
+			<br/>
 
-				<h2 class="title is-3 has-text-centered">Bans</h2>
-				
-				{% if player.bans %}
-					{{ ban_listing(player.bans, show_ckey=False) }}
-				{% else %}
-					<div class="box has-text-centered">
-						<p class="subtitle is-5">This user has no bans in the database</p>
-					</div>
-				{% endif %}
+			<h2 class="title is-3 has-text-centered">Bans</h2>
+			
+			{% if player.bans %}
+				{{ ban_listing(player.bans, show_ckey=False) }}
+			{% else %}
+				<div class="box has-text-centered">
+					<p class="subtitle is-5">This user has no bans in the database</p>
+				</div>
 			{% endif %}
 
-			{% if admin_perms.can_manage_notes() %}
-				<br/>
+			<br/>
 
-				<h2 class="title is-3 has-text-centered">Notes</h2>
+			<h2 class="title is-3 has-text-centered">Notes</h2>
 
-				{% if player.notes %}
-					{{ note_listing(player.notes, show_ckey=False) }}
-				{% else %}
-					<div class="box has-text-centered">
-						<p class="subtitle is-5">This user has no notes in the database</p>
-					</div>
-				{% endif %}
+			{% if player.notes %}
+				{{ note_listing(player.notes, show_ckey=False) }}
+			{% else %}
+				<div class="box has-text-centered">
+					<p class="subtitle is-5">This user has no notes in the database</p>
+				</div>
 			{% endif %}
 		</div>
 	</div>
