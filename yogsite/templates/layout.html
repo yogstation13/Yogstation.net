@@ -69,6 +69,23 @@
 		</nav>
 
 		<section class="section" id="content">
+			{% with flashes = get_flashed_messages(with_categories=True) %}
+				{% if flashes %}
+					<div class="flashes-container columns is-centered">
+						<div class="flashes column is-half">
+							{% for category, message in flashes %}
+								<div class="notification has-text-centered has-text-weight-bold is-fullwidth pt-2 pb-2
+									{% if category == 'success' %}is-success{% endif %}
+									{% if category == 'error' %}is-danger{% endif %}
+								">
+									{{ message }}
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+			{% endwith %}
+
 			{% block content %}
 
 			{% endblock %}

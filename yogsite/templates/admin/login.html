@@ -12,11 +12,7 @@
 	<div class="columns is-centered">
 		<div class="column is-half">
 			<div class="box">
-
-				{% if request.args.get("failure") %}
-					<p class="notification is-danger has-text-centered is-fullwidth pt-2 pb-2">Received Invalid Credentials</p>
-				{% endif %}
-
+				
 				<form id="login-form" method="POST">
 					<div class="field">
 						<div class="label">CKEY</div>

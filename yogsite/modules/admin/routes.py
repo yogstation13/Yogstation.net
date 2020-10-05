@@ -36,7 +36,7 @@ def page_login():
 		if admin_account and admin_account.check_password(login_pass):
 			login_user(admin_account, remember=True)
 
-			flash("Successfully Logged In")
+			flash("Successfully Logged In", "success")
 
 			redirect_url = request.args.get('next')
 
@@ -46,7 +46,7 @@ def page_login():
 			return redirect(redirect_url or "/")
 
 		else:
-			flash("Received Invalid Credentials")
+			flash("Received Invalid Credentials", "error")
 
 	return render_template("admin/login.html")
 
@@ -54,6 +54,7 @@ def page_login():
 @blueprint.route("/logout")
 def page_logout():
 	logout_user()
+	flash("Successfully Logged Out", "success")
 	return redirect("/")
 
 
