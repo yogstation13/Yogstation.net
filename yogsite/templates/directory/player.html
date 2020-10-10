@@ -35,14 +35,14 @@
 				<div class="column is-one-fourth">
 					<div class="box has-text-centered">
 						<p class="title is-4">Deaths</p>
-						<p class="subtitle is-4">{{ 9999 }}</p> {# temporary until I get deaths table TODO: fix #}
+						<p class="subtitle is-4">{{ player.get_death_count() }}</p>
 					</div>
 				</div>
 
 				<div class="column is-one-fourth">
 					<div class="box has-text-centered">
 						<p class="title is-4">Rounds Played</p>
-						<p class="subtitle is-4">{{ player.get_round_count() }}</p> {# temporary until I finish this TODO: fix #}
+						<p class="subtitle is-4">{{ player.get_round_count() }}</p>
 					</div>
 				</div>
 			</div>

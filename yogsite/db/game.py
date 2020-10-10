@@ -204,6 +204,16 @@ class Connection(flask_db_ext.Model):
 	ip				= Column('ip',			Integer())
 	computerid		= Column('computerid',	String(45))
 
+class Death(flask_db_ext.Model):
+	__tablename__ = "erro_death"
+
+	id				= Column('id',			Integer(), primary_key=True)
+	tod				= Column('tod',			DateTime())
+	server_ip		= Column('server_ip',	Integer())
+	server_port		= Column('server_port',	SmallInteger())
+	round_id		= Column('round_id',	Integer())
+	byondkey		= Column('byondkey',	String(32),	ForeignKey('erro_player.ckey'))
+	suicide			= Column('suicide',		SmallInteger())
 
 class Book(flask_db_ext.Model):
 	__tablename__ = "erro_library"
