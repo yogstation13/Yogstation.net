@@ -37,16 +37,24 @@ def page_login():
 
 		if auth_request.status_code == 200: # Success
 			user_data = auth_request.json()["user"]
-			session["username"] = user_data["username"] # Should in the future be moved somewhere else
-			session["permissions"] = user_data["permissions"]
 
-			flash("Successfully Logged In", "success")
+			if "byond" in user_data["linked_account"]:
+				# All the stars align, log this boy in
 
-			redirect_url = request.args.get('next') # Can specify where to go after login on the next arg
-			if not is_safe_redirect(redirect_url):
-				return abort(400)
+				session["username"] = user_data["username"] # Should in the future be moved somewhere else
+				session["permissions"] = user_data["permissions"]
+				session["ckey"] = user_data["linked_account"]["byond"]
+				
+				flash("Successfully Logged In", "success")
+
+				redirect_url = request.args.get('next') # Can specify where to go after login on the next arg
+				if not is_safe_redirect(redirect_url):
+					return abort(400)
 			
-			return redirect(redirect_url or "/")
+				return redirect(redirect_url or "/")
+			
+			else: # No logging in unless you've linked your ckey
+				flash("Account Has No Linked Ckey", "error")
 
 		elif auth_request.status_code == 400: # 400, ruh roh, creds must have been wrong
 			flash("Received Invalid Credentials", "error")

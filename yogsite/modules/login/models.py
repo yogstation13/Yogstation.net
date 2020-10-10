@@ -4,6 +4,7 @@
 
 class User():
 	username = None
+	ckey = None
 	permissions = [] # Husk of a user will have no perms
 	
 	@classmethod
@@ -14,6 +15,7 @@ class User():
 			return user # Return an empty user
 
 		user.username = session["username"]
+		user.ckey = session["ckey"]
 		user.permissions = session["permissions"] if "permissions" in session else []
 		
 		return user

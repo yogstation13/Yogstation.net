@@ -73,7 +73,7 @@ def page_ban_action(ban_id, action):
 	ban = db.Ban.from_id(ban_id)
 
 	if action == "revoke":
-		ban.revoke(g.current_user.username)
+		ban.revoke(g.current_user.ckey)
 	
 	elif action == "reinstate":
 		ban.reinstate()
