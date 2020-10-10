@@ -53,15 +53,17 @@
 					<td>{{ ckey_link(ban.unbanned_ckey) if ban.unbanned_ckey else "N/A" }}</td>
 
 					<td>
-						<div class="buttons">
-							<a class="button" href="/bans/{{ ban.id }}/edit">Edit</a>
+						{% if g.current_user.has_perms("bans.edit") %}
+							<div class="buttons">
+								<a class="button" href="/bans/{{ ban.id }}/edit">Edit</a>
 
-							{% if ban.unbanned_datetime %}
-								<a class="button" href="/bans/{{ ban.id }}/reinstate">Reinstate</a>
-							{% else %}
-								<a class="button" href="/bans/{{ ban.id }}/revoke">Revoke</a>
-							{% endif %}
-						</div>
+								{% if ban.unbanned_datetime %}
+									<a class="button" href="/bans/{{ ban.id }}/reinstate">Reinstate</a>
+								{% else %}
+									<a class="button" href="/bans/{{ ban.id }}/revoke">Revoke</a>
+								{% endif %}
+							</div>
+						{% endif %}
 					</td>
 				</tr>
 			{% endfor %}

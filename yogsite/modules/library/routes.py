@@ -13,7 +13,7 @@ import math
 
 from yogsite.config import cfg
 from yogsite import db
-from yogsite.util import login_required
+from yogsite.util import login_required, perms_required
 
 from .forms import BookEditForm
 
@@ -27,7 +27,7 @@ def page_library():
 	
 	books_query = db.game_db.query(db.Book)
 
-	if not g.current_user:
+	if not g.current_user.has_perms("book.delete"):
 		books_query = books_query.filter(db.Book.deleted.is_(None))
 
 	if search_query: # TODO: put this somewhere else
@@ -63,6 +63,7 @@ def page_book(book_id):
 
 @blueprint.route("/library/<string:book_id>/<string:action>")
 @login_required
+@perms_required("book.delete")
 def page_book_action(book_id, action):
 
 	book = db.Book.from_id(book_id)
@@ -75,7 +76,7 @@ def page_book_action(book_id, action):
 
 	return redirect(request.referrer)
 
-
+""" Disabled because not complete and it's not on my todo list atm
 @blueprint.route("/library/<int:book_id>/edit", methods=["GET", "POST"])
 def page_book_edit(book_id):
 
@@ -100,3 +101,4 @@ def page_book_edit(book_id):
 		form_book_edit.category.data = book.category
 
 	return render_template("library/edit.html", book=book, form=form_book_edit)
+"""

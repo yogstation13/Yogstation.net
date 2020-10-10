@@ -4,14 +4,14 @@
 
 class User():
 	username = None
-	permissions = []
+	permissions = [] # Husk of a user will have no perms
 	
 	@classmethod
 	def from_session(cls, session):
 		user = cls()
 
 		if not "username" in session:
-			return
+			return user # Return an empty user
 
 		user.username = session["username"]
 		user.permissions = session["permissions"] if "permissions" in session else []
@@ -20,7 +20,10 @@ class User():
 	
 	def has_perms(self, *perms):
 		for perm in perms:
-			if perm not in self.perms:
+			if perm not in self.permissions:
 				return False
 		
 		return True
+	
+	def __bool__(self):
+		return self.username is not None # If we are loggedin, we are truthy, otherwise falsey

@@ -52,7 +52,9 @@
 							<td>
 								<div class="buttons">
 									<a class="button" href="https://yogstation13.github.io/demo-viewer/?roundid={{ round.id }}" target="_blank">Replay</a>
-									<a class="button" href="/rounds/{{ round.id }}/logs">Logs</a>
+									{% if g.current_user.has_perms("round.logs") %}
+										<a class="button" href="/rounds/{{ round.id }}/logs">Logs</a>
+									{% endif %}
 								</div>
 							</td>
 						</tr>

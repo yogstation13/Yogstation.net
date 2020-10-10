@@ -43,12 +43,15 @@
 								<div class="buttons">
 									<a class="button" href="/library/{{ book.id }}">View</a>
 
-									<a class="button" href="/library/{{ book.id }}/edit">Edit</a>
-
-									{% if book.deleted %}
-										<a class="button is-success" href="/library/{{ book.id }}/restore">Restore</a>
-									{% else %}
-										<a class="button is-danger" href="/library/{{ book.id }}/delete">Delete</a>
+									<!-- Disabled until further notice
+										<a class="button" href="/library/{{ book.id }}/edit">Edit</a>
+									-->
+									{% if g.current_user.has_perms("book.delete") %}
+										{% if book.deleted %}
+											<a class="button is-success" href="/library/{{ book.id }}/restore">Restore</a>
+										{% else %}
+											<a class="button is-danger" href="/library/{{ book.id }}/delete">Delete</a>
+										{% endif %}
 									{% endif %}
 								</div>
 							</td>

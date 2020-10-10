@@ -25,13 +25,13 @@ def perms_required(*perms):
 		@wraps(view_function)
 		
 		def decorated_function(*args, **kwargs):
-			if not current_user.has_perms(*perms):
+			if not g.current_user.has_perms(*perms):
 				# Redirect to the unauthorized page
-				return abort(400)
+				return abort(401)
 
 			# It's OK to call the view, the user has teh perms
 			return view_function(*args, **kwargs)
 
-		return decorator
+		return decorated_function
 
 	return wrapper

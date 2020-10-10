@@ -9,7 +9,7 @@ import math
 
 from yogsite.config import cfg
 from yogsite import db
-from yogsite.util import login_required, IPAddress
+from yogsite.util import login_required, perms_required, IPAddress
 
 from .forms import BanEditForm
 
@@ -37,6 +37,7 @@ def page_bans():
 
 @blueprint.route("/bans/<int:ban_id>/edit", methods=["GET", "POST"])
 @login_required
+@perms_required("bans.edit")
 def page_ban_edit(ban_id):
 
 	ban = db.Ban.from_id(ban_id)
@@ -66,6 +67,7 @@ def page_ban_edit(ban_id):
 
 @blueprint.route("/bans/<int:ban_id>/<string:action>")
 @login_required
+@perms_required("bans.edit")
 def page_ban_action(ban_id, action):
 
 	ban = db.Ban.from_id(ban_id)
