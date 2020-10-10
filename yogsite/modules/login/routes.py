@@ -38,13 +38,13 @@ def page_login():
 		if auth_request.status_code == 200: # Success
 			user_data = auth_request.json()["user"]
 
-			if "byond" in user_data["linked_account"]:
+			if user_data["linked_accout"] and ("byond" in user_data["linked_account"]):
 				# All the stars align, log this boy in
 
 				session["username"] = user_data["username"] # Should in the future be moved somewhere else
 				session["permissions"] = user_data["permissions"]
 				session["ckey"] = user_data["linked_account"]["byond"]
-				
+
 				flash("Successfully Logged In", "success")
 
 				redirect_url = request.args.get('next') # Can specify where to go after login on the next arg
