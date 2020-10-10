@@ -5,20 +5,22 @@ from flask import g
 from flask import session
 from flask import send_from_directory
 
-from flask_login import current_user
-
 from yogsite.config import cfg
-from yogsite.modules.admin import Permissions
 from yogsite import util
 import yogsite.db
 
-from yogsite.extensions import flask_db_ext, login_manager
+from yogsite.extensions import flask_db_ext
+from yogsite.extensions import flask_perm
+
+from yogsite.modules.login import User
 
 import os
 
+import uuid
+
 def register_extensions(app):
 	flask_db_ext.init_app(app)
-	login_manager.init_app(app)
+	flask_perm.init_app(app)
 
 def create_app():
 	app = Flask(__name__)
@@ -41,15 +43,17 @@ def create_app():
 
 app = create_app()
 
+@app.before_request
+def before_request():
+	g.current_user = User.from_session(session)
 
 @app.route("/ses")
 def debug_ses():
-	return str(current_user.__dict__)
+	return str(dict(session))+" "+str(g.current_user.__dict__)
 
-@login_manager.user_loader
-def load_user(user_ckey):
-    return db.Admin.from_ckey(user_ckey)
-
+@flask_perm.current_user_loader
+def load_current_user():
+	return g.current_user
 
 @app.context_processor
 def context_processor():
@@ -62,6 +66,7 @@ from yogsite.modules.bans import blueprint as bp_bans
 from yogsite.modules.directory import blueprint as bp_directory
 from yogsite.modules.donate import blueprint as bp_donate
 from yogsite.modules.library import blueprint as bp_library
+from yogsite.modules.login import blueprint as bp_login
 from yogsite.modules.home import blueprint as bp_home
 from yogsite.modules.rounds import blueprint as bp_rounds
 
@@ -72,4 +77,5 @@ app.register_blueprint(bp_directory)
 app.register_blueprint(bp_donate)
 app.register_blueprint(bp_home)
 app.register_blueprint(bp_library)
+app.register_blueprint(bp_login)
 app.register_blueprint(bp_rounds)

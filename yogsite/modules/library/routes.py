@@ -6,8 +6,6 @@ from flask import render_template
 from flask import request
 from flask import url_for
 
-from flask_login import current_user
-
 from sqlalchemy import and_
 from sqlalchemy import or_
 
@@ -28,7 +26,7 @@ def page_library():
 	
 	books_query = db.game_db.query(db.Book)
 
-	if not current_user.is_authenticated:
+	if not g.current_user:
 		books_query = books_query.filter(db.Book.deleted.is_(None))
 
 	if search_query: # TODO: put this somewhere else

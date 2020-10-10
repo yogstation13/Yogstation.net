@@ -25,39 +25,6 @@ from .forms import SetLOAForm
 
 blueprint = Blueprint("admin", __name__)
 
-@blueprint.route("/login", methods=["GET", "POST"])
-def page_login():
-	if request.method == "POST":
-		login_ckey = request.form.get("ckey")
-		login_pass = request.form.get("password")
-
-		admin_account = db.Admin.from_ckey(login_ckey)
-
-		if admin_account and admin_account.check_password(login_pass):
-			login_user(admin_account, remember=True)
-
-			flash("Successfully Logged In", "success")
-
-			redirect_url = request.args.get('next')
-
-			if not is_safe_redirect(redirect_url):
-				return abort(400)
-			
-			return redirect(redirect_url or "/")
-
-		else:
-			flash("Received Invalid Credentials", "error")
-
-	return render_template("admin/login.html")
-
-
-@blueprint.route("/logout")
-def page_logout():
-	logout_user()
-	flash("Successfully Logged Out", "success")
-	return redirect("/")
-
-
 @blueprint.route("/admin/admins", methods=["GET", "POST"])
 def page_manage_admins():
 

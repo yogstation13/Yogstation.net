@@ -6,4 +6,6 @@ set DB_GAME_NAME="yogstation"
 
 set FLASK_SECRET_KEY="geiogjiovheiofhweiofh"
 
+set XENFORO_AUTH_KEY="zqYUzYX61nmuqKQ2S74urijqVwRdHl5R"
+
 python wsgi.py

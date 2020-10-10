@@ -5,8 +5,6 @@ from flask import render_template
 from flask import request
 from flask import url_for
 
-from flask_login import current_user
-
 import math
 
 from yogsite.config import cfg
@@ -71,7 +69,7 @@ def page_ban_action(ban_id, action):
 	ban = db.Ban.from_id(ban_id)
 
 	if action == "revoke":
-		ban.revoke(current_user.ckey)
+		ban.revoke(g.current_user.username)
 	
 	elif action == "reinstate":
 		ban.reinstate()

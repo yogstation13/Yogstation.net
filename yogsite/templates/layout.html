@@ -52,7 +52,7 @@
 					<a class="navbar-item" href="/library">Library</a>
 					<a class="navbar-item" href="/donate">Donate</a>
 					
-					{% if current_user.is_authenticated %}
+					{% if g.current_user %}
 						<div class="navbar-item has-dropdown is-hoverable">
 							<a class="navbar-link">Admin</a>
 
@@ -95,10 +95,10 @@
 			<div class="has-text-centered">
 				<strong>YogStation</strong> website made with &lt;3 by <a href="https://github.com/qwertyquerty">qwerty</a>
 				<br/>
-				{% if not current_user.is_authenticated %}
+				{% if not g.current_user %}
 					<a href="/login">Admin Login</a>
 				{% else %}
-					<a href="/logout">Logout</a>
+					Welcome <b>{{ g.current_user.username }}</b> | <a href="/logout">Logout</a>
 				{% endif %}
 			</div>
 		</footer>

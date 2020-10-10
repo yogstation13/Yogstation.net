@@ -4,8 +4,6 @@ from hashlib import sha256
 
 from netaddr import IPAddress
 
-from flask_login import UserMixin
-
 from flask_sqlalchemy import SQLAlchemy
 
 from sqlalchemy import and_
@@ -280,7 +278,7 @@ class RoleTime(flask_db_ext.Model):
 	minutes	=	 Column('minutes',		Integer())
 
 
-class Admin(UserMixin, flask_db_ext.Model):
+class Admin(flask_db_ext.Model):
 	__tablename__ = 'erro_admin'
 
 	ckey		= Column('ckey',		String(32), primary_key=True)
@@ -295,21 +293,7 @@ class Admin(UserMixin, flask_db_ext.Model):
 			return game_db.query(cls).filter(cls.ckey == ckey).one()
 		except NoResultFound:
 			return None
-	
-	def check_password(self, passwd): # MAKE SURE THIS IS SECUREEEE
-		hash = sha256()
-		hash.update(passwd.encode())
-		hex_hash = hash.hexdigest()
 
-		return self.password == hex_hash
-	
-	def set_password(self, passwd):
-		self.password = generate_password_hash(passwd)
-		game_db.commit()
-	
-	def check_password(self, passwd):
-		return check_password_hash(self.password, passwd)
-	
 	# Override so flask_login knows what we identify with
 	def get_id(self):
 		return self.ckey
