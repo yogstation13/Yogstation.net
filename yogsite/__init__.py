@@ -10,7 +10,6 @@ from yogsite import util
 import yogsite.db
 
 from yogsite.extensions import flask_db_ext
-from yogsite.extensions import flask_perm
 
 from yogsite.modules.login import User
 
@@ -20,7 +19,6 @@ import uuid
 
 def register_extensions(app):
 	flask_db_ext.init_app(app)
-	flask_perm.init_app(app)
 
 def create_app():
 	app = Flask(__name__)
@@ -51,14 +49,9 @@ def before_request():
 def debug_ses():
 	return str(dict(session))+" "+str(g.current_user.__dict__)
 
-@flask_perm.current_user_loader
-def load_current_user():
-	return g.current_user
-
 @app.context_processor
 def context_processor():
 	return dict(datetime=datetime, cfg=cfg, db=db, util=util)
-
 
 from yogsite.modules.admin import blueprint as bp_admin
 from yogsite.modules.api import blueprint as bp_api

@@ -18,5 +18,9 @@ class User():
 		
 		return user
 	
-	def has_permission(self, perm):
-		return perm in self.permissions
+	def has_perms(self, *perms):
+		for perm in perms:
+			if perm not in self.perms:
+				return False
+		
+		return True

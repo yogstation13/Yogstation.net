@@ -10,6 +10,7 @@ import math
 
 from yogsite.config import cfg
 from yogsite import db
+from yogsite.util import login_required
 
 from .log_parsing import RoundLogs
 
@@ -45,6 +46,7 @@ def page_rounds():
 	return render_template("rounds/rounds.html", rounds=displayed_rounds, page=page, page_count=page_count, search_query=search_query)
 
 @blueprint.route("/rounds/<int:round_id>/logs")
+@login_required
 def page_round_logs(round_id):
 	round = db.Round.from_id(round_id)
 
@@ -54,6 +56,7 @@ def page_round_logs(round_id):
 	return render_template("rounds/log_viewer/log_viewer.html", round=round)
 
 @blueprint.route("/api/rounds/<int:round_id>/logs")
+@login_required
 def page_round_logs_api(round_id):
 	logs = RoundLogs(round_id)
 

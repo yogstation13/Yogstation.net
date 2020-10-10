@@ -1,7 +1,6 @@
 cachetools==4.1.1
 envyaml==0.2060
 Flask==1.1.1
-flask-perm==0.2.8
 flask_sqlalchemy==2.4.4
 flask-wtf==0.14.3
 humanize==2.5.0

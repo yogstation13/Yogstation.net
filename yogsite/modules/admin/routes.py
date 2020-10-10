@@ -9,23 +9,20 @@ from flask import request
 from flask import session
 from flask import url_for
 
-from flask_login import login_required
-from flask_login import login_user
-from flask_login import logout_user
-
 from sqlalchemy import or_, and_
 
 import math
 
 from yogsite import db
 from yogsite.config import cfg
-from yogsite.util import is_safe_redirect
+from yogsite.util import login_required
 
 from .forms import SetLOAForm
 
 blueprint = Blueprint("admin", __name__)
 
 @blueprint.route("/admin/admins", methods=["GET", "POST"])
+@login_required
 def page_manage_admins():
 
 	form_set_loa = SetLOAForm(request.form, prefix="form_set_loa")
@@ -56,6 +53,7 @@ def page_manage_admins():
 
 
 @blueprint.route("/admin/loa/<int:loa_id>/<string:action>")
+@login_required
 def page_loa_action(loa_id, action):
 
 	loa = db.LOA.from_id(loa_id)

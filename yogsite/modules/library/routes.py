@@ -13,6 +13,7 @@ import math
 
 from yogsite.config import cfg
 from yogsite import db
+from yogsite.util import login_required
 
 from .forms import BookEditForm
 
@@ -61,6 +62,7 @@ def page_book(book_id):
 
 
 @blueprint.route("/library/<string:book_id>/<string:action>")
+@login_required
 def page_book_action(book_id, action):
 
 	book = db.Book.from_id(book_id)
