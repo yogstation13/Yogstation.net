@@ -27,7 +27,7 @@ def page_library():
 	
 	books_query = db.game_db.query(db.Book)
 
-	if not g.current_user.has_perms("book.delete"):
+	if not (g.current_user.has_perms("book.delete") or g.current_user.has_perms("book.deleted")):
 		books_query = books_query.filter(db.Book.deleted.is_(None))
 
 	if search_query: # TODO: put this somewhere else
