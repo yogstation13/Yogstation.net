@@ -1,5 +1,6 @@
 from flask import abort
 from flask import Blueprint
+from flask import g
 from flask import jsonify
 from flask import render_template
 from flask import request
@@ -26,6 +27,9 @@ def page_rounds():
 	# This way of just shamelessly stringing together queries is probably bad and could be improved
 
 	rounds_query = db.game_db.query(db.Round)
+
+	if not g.current_user.has_perms("round.active"):
+		rounds_query = rounds_query.filter(db.Round.end_datetime.isnot(None))
 
 	if search_query:
 		# Search for rounds by either matching round id, game mode, or map name
