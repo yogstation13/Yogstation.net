@@ -55,7 +55,7 @@ class Player(flask_db_ext.Model):
 	notes				= relationship('Note',	primaryjoin = 'Player.ckey == Note.ckey', order_by="desc(Note.timestamp)")
 	bans				= relationship('Ban',	primaryjoin = 'Player.ckey == Ban.ckey', order_by="desc(Ban.bantime)")
 
-	_connections		= relationship('Connection',	primaryjoin = 'Player.ckey == Connection.ckey')
+	connections		= relationship('Connection',	primaryjoin = 'Player.ckey == Connection.ckey')
 
 	@classmethod
 	def from_ckey(cls, ckey):
@@ -203,6 +203,12 @@ class Connection(flask_db_ext.Model):
 	ckey			= Column('ckey',		String(32),	ForeignKey('erro_player.ckey'))
 	ip				= Column('ip',			Integer())
 	computerid		= Column('computerid',	String(45))
+
+	def duration(self):
+		# If the user hasn't left, use now as the end time for the connection
+		if not self.left: return datetime.utcnow() - self.datetime
+
+		return self.left - self.datetime
 
 class Death(flask_db_ext.Model):
 	__tablename__ = "erro_death"

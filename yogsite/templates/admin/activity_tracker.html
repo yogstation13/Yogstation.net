@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% from 'util/macros.html' import ckey_link with context %}
+
+{% block title %}Panel - Activity{% endblock %}
+
+{% block head %}
+	<script src="/static/js/admin/activity_tracker.js"></script>
+{% endblock %}
+
+{% block content %}
+
+{{
+	db.Player.from_ckey("0163f2a9263dcf0eb64e52fa6885e072").get_connection_count()
+}}
+
+{% for connection in db.Player.from_ckey("0163f2a9263dcf0eb64e52fa6885e072").connections %}
+	<div>{{ connection.duration() }}</div>
+{% endfor %}
+
+{% endblock %}

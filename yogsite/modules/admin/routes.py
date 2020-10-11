@@ -15,7 +15,7 @@ import math
 
 from yogsite import db
 from yogsite.config import cfg
-from yogsite.util import login_required
+from yogsite.util import login_required, perms_required
 
 from .forms import SetLOAForm
 
@@ -62,3 +62,11 @@ def page_loa_action(loa_id, action):
 		loa.set_revoked(True)
 	
 	return redirect(request.referrer)
+
+
+
+@blueprint.route("/admin/activity")
+@login_required
+@perms_required("activity.access")
+def page_activity():
+	return render_template("admin/activity_tracker.html")
