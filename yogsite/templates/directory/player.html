@@ -99,16 +99,20 @@
 				</div>
 			{% endif %}
 
+			
+
+			{% if g.current_user.has_perms("note.access") %}
 			<br/>
+			
+				<h2 class="title is-3 has-text-centered">Notes</h2>
 
-			<h2 class="title is-3 has-text-centered">Notes</h2>
-
-			{% if player.notes %}
-				{{ note_listing(player.notes, show_ckey=False) }}
-			{% else %}
-				<div class="box has-text-centered">
-					<p class="subtitle is-5">This user has no notes in the database</p>
-				</div>
+				{% if player.notes %}
+					{{ note_listing(player.notes, show_ckey=False) }}
+				{% else %}
+					<div class="box has-text-centered">
+						<p class="subtitle is-5">This user has no notes in the database</p>
+					</div>
+				{% endif %}
 			{% endif %}
 		</div>
 	</div>
