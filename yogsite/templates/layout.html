@@ -100,6 +100,10 @@
 				{% else %}
 					Welcome <b>{{ g.current_user.username }}</b> | <a href="/logout">Logout</a>
 				{% endif %}
+				<br/>
+				{% if g.current_user.has_perms("website.debug") %}
+					<p class="is-size-6">Rendered in {{ '%0.3f' % g.request_duration() }}s</p>
+				{% endif %}
 			</div>
 		</footer>
 	</body>

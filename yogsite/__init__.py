@@ -14,7 +14,7 @@ from yogsite.extensions import flask_db_ext
 from yogsite.modules.login import User
 
 import os
-
+import time
 import uuid
 
 def register_extensions(app):
@@ -43,6 +43,9 @@ app = create_app()
 
 @app.before_request
 def before_request():
+	request_start_time = time.time()
+	g.request_duration = lambda: (time.time() - request_start_time)
+
 	g.current_user = User.from_session(session)
 
 @app.route("/ses")
