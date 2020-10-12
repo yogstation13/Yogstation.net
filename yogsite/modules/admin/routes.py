@@ -64,9 +64,35 @@ def page_loa_action(loa_id, action):
 	return redirect(request.referrer)
 
 
-
 @blueprint.route("/admin/activity")
 @login_required
 @perms_required("activity.access")
 def page_activity():
 	return render_template("admin/activity_tracker.html")
+
+
+@blueprint.route("/admin/action_log")
+@login_required
+@perms_required("action_log.access")
+def page_action_log():
+	page = request.args.get('page', type=int, default=1)
+
+	search_query = request.args.get('query', type=str, default=None)
+
+	if search_query:
+		action_log_query = db.game_db.query(db.ActionLog).filter(
+			or_(
+				db.ActionLog.adminid.like(search_query),
+				db.ActionLog.target.like(search_query),
+				db.ActionLog.description.like(f"%{search_query}%")
+			)
+		).order_by(db.ActionLog.id.desc())
+	else:
+		action_log_query = db.game_db.query(db.ActionLog).order_by(db.ActionLog.timestamp.desc())
+
+	page_count = math.ceil(action_log_query.count() / cfg.get("items_per_page")) # Selecting only the id on a count is faster than selecting the entire row
+
+	displayed_logs = action_log_query.limit(cfg.get("items_per_page")).offset((page - 1) * cfg.get("items_per_page"))
+
+	return render_template("admin/action_log.html", action_log=displayed_logs, page=page, page_count=page_count, search_query=search_query)
+

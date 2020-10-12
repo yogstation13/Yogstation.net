@@ -53,7 +53,7 @@
 					<td>{{ ckey_link(ban.unbanned_ckey) if ban.unbanned_ckey else "N/A" }}</td>
 
 					<td>
-						{% if g.current_user.has_perms("ban.edit") %}
+						{% if g.current_user.has_perms("ban.manage") %}
 							<div class="buttons">
 								<a class="button" href="/bans/{{ ban.id }}/edit">Edit</a>
 

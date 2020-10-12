@@ -23,7 +23,7 @@ def page_bans():
 
 	if search_query:
 		bans_query = db.game_db.query(db.Ban).filter(
-			db.Ban.ckey.like(f"{search_query}")
+			db.Ban.ckey.like(search_query)
 		).order_by(db.Ban.id.desc())
 	else:
 		bans_query = db.game_db.query(db.Ban).order_by(db.Ban.id.desc())
@@ -37,13 +37,12 @@ def page_bans():
 
 @blueprint.route("/bans/<int:ban_id>/edit", methods=["GET", "POST"])
 @login_required
-@perms_required("ban.edit")
+@perms_required("ban.manage")
 def page_ban_edit(ban_id):
 
 	ban = db.Ban.from_id(ban_id)
 
 	form_ban_edit = BanEditForm(request.form, prefix="form_ban_edit")
-
 
 	if request.method == "POST":
 		print(request.form)
@@ -67,15 +66,17 @@ def page_ban_edit(ban_id):
 
 @blueprint.route("/bans/<int:ban_id>/<string:action>")
 @login_required
-@perms_required("ban.edit")
+@perms_required("ban.manage")
 def page_ban_action(ban_id, action):
 
 	ban = db.Ban.from_id(ban_id)
 
 	if action == "revoke":
+		db.ActionLog.add(g.current_user.ckey, ban.ckey, f"Revoked ban {ban.id}")
 		ban.revoke(g.current_user.ckey)
 	
 	elif action == "reinstate":
+		db.ActionLog.add(g.current_user.ckey, ban.ckey, f"Reinstated ban {ban.id}")
 		ban.reinstate()
 	
 	return redirect(request.referrer)

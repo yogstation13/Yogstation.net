@@ -69,9 +69,11 @@ def page_book_action(book_id, action):
 	book = db.Book.from_id(book_id)
 
 	if action == "delete":
+		db.ActionLog.add(g.current_user.ckey, book.ckey, f"Deleted book {book.id}, Title: {book.title}")
 		book.set_deleted(True)
 
 	elif action == "restore":
+		db.ActionLog.add(g.current_user.ckey, book.ckey, f"Restored book {book.id}, Title: {book.title}")
 		book.set_deleted(False)
 
 	return redirect(request.referrer)

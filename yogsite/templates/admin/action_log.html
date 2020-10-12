@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% from 'util/macros.html' import pagination, search_form, ckey_link with context %}
+{% from 'bans/macros.html' import ban_listing with context %}
+
+{% block title %}Panel - Action Log{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+	<h2 class="title is-2 has-text-centered">Webmin Action Log</h2>
+
+	<div class="columns is-centered">
+		<div class="column is-four-fifths">
+
+			{{ search_form(search_query, "Search by admin, target, or description...") }}
+
+			{{ pagination(page, page_count) }}
+
+			<table class="table is-striped is-hoverable is-fullwidth">
+				<thead>
+					<tr>
+						<th>Admin</th>
+						<th>Target</th>
+						<th>Description</th>
+						<th>Timestamp</th>
+					</tr>
+				</thead>
+		
+				<tbody>
+					{% for entry in action_log %}
+						<tr>
+							<td>{{ ckey_link(entry.adminid) }}</td>
+		
+							<td>{{ ckey_link(entry.target) }}</td>
+
+							<td>{{ entry.description }}</td>
+
+							<td><time datetime="{{ entry.timestamp }}">{{ entry.timestamp }}</time></td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			{{ pagination(page, page_count) }}
+		</div>
+	</div>
+{% endblock %}

@@ -351,3 +351,18 @@ class LOA(flask_db_ext.Model):
 		"""
 		self.revoked = int(revoked) # so we can pass bools
 		game_db.commit()
+
+class ActionLog(flask_db_ext.Model):
+	__tablename__ = "web_logs"
+
+	id			= Column('id',			Integer(), primary_key=True)
+	adminid		= Column('adminid',		String(32))
+	target		= Column('target',		String(32),	ForeignKey('erro_player.ckey'))
+	description	= Column('description',	String(16777215))
+	timestamp	= Column('timestamp',	DateTime())
+
+	@classmethod
+	def add(cls, admin_ckey, target_ckey, description):
+		entry = cls(adminid=admin_ckey, target=target_ckey, description=description)
+		game_db.add(entry)
+		game_db.commit()

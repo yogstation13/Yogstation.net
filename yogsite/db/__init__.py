@@ -1,5 +1,6 @@
 from .game import game_db
 
+from .game import ActionLog
 from .game import Admin
 from .game import AdminRank
 from .game import Ban
