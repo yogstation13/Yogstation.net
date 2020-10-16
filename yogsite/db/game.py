@@ -122,6 +122,12 @@ class Note(flask_db_ext.Model):
 	last_editor			= Column('last_editor',			String(32))
 	edits				= Column('edits',				Text())
 
+	@classmethod
+	def add(cls, ckey, admin, description):
+		entry = cls(ckey=ckey, adminckey=admin, notetext=description, timestamp=datetime.utcnow(), server="Webpanel", secret=1, last_editor="", edits="")
+		game_db.add(entry)
+		game_db.commit()
+
 
 class Ban(flask_db_ext.Model):
 	__tablename__ = 'erro_ban'

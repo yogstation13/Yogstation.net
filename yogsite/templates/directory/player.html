@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 
+{% from 'util/macros.html' import form_errors with context %}
 {% from 'bans/macros.html' import ban_listing with context %}
 {% from 'directory/macros.html' import note_listing with context %}
 
@@ -86,6 +87,38 @@
 					</div>
 				</div>
 			</div>
+			<br/>
+			
+			{% if g.current_user.has_perms("note.access") %}
+				<h2 class="title is-3 has-text-centered">Notes</h2>
+				
+				{% if g.current_user.has_perms("note.manage") %}
+					<form id="edit-ban-form" method="POST">
+						{{ form_note_add.csrf_token }}
+
+						<div class="field has-addons">
+							<div class="control is-expanded">
+								{{ form_note_add.description(class_="input is-fullwidth", placeholder="Type out the note you wish to add...") }}
+							</div>
+
+							<div class="control">
+								<button class="button is-primary is-pulled-right">Add Note</button>
+							</div>
+						</div>
+					</form>
+
+					<br/>
+					{{ form_errors(form_note_add) }}
+				{% endif %}
+
+				{% if player.notes %}
+					{{ note_listing(player.notes, show_ckey=False) }}
+				{% else %}
+					<div class="box has-text-centered">
+						<p class="subtitle is-5">This user has no notes in the database</p>
+					</div>
+				{% endif %}
+			{% endif %}
 
 			<br/>
 
@@ -97,20 +130,6 @@
 				<div class="box has-text-centered">
 					<p class="subtitle is-5">This user has no bans in the database</p>
 				</div>
-			{% endif %}
-
-			{% if g.current_user.has_perms("note.access") %}
-			<br/>
-
-				<h2 class="title is-3 has-text-centered">Notes</h2>
-
-				{% if player.notes %}
-					{{ note_listing(player.notes, show_ckey=False) }}
-				{% else %}
-					<div class="box has-text-centered">
-						<p class="subtitle is-5">This user has no notes in the database</p>
-					</div>
-				{% endif %}
 			{% endif %}
 		</div>
 	</div>
