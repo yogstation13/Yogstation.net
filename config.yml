@@ -22,7 +22,7 @@ servers:
 
 
 logs:
-  directory: "../Yogstation/data/logs/*/*/*"
+  directory: $GAME_LOGS_DIR
 
 links:
   forums: "https://forums.yogstation.net/"

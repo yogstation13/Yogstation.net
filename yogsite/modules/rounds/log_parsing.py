@@ -35,7 +35,7 @@ class RoundLogs():
 		self.load_entries()
 	
 	def get_directory(self):
-		matches = glob.glob(f"{cfg.get('logs.directory')}/round-{self.round_id}")
+		matches = glob.glob(f"{cfg.get('logs.directory')}/*/*/*/round-{self.round_id}")
 
 		if matches:
 			return matches[0]
