@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% from 'util/macros.html' import ckey_link, pagination, search_form, form_errors with context %}
+
+{% block title %}Panel - LOAs{% endblock %}
+
+{% block content %}
+
+	<h2 class="title is-2 has-text-centered">Manage LOAs</h2>
+
+	<div class="columns is-centered">
+		<div class="column is-four-fifths">
+
+			<form id="set-loa-form" method="POST">
+				{{ form_set_loa.csrf_token }}
+		
+					<div class="field">
+						<div class="label">Reason</div>
+						<div class="control">
+							{{ form_set_loa.reason(class_="textarea is-fullwidth", placeholder="Enter the reason for the LOA...", rows="2") }}
+						</div>
+					</div>
+		
+					<div class="field">
+						<div class="label">Expiration Date</div>
+						<div class="control has-icons-left">
+							{{ form_set_loa.expiration_time(class_="input is-fullwidth") }}
+							<span class="icon is-small is-left">
+								<i class="fas fa-clock"></i>
+							</span>
+						</div>
+					</div>
+
+					<button class="button is-success is-pulled-right">Set LOA</button>
+		
+					{{ form_errors(form_set_loa) }}
+			</form>
+
+			<div class="box">
+				<table class="table is-striped is-hoverable is-fullwidth">
+					<thead>
+						<tr>
+							<th>CKEY</th>
+							<th>Start Time</th>
+							<th>Expiry Time</th>
+							<th>Reason</th>
+							<th>Tools</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for loa in loas %}
+							<tr>
+								<td>{{ ckey_link(loa.ckey) }}</td>
+
+								<td>
+									<time datetime="{{ loa.time }}">{{ loa.time }}</time>
+								</td>
+
+								<td>
+									<time datetime="{{ loa.expiry_time }}">{{ util.readable_time_delta(loa.expiry_time) }}</time>
+								</td>
+
+								<td>{{ loa.reason }}</td>
+
+								<td>
+									<div class="buttons">
+										<a class="button" href="/admin/loa/{{ loa.id }}/revoke">Revoke</a>
+									</div>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

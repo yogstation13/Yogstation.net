@@ -12,8 +12,6 @@ from yogsite.config import cfg
 from yogsite.util import validator_is_ckey
 
 class SetLOAForm(FlaskForm):
-	ckey = TextField("CKEY", [InputRequired(), validator_is_ckey])
-
 	reason = TextAreaField("Reason", [InputRequired(), Length(max=2048)])
 
 	expiration_time = DateTimeLocalField("Expiration Time", [InputRequired()], format="%Y-%m-%dT%H:%M")

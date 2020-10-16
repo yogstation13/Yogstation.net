@@ -358,6 +358,12 @@ class LOA(flask_db_ext.Model):
 		self.revoked = int(revoked) # so we can pass bools
 		game_db.commit()
 
+	@classmethod
+	def add(cls, admin_ckey, reason, expiry_time):
+		entry = cls(ckey=admin_ckey, reason=reason, expiry_time=expiry_time, time=datetime.utcnow())
+		game_db.add(entry)
+		game_db.commit()
+
 class ActionLog(flask_db_ext.Model):
 	__tablename__ = "web_logs"
 

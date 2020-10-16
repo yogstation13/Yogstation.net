@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import abort
 from flask import Blueprint
 from flask import flash
+from flask import g
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -21,13 +22,10 @@ from .forms import SetLOAForm
 
 blueprint = Blueprint("admin", __name__)
 
-@blueprint.route("/admin/admins", methods=["GET", "POST"])
+@blueprint.route("/admin/loa", methods=["GET", "POST"])
 @login_required
-def page_manage_admins():
-
+def page_loa():
 	form_set_loa = SetLOAForm(request.form, prefix="form_set_loa")
-
-	admins = db.game_db.query(db.Admin).order_by(db.Admin.ckey) # Get admins sorted by ckey
 
 	loas = db.game_db.query(db.LOA).filter(
 		and_(
@@ -37,18 +35,18 @@ def page_manage_admins():
 			),
 			db.LOA.expiry_time > datetime.utcnow()
 		)
-	).order_by(db.LOA.time) # Get LOAs sorted by start time
+	).order_by(db.LOA.id.desc()) # Get LOAs sorted by start time
 
-	admin_ranks = db.game_db.query(db.AdminRank)
+	if not g.current_user.has_perms("loa.others"):
+		loas = loas.filter(db.LOA.ckey == g.current_user.ckey)
 
 	if request.method == "POST":
 		if form_set_loa.validate_on_submit():
-			print ("loa works")
-			return redirect(url_for("admin.page_manage_admins"))
+			db.LOA.add(g.current_user.ckey, reason=form_set_loa.reason.data, expiry_time=form_set_loa.expiration_time.data)
+			return redirect(url_for("admin.page_loa"))
 
-	return render_template("admin/manage_admins.html", 
-		admins=admins, loas=loas, admin_ranks=admin_ranks,
-		form_set_loa = form_set_loa
+	return render_template("admin/loa_manager.html", 
+		loas = loas, form_set_loa = form_set_loa
 	)
 
 
@@ -60,6 +58,7 @@ def page_loa_action(loa_id, action):
 
 	if action == "revoke":
 		loa.set_revoked(True)
+		flash("Successfully Revoked LOA", "success")
 	
 	return redirect(request.referrer)
 
