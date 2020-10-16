@@ -52,7 +52,12 @@
 					</div>
 				</div>
 
-				<br/><br/>
+				<input class="slider is-fullwidth is-success is-circle" step="1" value="0" min="0" max="10000" type="range"
+					v-on:input="seek = parseInt($event.target.value)"
+					v-bind:value="seek"
+				>
+
+				<br/>
 
 				<table class="table is-striped is-hoverable is-fullwidth">
 					<thead>

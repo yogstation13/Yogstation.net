@@ -23,7 +23,8 @@ window.addEventListener("load", function () {
 		data: {
 			query: "",
 			log_entries: [],
-			enabled_categories: Object.keys(category_color_classes)
+			enabled_categories: Object.keys(category_color_classes),
+			seek: 0
 		},
 
 		mounted: function() {
@@ -32,11 +33,15 @@ window.addEventListener("load", function () {
 
 		computed: {
 			filtered_log_entries() {
-				return this.log_entries.filter(entry => {
+				var temp_log_entries = this.log_entries.filter(entry => {
 					return	entry.content.toLowerCase().includes(this.query.toLowerCase()) &&
 							this.enabled_categories.includes(entry.category);
 				})
-			}
+				
+				temp_log_entries = temp_log_entries.slice(Math.floor(this.seek/10000*temp_log_entries.length), Math.floor(this.seek/10000*temp_log_entries.length)+50)
+				
+				return temp_log_entries;
+			},
 		},
 
 		methods: {
