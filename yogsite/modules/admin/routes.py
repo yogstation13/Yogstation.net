@@ -43,6 +43,8 @@ def page_loa():
 	if request.method == "POST":
 		if form_set_loa.validate_on_submit():
 			db.LOA.add(g.current_user.ckey, reason=form_set_loa.reason.data, expiry_time=form_set_loa.expiration_time.data)
+			flash("Successfully Set LOA", "success")
+			
 			return redirect(url_for("admin.page_loa"))
 
 	return render_template("admin/loa_manager.html", 
