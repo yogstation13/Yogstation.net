@@ -9,7 +9,7 @@ def login_required(view_function):
 	@wraps(view_function)
 
 	def decorated_function(*args, **kwargs):
-		if g.current_user is None:
+		if not g.current_user:
 			return redirect(url_for("login.page_login", next=request.url))
 		
 		return view_function(*args, **kwargs)
