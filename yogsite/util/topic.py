@@ -1,6 +1,7 @@
 """
 This file is for stuff that will talk to the game servers via topic requests
 """
+from yogsite.config import cfg
 
 from cachetools import cached
 from cachetools import TTLCache
@@ -26,7 +27,7 @@ def topic_query(server, query, args=None):
 	
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	sock.settimeout(3)
-	sock.connect((server.host, server.port))
+	sock.connect((server["host"], server["port"]))
 
 	sock.sendall(packed_query)
 
@@ -37,8 +38,9 @@ def topic_query(server, query, args=None):
 	return {i:parsed_data[i][0] for i in parsed_data.keys()}
 
 
-@cached(cache=TTLCache(ttl=5, maxsize=10))
-def query_server_status(server):
+@cached(cache=TTLCache(ttl=10, maxsize=10))
+def query_server_status(server_id):
+	server = cfg.get("servers")[server_id]
 	status = topic_query(server, "status")
 
 	if not status:

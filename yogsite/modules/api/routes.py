@@ -1,3 +1,4 @@
+from flask import abort
 from flask import Blueprint
 from flask import jsonify
 from flask import redirect
@@ -13,14 +14,10 @@ from yogsite.util import query_server_status
 blueprint = Blueprint("api", __name__)
 
 
-@blueprint.route("/api/stats")
-def page_api_stats():
-	server_stats_list = []
+@blueprint.route("/api/stats/<string:server_id>")
+def page_api_stats(server_id):
+	if server_id not in cfg.get("servers"):
+		return jsonify({"error": "server id not found"})
 
-	for server in cfg.get("servers"):
-		server_stats = query_server_status(server)
-		server_stats["server"] = server.__dict__
-
-		server_stats_list.append(server_stats)
-	
-	return jsonify(server_stats_list)
+	server_stats = query_server_status(server_id)
+	return jsonify(server_stats)

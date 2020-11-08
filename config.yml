@@ -10,15 +10,19 @@ items_per_page: 20
 
 
 servers:
-  - id: "main"
+  main:
+    id: "main"
     host: "game.yogstation.net"
     port: 4133
     name: "YogStation Main"
+    primary: true
 
-  - id: "atlas"
+  atlas:
+    id: "atlas"
     host: "game.yogstation.net"
     port: 5133
     name: "YogStation Atlas"
+    primary: false
 
 
 logs:
