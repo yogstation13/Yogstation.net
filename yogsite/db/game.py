@@ -6,6 +6,9 @@ from netaddr import IPAddress
 
 from flask_sqlalchemy import SQLAlchemy
 
+from flask import g # dumb dumb stupid varname
+from flask import request
+
 from sqlalchemy import and_
 from sqlalchemy import BigInteger
 from sqlalchemy import create_engine
@@ -145,10 +148,47 @@ class Ban(flask_db_ext.Model):
 	ip					= Column('ip',					Integer())
 	computerid			= Column('computerid',			String(32))
 	a_ckey				= Column('a_ckey',				String(32))
+	a_ip				= Column('a_ip',				Integer())
+	a_computerid		= Column('a_computerid',		Integer())
+	who					= Column('who',					String(2048))
+	adminwho			= Column('adminwho',			String(2048))
 	edits				= Column('edits',				Text())
 	unbanned_datetime	= Column('unbanned_datetime',	DateTime())
 	unbanned_ckey		= Column('unbanned_ckey',		String(32))
+	unbanned_ip			= Column('unbanned_ip',			Integer())
+	unbanned_computerid	= Column('unbanned_computerid',	String(32))
 	unbanned_round_id	= Column('unbanned_round_id',	Integer())
+
+	@classmethod
+	def add_from_form(cls, form):
+		entry = cls(
+			ckey = form.ckey.data,
+			a_ckey = g.current_user.ckey,
+			bantime = datetime.utcnow(),
+			expiration_time = form.expiration_time.data if form.expiration_time.data else None,
+			role = form.role.data,
+			ip = int(IPAddress(form.ip.data)),
+			computerid = form.computerid.data,
+			reason = form.reason.data,
+			## Defaults ##
+			server_ip = 0,
+			server_port = 0,
+			round_id = 0,
+			applies_to_admins = 0,
+			edits = None,
+			unbanned_datetime = None,
+			unbanned_ckey = None,
+			unbanned_round_id = None,
+			a_ip = int(IPAddress(request.remote_addr)),
+			a_computerid = 0,
+			who = "",
+			adminwho = "",
+			unbanned_ip = None,
+			unbanned_computerid = None
+		)
+		
+		game_db.add(entry)
+		game_db.commit()
 
 	@classmethod
 	def from_id(cls, id):
@@ -156,7 +196,6 @@ class Ban(flask_db_ext.Model):
 			return game_db.query(cls).filter(cls.id == id).one()
 		except NoResultFound:
 			return None
-
 
 	def apply_edit_form(self, form):
 		"""

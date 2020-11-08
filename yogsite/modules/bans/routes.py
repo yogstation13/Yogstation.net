@@ -1,4 +1,5 @@
 from flask import Blueprint
+from flask import flash
 from flask import g # what a terrible name
 from flask import redirect
 from flask import render_template
@@ -11,7 +12,7 @@ from yogsite.config import cfg
 from yogsite import db
 from yogsite.util import login_required, perms_required, IPAddress
 
-from .forms import BanEditForm
+from .forms import BanAddForm, BanEditForm
 
 blueprint = Blueprint("bans", __name__)
 
@@ -50,6 +51,8 @@ def page_ban_edit(ban_id):
 			print("VALID", request.form, form_ban_edit)
 			ban.apply_edit_form(form_ban_edit)
 
+			flash("Ban Successfully Edited", "success")
+
 			return redirect(url_for("bans.page_ban_edit", ban_id=ban.id))
 
 	else:
@@ -63,6 +66,34 @@ def page_ban_edit(ban_id):
 		form_ban_edit.computerid.data = ban.computerid
 
 	return render_template("bans/edit.html", ban=ban, form=form_ban_edit)
+
+
+@blueprint.route("/bans/add", methods=["GET", "POST"])
+@login_required
+@perms_required("ban.manage")
+def page_ban_add():
+
+	form_ban_add = BanAddForm(request.form, prefix="form_ban_add")
+
+	if request.method == "POST":
+		print(request.form)
+		if form_ban_add.validate():
+			print("VALID", request.form, form_ban_add)
+
+			db.Ban.add_from_form(form_ban_add)
+
+			flash("Ban Successfully Added", "success")
+
+			return redirect(url_for("bans.page_ban_add"))
+
+	else:
+		# this absolute bs makes it so it only sets default values on the first get, and then every time you update with a post
+		# it populates them with the new values from the post
+		if request.args.get("ckey"):
+			form_ban_add.ckey.data = request.args.get("ckey")
+			form_ban_add.role.data = "Server" # Default to a server ban, not a job ban
+	
+	return render_template("bans/add.html", form=form_ban_add)
 
 @blueprint.route("/bans/<int:ban_id>/<string:action>")
 @login_required
