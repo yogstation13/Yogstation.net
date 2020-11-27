@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timedelta
 
 from hashlib import sha256
 
@@ -251,7 +252,7 @@ class Connection(flask_db_ext.Model):
 
 	def duration(self):
 		# If the user hasn't left, use now as the end time for the connection
-		if not self.left: return datetime.utcnow() - self.datetime
+		if not self.left: return timedelta(0)
 
 		return self.left - self.datetime
 

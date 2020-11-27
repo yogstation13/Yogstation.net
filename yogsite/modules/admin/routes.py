@@ -4,6 +4,7 @@ from flask import abort
 from flask import Blueprint
 from flask import flash
 from flask import g
+from flask import jsonify
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -19,6 +20,7 @@ from yogsite.config import cfg
 from yogsite.util import login_required, perms_required
 
 from .forms import SetLOAForm
+from .activity_tracker import AdminActivityAnalytics
 
 blueprint = Blueprint("admin", __name__)
 
@@ -71,6 +73,12 @@ def page_loa_action(loa_id, action):
 def page_activity():
 	return render_template("admin/activity_tracker.html")
 
+@blueprint.route("/api/admin/activity")
+@login_required
+@perms_required("activity.access")
+def page_api_activity():
+	analytics = AdminActivityAnalytics(0)
+	return jsonify(analytics.week)
 
 @blueprint.route("/admin/action_log")
 @login_required

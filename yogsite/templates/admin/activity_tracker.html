@@ -10,12 +10,26 @@
 
 {% block content %}
 
-{{
-	db.Player.from_ckey("0163f2a9263dcf0eb64e52fa6885e072").get_connection_count()
-}}
+<div id="activity-tracker">
+	<table class="table">
+		<thead>
+			<tr>
+				<th></th>
+				<th v-for="hour in 24">
+					${ hour }
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr v-for="day in 7">
+				<td>${ days_of_week[day-1] }</td>
 
-{% for connection in db.Player.from_ckey("0163f2a9263dcf0eb64e52fa6885e072").connections %}
-	<div>{{ connection.duration() }}</div>
-{% endfor %}
+				<td v-for="hour in 24" :style="{'background-color': color_from_amount_active(week[day-1][hour-1])}">
+					${ week[day-1][hour-1] }
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 
 {% endblock %}
