@@ -5,6 +5,8 @@ from datetime import timedelta, date
 from sqlalchemy import and_
 from sqlalchemy import func
 
+import math
+
 class AdminActivityAnalytics():
 	def __init__(self, start_date, end_date, rank_filter):
 		self.admins = db.game_db.query(db.Admin)
@@ -46,11 +48,11 @@ class AdminActivityAnalytics():
 		for connection in self.connections:
 			print(connection, connection.duration().total_seconds())
 
-			if (connection.duration().total_seconds() // 60) >= 10: # Magic numbers mean ignore any connection less than ten minutes
+			if (connection.duration().total_seconds() // 60) >= 30: # Magic numbers mean ignore any connection less than ten minutes
 				start_hour = connection.datetime.hour
 				start_day = connection.datetime.weekday()
 
-				for hour in range(int(connection.duration().total_seconds() // 3600)):
+				for hour in range(int(math.ceil(connection.duration().total_seconds() // 3600))):
 					marking_hour = (start_hour + hour) % 24 # Handle day rollover
 					marking_day = start_day + (start_hour+hour) // 24
 
