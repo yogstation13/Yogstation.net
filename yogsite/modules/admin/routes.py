@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta, date
 
 from flask import abort
 from flask import Blueprint
@@ -71,13 +71,22 @@ def page_loa_action(loa_id, action):
 @login_required
 @perms_required("activity.access")
 def page_activity():
-	return render_template("admin/activity_tracker.html")
+	admin_ranks = db.game_db.query(db.AdminRank).all()
+
+	return render_template("admin/activity_tracker.html", admin_ranks=admin_ranks)
 
 @blueprint.route("/api/admin/activity")
 @login_required
 @perms_required("activity.access")
 def page_api_activity():
-	analytics = AdminActivityAnalytics(0)
+	start_date = request.args.get("start_date")
+	end_date = request.args.get("end_date")
+	rank_filter = request.args.get("rank_filter")
+
+	if not start_date or not end_date or not rank_filter:
+		return abort(400)
+	
+	analytics = AdminActivityAnalytics(datetime.strptime(start_date, "%Y-%m-%d").date(), datetime.strptime(end_date, "%Y-%m-%d").date(), rank_filter=rank_filter)
 	return jsonify(analytics.week)
 
 @blueprint.route("/admin/action_log")
