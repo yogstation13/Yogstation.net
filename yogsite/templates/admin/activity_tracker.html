@@ -26,48 +26,46 @@
 			</div>
 		</div>
 
-		<div class="column is-3 field">
-			<div class="label">Filter Rank</div>
-			<div class="control">
-				<div class="select is-fullwidth">
-					<select v-model="filter_rank">
-						<option>All</option>
-						{% for rank in admin_ranks %}
-						<option>{{ rank.rank }}</option>
-						{% endfor %}
-					</select>
-				</div>
-			</div>
-		</div>
-
-		<div class="column is-1"></div>
+		<div class="column is-4"></div>
 
 		<div class="column is-2">
 			<div class="field is-pulled-right">
 				<div class="label">Apply</div>
 				<div class="control">
-					<button class="button" @click="update_week_from_api">Submit Changes</button>
+					<button class="button" @click="get_leaderboard_from_api">Submit Changes</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
+	<div class="label">Rank Filter</div>
+	<div v-cloak class="field is-grouped is-grouped-multiline">
+		{% for admin_rank in admin_ranks %}
+		<div class="control">
+			<label class="tag checkbox" style="user-select: none;">
+				<input v-cloak type="checkbox" v-model="enabled_ranks" value="{{ admin_rank.rank }}" />
+				&nbsp;{{ admin_rank.rank }}
+			</label>
+		</div>
+		{% endfor %}
+	</div>
+
+
 	<table class="table is-fullwidth is-striped is-hoverable">
 		<thead v-cloak>
 			<tr>
-				<th></th>
-				<th style="min-width:40px; max-width:40px;" v-for="hour in 24">
-					${ hour }
-				</th>
+				<th>Rank</th>
+				<th>Admin</th>
+				<th>Hours</th>
 			</tr>
 		</thead>
 		<tbody v-cloak>
-			<tr v-for="day in 7">
-				<td>${ days_of_week[day-1] }</td>
+			<tr v-for="admin in leaderboard">
+				<td>${ admin["rank"] }</td>
 
-				<td style="min-width:40px; max-width:40px;" v-for="hour in 24" :style="{'background-color': color_from_amount_active(week[day-1][hour-1])}">
-					${ week[day-1][hour-1] }
-				</td>
+				<td>${ admin["ckey"] }</td>
+
+				<td>${ (admin["playtime"] / 3600).toFixed(1) }</td>
 			</tr>
 		</tbody>
 	</table>

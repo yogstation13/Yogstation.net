@@ -81,13 +81,16 @@ def page_activity():
 def page_api_activity():
 	start_date = request.args.get("start_date")
 	end_date = request.args.get("end_date")
-	rank_filter = request.args.get("rank_filter")
+	enabled_ranks = request.args.getlist("enabled_ranks[]")
 
-	if not start_date or not end_date or not rank_filter:
+	print(start_date, end_date, enabled_ranks)
+
+	if start_date == None or end_date == None:
 		return abort(400)
 	
-	analytics = AdminActivityAnalytics(datetime.strptime(start_date, "%Y-%m-%d").date(), datetime.strptime(end_date, "%Y-%m-%d").date(), rank_filter=rank_filter)
-	return jsonify(analytics.week)
+	analytics = AdminActivityAnalytics(datetime.strptime(start_date, "%Y-%m-%d").date(), datetime.strptime(end_date, "%Y-%m-%d").date(), enabled_ranks=enabled_ranks)
+	
+	return jsonify(analytics.admin_leaderboard())
 
 @blueprint.route("/admin/action_log")
 @login_required
