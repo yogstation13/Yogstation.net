@@ -68,7 +68,7 @@
 			<tr v-for="admin in leaderboard">
 				<td>${ admin["rank"] }</td>
 
-				<td>${ ckey_link(admin["ckey"]) }</td>
+				<td><a href="/players/${ admin['ckey'] }">${ admin["ckey"] }</a></td>
 
 				<td>${ (admin["playtime"] / 3600).toFixed(1) }</td>
 			</tr>
