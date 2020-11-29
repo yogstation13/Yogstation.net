@@ -5,10 +5,13 @@ window.addEventListener("load", function () {
 			leaderboard: [],
 			enabled_ranks: [],
 			start_date: new Date(new Date().setDate(new Date().getDate() - 27)).toISOString().split("T")[0], // Simply amazing, javascript
-			end_date: new Date().toISOString().split("T")[0]
+			end_date: new Date().toISOString().split("T")[0],
+
+			loading: false
 		},
 		methods: {
 			get_leaderboard_from_api() {
+				this.loading = true;
 				$.ajax(
 					{
 						url: `/api/admin/activity`,
@@ -21,6 +24,7 @@ window.addEventListener("load", function () {
 						success : function(result) {
 							console.log(result)
 							window.activity_tracker.leaderboard = result;
+							window.activity_tracker.loading = false;
 						}
 					}
 				);

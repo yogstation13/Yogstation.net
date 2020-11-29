@@ -60,6 +60,11 @@
 			</tr>
 		</thead>
 		<tbody v-cloak>
+			<tr id="activity-loader" v-if="loading">
+				<td colspan="3">
+					<progress class="progress is-small is-primary" max="100"></progress>
+				</td>
+			</tr>
 			<tr v-for="admin in leaderboard">
 				<td>${ admin["rank"] }</td>
 
