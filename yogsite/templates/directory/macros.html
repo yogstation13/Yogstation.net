@@ -1,3 +1,5 @@
+{% from 'util/macros.html' import render_datetime_as_delta with context %}
+
 {% macro note_listing(notes, show_ckey=True) %}
 	<table class="table is-striped is-hoverable is-fullwidth">
 		<thead>
@@ -22,7 +24,7 @@
 
 					<td>
 						{% if note.timestamp %}
-							<time datetime="{{ note.timestamp }}">{{ util.readable_time_delta(note.timestamp) }}</time>
+							<time datetime="{{ note.timestamp }}">{{ render_datetime_as_delta(note.timestamp) }}</time>
 						{% else %}
 							None
 						{% endif %}

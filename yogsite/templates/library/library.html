@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% from 'util/macros.html' import pagination, search_form with context %}
+{% from 'util/macros.html' import pagination, search_form, render_datetime_as_delta with context %}
 
 {% block title %}Library{% endblock %}
 
@@ -37,7 +37,7 @@
 							
 							<td><div class="tag is-medium is-primary">{{ book.category }}</div></td>
 							
-							<td><time datetime="{{ book.datetime }}">{{ util.readable_time_delta(book.datetime) }}</time></td>
+							<td>{{ render_datetime_as_delta(book.datetime) }}</time></td>
 
 							<td>
 								<div class="buttons">

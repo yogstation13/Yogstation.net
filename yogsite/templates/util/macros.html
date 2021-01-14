@@ -82,3 +82,7 @@
 {% macro ckey_link(ckey) %}
 	<a href="/players/{{ ckey }}">{{ ckey }}</a>
 {% endmacro %}
+
+{% macro render_datetime_as_delta(dt) %}
+	<time datetime="{{ dt }}" title="{{ dt }}">{{ util.readable_time_delta(dt) }}</time>
+{% endmacro %}

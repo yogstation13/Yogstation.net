@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% from 'util/macros.html' import ckey_link, pagination, search_form, form_errors with context %}
+{% from 'util/macros.html' import ckey_link, pagination, search_form, form_errors, render_datetime_as_delta with context %}
 
 {% block title %}Panel - LOAs{% endblock %}
 
@@ -61,7 +61,7 @@
 								</td>
 
 								<td>
-									<time datetime="{{ loa.expiry_time }}">{{ util.readable_time_delta(loa.expiry_time) }}</time>
+									<time datetime="{{ loa.expiry_time }}">{{ render_datetime_as_delta(loa.expiry_time) }}</time>
 								</td>
 
 								<td>{{ loa.reason }}</td>

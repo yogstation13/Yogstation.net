@@ -1,4 +1,4 @@
-{% from 'util/macros.html' import ckey_link with context %}
+{% from 'util/macros.html' import ckey_link, render_datetime_as_delta with context %}
 
 {% macro ban_listing(bans, show_ckey=True) %}
 	<table class="table is-striped is-hoverable is-fullwidth">
@@ -30,10 +30,10 @@
 
 					<td>{{ ban.reason }}</td>
 
-					<td><time datetime="{{ ban.bantime }}">{{ util.readable_time_delta(ban.bantime) }}</time></td>
+					<td>{{ render_datetime_as_delta(ban.bantime) }}</td>
 					
 					{% if ban.expiration_time %}
-						<td><time datetime="{{ ban.expiration_time }}">{{ util.readable_time_delta(ban.expiration_time) }}</time></td>
+						<td>{{ render_datetime_as_delta(ban.expiration_time) }}</td>
 					{% else %}
 						<td>Never</td>
 					{% endif %}
