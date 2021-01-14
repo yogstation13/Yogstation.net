@@ -12,7 +12,7 @@ from yogsite.config import cfg
 from yogsite import db
 from yogsite.util import login_required, perms_required, IPAddress
 
-from .forms import BanAddForm, BanEditForm
+from .forms import BanEditForm
 
 blueprint = Blueprint("bans", __name__)
 
@@ -73,14 +73,14 @@ def page_ban_edit(ban_id):
 @perms_required("ban.manage")
 def page_ban_add():
 
-	form_ban_add = BanAddForm(request.form, prefix="form_ban_add")
+	form_ban_edit = BanEditForm(request.form, prefix="form_ban_edit") # We can use the same form as editing since it has the same fields
 
 	if request.method == "POST":
 		print(request.form)
-		if form_ban_add.validate():
-			print("VALID", request.form, form_ban_add)
+		if form_ban_edit.validate():
+			print("VALID", request.form, form_ban_edit)
 
-			db.Ban.add_from_form(form_ban_add)
+			db.Ban.add_from_form(form_ban_edit)
 
 			flash("Ban Successfully Added", "success")
 
@@ -90,10 +90,10 @@ def page_ban_add():
 		# this absolute bs makes it so it only sets default values on the first get, and then every time you update with a post
 		# it populates them with the new values from the post
 		if request.args.get("ckey"):
-			form_ban_add.ckey.data = request.args.get("ckey")
-			form_ban_add.role.data = "Server" # Default to a server ban, not a job ban
+			form_ban_edit.ckey.data = request.args.get("ckey")
+			form_ban_edit.role.data = "Server" # Default to a server ban, not a job ban
 	
-	return render_template("bans/add.html", form=form_ban_add)
+	return render_template("bans/add.html", form=form_ban_edit)
 
 @blueprint.route("/bans/<int:ban_id>/<string:action>")
 @login_required
