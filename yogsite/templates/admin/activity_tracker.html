@@ -40,11 +40,11 @@
 
 	<div class="label">Rank Filter</div>
 	<div v-cloak class="field is-grouped is-grouped-multiline">
-		{% for admin_rank in admin_ranks %}
+		{% for admin_group in admin_groups %}
 		<div class="control">
 			<label class="tag checkbox" style="user-select: none;">
-				<input v-cloak type="checkbox" v-model="enabled_ranks" value="{{ admin_rank.rank }}" />
-				&nbsp;{{ admin_rank.rank }}
+				<input v-cloak type="checkbox" v-model="enabled_ranks" value="{{ admin_group['user_group_id'] }}" />
+				&nbsp;{{ admin_group["title"] }}
 			</label>
 		</div>
 		{% endfor %}

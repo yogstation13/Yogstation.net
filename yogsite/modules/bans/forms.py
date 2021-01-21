@@ -19,6 +19,6 @@ class BanEditForm(FlaskForm):
 
 	role = SelectField("Role", [AnyOf(cfg.get("roles"))], choices=list(zip(cfg.get("roles"), cfg.get("roles"))))
 
-	ip = TextField("IP", [Optional(), IPAddress()])
+	ip = TextField("IP", [IPAddress()])
 
-	computerid = TextField("CID", [Optional()])
+	computerid = TextField("CID", [])

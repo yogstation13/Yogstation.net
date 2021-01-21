@@ -18,6 +18,7 @@ import math
 from yogsite import db
 from yogsite.config import cfg
 from yogsite.util import login_required, perms_required
+from yogsite.util.xenforo import get_xenforo_groups
 
 from .forms import SetLOAForm
 from .activity_tracker import AdminActivityAnalytics
@@ -71,9 +72,9 @@ def page_loa_action(loa_id, action):
 @login_required
 @perms_required("activity.access")
 def page_activity():
-	admin_ranks = db.game_db.query(db.AdminRank).all()
+	admin_groups = get_xenforo_groups()
 
-	return render_template("admin/activity_tracker.html", admin_ranks=admin_ranks)
+	return render_template("admin/activity_tracker.html", admin_groups=admin_groups)
 
 @blueprint.route("/api/admin/activity")
 @login_required
@@ -82,8 +83,6 @@ def page_api_activity():
 	start_date = request.args.get("start_date")
 	end_date = request.args.get("end_date")
 	enabled_ranks = request.args.getlist("enabled_ranks[]")
-
-	print(start_date, end_date, enabled_ranks)
 
 	if start_date == None or end_date == None:
 		return abort(400)

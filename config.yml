@@ -120,3 +120,6 @@ library:
     "Reference",
     "Religion"
   ]
+
+xenforo:
+  apiurl: "https://forums.yogstation.net/api"

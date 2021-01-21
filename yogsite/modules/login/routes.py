@@ -17,6 +17,7 @@ from yogsite import db
 from yogsite.config import cfg
 from yogsite.config import XENFORO_HEADERS
 from yogsite.util import is_safe_redirect
+from yogsite.util.xenforo import validate_xenforo_credentials
 
 from .models import User
 
@@ -30,12 +31,8 @@ def page_login():
 		uname = request.form.get("username")
 		passwd = request.form.get("password")
 
-		auth_request = requests.post("https://forums.yogstation.net/api/auth", # request user details from the forums authing with username and password
-			data = {"login": uname, "password": passwd},
-			headers = XENFORO_HEADERS
-		)
-
-		if auth_request.status_code == 200: # Success
+		auth_request = validate_xenforo_credentials(uname, passwd)
+		if auth_request.status_code == 200: # Success AHHH I HATE THIS THIS IS SO INSECUREEE
 			user_data = auth_request.json()["user"]
 
 			if user_data["linked_accounts"] and ("byond" in user_data["linked_accounts"]):

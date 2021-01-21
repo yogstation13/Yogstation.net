@@ -1,4 +1,5 @@
 from yogsite import db
+from yogsite.util.xenforo import get_xenforo_ckeys_from_groups
 
 from datetime import timedelta, date
 
@@ -9,9 +10,9 @@ import math
 
 class AdminActivityAnalytics():
 	def __init__(self, start_date, end_date, enabled_ranks):
-		self.admins = db.game_db.query(db.Admin).filter(db.Admin.rank.in_(enabled_ranks)).all()
+		admin_ckeys = get_xenforo_ckeys_from_groups(enabled_ranks)
 
-		print(self.admins)
+		self.admins = db.game_db.query(db.Admin).filter(db.Admin.ckey.in_(admin_ckeys)).all()
 
 		self.start_date = start_date
 		self.end_date = end_date
