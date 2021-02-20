@@ -7,52 +7,102 @@
 {% endblock %}
 
 {% block content %}
+	<div id="frontpage">
+		<!--<h1 class="title is-1 has-text-centered" style="font-size: 5em !important;">YogStation 13</h1>-->
+		<div style="user-select: none;" class="has-text-centered">
+			<img src="/static/img/logo.png" width="75%" />
+		</div>
 
-	<h1 class="title is-1 has-text-centered">YogStation 13</h1>
+		<h2 class="title is-2 has-text-centered">Game Servers</h2>
 
-	<div class="columns is-centered">
-		<div class="column is-two-thirds">
-			
-			<div class="card">
-				<div class="card-content">
-					<div class="media">
-						<div class="media-content">						
-							<div class="columns">
-								<div class="column is-one-quarter">
-									<p class="title is-3">YogStation Main</p>
-									<p class="subtitle is-5">game.yogstation.net:4133</p>
-								</div>
-								
-								<div class="column has-text-centered">
-									<p class="title is-4">Players</p>
-									<p class="subtitle is-4">45/82</p>
-								</div>
+		<div class="columns is-centered">
+			<div class="column is-three-quarters">
+				
+				<div v-if="!server_stats.length">
+						<progress class="progress is-small is-primary" max="100"></progress>
+				</div>
 
-								<div class="column has-text-centered">
-									<p class="title is-4">Admins</p>
-									<p class="subtitle is-4">6</p>
-								</div>
+				<div v-cloak v-for="server in server_stats" class="card">
+					<div class="card-content">
+						<div class="media">
+							<div class="media-content">						
+								<div class="columns">
+									<div class="column is-one-quarter">
+										<p class="title is-3">${ server.info.name }</p>
+										<p class="subtitle is-5">${ server.info.host }:${ server.info.port }</p>
+									</div>
+									
+									<div class="column has-text-centered">
+										<p class="title is-4">Players</p>
+										<p class="subtitle is-4">${ server.stats.players }/${ server.stats.extreme_popcap }</p>
+									</div>
 
-								<div class="column has-text-centered">
-									<p class="title is-4">Map</p>
-									<p class="subtitle is-4">YogStation</p>
-								</div>
+									<div class="column has-text-centered">
+										<p class="title is-4">Admins</p>
+										<p class="subtitle is-4">${ server.stats.admins }</p>
+									</div>
 
-								<div class="column has-text-centered">
-									<p class="title is-4">Duration</p>
-									<p class="subtitle is-4">12:32</p>
+									<div class="column has-text-centered">
+										<p class="title is-4">Map</p>
+										<p class="subtitle is-4">${ server.stats.map_name }</p>
+									</div>
+
+									<div class="column has-text-centered">
+										<p class="title is-4">Duration</p>
+										<p class="subtitle is-4">${ new Date(server.stats.round_duration * 1000).toISOString().substr(11, 8) }</p>
+									</div>
+
+									<div class="column has-text-centered">
+										<a class="button is-primary is-medium" :href="'byond://'+server.info.host+':'+server.info.port">Join</a>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				
-					<div class="content">
-						<div class="buttons is-right">
-							<a class="button is-primary is-medium">Join</a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
+		<br><br>
+
+		<h2 class="title is-2 has-text-centered">Active Staff</h2>
+
+		<div class="columns is-centered">
+			<div class="column is-three-quarters">
+				<div class="columns is-centered">
+					<div class="column is-one-third has-text-centered">
+						<h3 class="has-text-grey-light is-size-3">Hosts</h3>
+						<p v-cloak class="is-size-4" v-for="host in staff.host">
+							${ host }
+						</p>
+
+						<p v-cloak class="has-text-grey-light is-size-4" v-if="!('host' in staff)">
+							...
+						</p>
+					</div>
+					<div class="column is-one-third has-text-centered">
+						<h3 class="has-text-grey-light is-size-3">Council</h3>
+						<p v-cloak class="is-size-4" v-for="council in staff.council">
+							${ council }
+						</p>
+
+						<p v-cloak class="has-text-grey-light is-size-4" v-if="!('council' in staff)">
+							...
+						</p>
+					</div>
+					<div class="column is-one-third has-text-centered">
+						<h3 class="has-text-grey-light is-size-3">Head Coders</h3>
+						<p v-cloak class="is-size-4" v-for="headcoder in staff.headcoder">
+							${ headcoder }
+						</p>
+						
+						<p v-cloak class="has-text-grey-light is-size-4" v-if="!('headcoder' in staff)">
+							...
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 {% endblock %}

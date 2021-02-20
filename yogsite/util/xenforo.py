@@ -1,5 +1,8 @@
 import requests
 
+from cachetools import cached
+from cachetools import TTLCache
+
 from yogsite.config import cfg
 from yogsite.config import XENFORO_HEADERS
 
@@ -41,3 +44,13 @@ def get_xenforo_ckeys_from_groups(groups):
 	assert request.status_code == 200, f"Get xenforo /group/users returned {request.status_code}"
 
 	return [byondname_to_ckey(bk) for bk in request.json()["users"]]
+
+@cached(cache=TTLCache(ttl=36000, maxsize=1)) # 10 hour cache because screw doing a ton of http requests a ton of times
+def get_frontpage_staff():
+	frontpage_staff = {}
+
+	frontpage_staff["host"] = get_xenforo_ckeys_from_groups(cfg.get("xenforo.group_ids.host"))
+	frontpage_staff["council"] = get_xenforo_ckeys_from_groups(cfg.get("xenforo.group_ids.council"))
+	frontpage_staff["headcoder"] = get_xenforo_ckeys_from_groups(cfg.get("xenforo.group_ids.headcoder"))
+
+	return frontpage_staff

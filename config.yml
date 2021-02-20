@@ -17,14 +17,6 @@ servers:
     name: "YogStation Main"
     primary: true
 
-  atlas:
-    id: "atlas"
-    host: "game.yogstation.net"
-    port: 5133
-    name: "YogStation Atlas"
-    primary: false
-
-
 logs:
   directory: $GAME_LOGS_DIR
 
@@ -123,3 +115,7 @@ library:
 
 xenforo:
   apiurl: "https://forums.yogstation.net/api"
+  group_ids: # For the sole purpose of getting them for the homepage. If these IDs magically change? Oops. Completely arbitrary.
+    host: 43
+    council: 8
+    headcoder: 30

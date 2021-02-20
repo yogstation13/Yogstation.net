@@ -41,7 +41,11 @@ def topic_query(server, query, args=None):
 @cached(cache=TTLCache(ttl=10, maxsize=10))
 def query_server_status(server_id):
 	server = cfg.get("servers")[server_id]
-	status = topic_query(server, "status")
+	
+	try:
+		status = topic_query(server, "status")
+	except socket.timeout:
+		return None
 
 	if not status:
 		return status
