@@ -1,0 +1,24 @@
+body {
+	background: url("/static/img/background.png") no-repeat top center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+  
+#navbar {
+	background-color: #2a282f88;
+	border-bottom: solid;
+	border-color: #696969;
+	backdrop-filter: blur(2px);
+}
+
+.navbar-item:hover {
+	background-color: #1e1d2288 !important;
+}
+
+.server-stats-card {
+	background-color: #2a282f33;
+}
+
+footer {
+	background-color: transparent !important;
+}
