@@ -18,33 +18,35 @@
 
 			{{ pagination(page, page_count) }}
 
-			<table class="table is-striped is-hoverable is-fullwidth">
-				<thead>
-					<tr>
-						<th>CKEY</th>
-						<th width="200px">First Seen</th>
-						<th width="200px">Last Seen</th>
-						<th>Tools</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for player in players %}
+			<div class="box">
+				<table class="table is-striped is-hoverable is-fullwidth">
+					<thead>
 						<tr>
-							<td>{{ ckey_link(player.ckey) }}</td>
-
-							<td><time datetime="{{ player.firstseen }}">{{ player.firstseen }}</time></td>
-							
-							<td><time datetime="{{ player.lastseen }}">{{ player.lastseen }}</time></td>
-
-							<td>
-								<div class="buttons">
-									<a class="button" href="/players/{{ player.ckey }}">View</a>
-								</div>
-							</td>
+							<th>CKEY</th>
+							<th width="200px">First Seen</th>
+							<th width="200px">Last Seen</th>
+							<th>Tools</th>
 						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{% for player in players %}
+							<tr>
+								<td>{{ ckey_link(player.ckey) }}</td>
+
+								<td><time datetime="{{ player.firstseen }}">{{ player.firstseen }}</time></td>
+								
+								<td><time datetime="{{ player.lastseen }}">{{ player.lastseen }}</time></td>
+
+								<td>
+									<div class="buttons">
+										<a class="button" href="/players/{{ player.ckey }}">View</a>
+									</div>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 
 			{{ pagination(page, page_count) }}
 		</div>

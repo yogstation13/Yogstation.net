@@ -17,48 +17,49 @@
 			{{ search_form(search_query, "Search for books...") }}
 
 			{{ pagination(page, page_count) }}
-
-			<table class="table is-striped is-hoverable is-fullwidth">
-				<thead>
-					<tr>
-						<th>Title</th>
-						<th>Author</th>
-						<th>Category</th>
-						<th width="150px">Date Written</th>
-						<th>Tools</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for book in books %}
+			<div class="box">
+				<table class="table is-striped is-hoverable is-fullwidth">
+					<thead>
 						<tr>
-							<td>{{ book.title }}</td>
-
-							<td>{{ book.author }}</td>
-							
-							<td><div class="tag is-medium is-primary">{{ book.category }}</div></td>
-							
-							<td>{{ render_datetime_as_delta(book.datetime) }}</time></td>
-
-							<td>
-								<div class="buttons">
-									<a class="button" href="/library/{{ book.id }}">View</a>
-
-									<!-- Disabled until further notice
-										<a class="button" href="/library/{{ book.id }}/edit">Edit</a>
-									-->
-									{% if g.current_user.has_perms("book.delete") %}
-										{% if book.deleted %}
-											<a class="button is-success" href="/library/{{ book.id }}/restore">Restore</a>
-										{% else %}
-											<a class="button is-danger" href="/library/{{ book.id }}/delete">Delete</a>
-										{% endif %}
-									{% endif %}
-								</div>
-							</td>
+							<th>Title</th>
+							<th>Author</th>
+							<th>Category</th>
+							<th width="150px">Date Written</th>
+							<th>Tools</th>
 						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{% for book in books %}
+							<tr>
+								<td>{{ book.title }}</td>
+
+								<td>{{ book.author }}</td>
+								
+								<td><div class="tag is-medium is-primary">{{ book.category }}</div></td>
+								
+								<td>{{ render_datetime_as_delta(book.datetime) }}</time></td>
+
+								<td>
+									<div class="buttons">
+										<a class="button" href="/library/{{ book.id }}">View</a>
+
+										<!-- Disabled until further notice
+											<a class="button" href="/library/{{ book.id }}/edit">Edit</a>
+										-->
+										{% if g.current_user.has_perms("book.delete") %}
+											{% if book.deleted %}
+												<a class="button is-success" href="/library/{{ book.id }}/restore">Restore</a>
+											{% else %}
+												<a class="button is-danger" href="/library/{{ book.id }}/delete">Delete</a>
+											{% endif %}
+										{% endif %}
+									</div>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 
 			{{ pagination(page, page_count) }}
 		</div>
