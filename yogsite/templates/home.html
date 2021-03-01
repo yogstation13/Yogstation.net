@@ -73,7 +73,7 @@
 					<div class="column is-one-third has-text-centered">
 						<h3 class="has-text-grey-light is-size-3">Hosts</h3>
 						<p v-cloak class="is-size-4" v-for="host in staff.host">
-							${ host }
+							${ host | capitalize }
 						</p>
 
 						<p v-cloak class="has-text-grey-light is-size-4" v-if="!('host' in staff)">
@@ -83,7 +83,7 @@
 					<div class="column is-one-third has-text-centered">
 						<h3 class="has-text-grey-light is-size-3">Council</h3>
 						<p v-cloak class="is-size-4" v-for="council in staff.council">
-							${ council }
+							${ council | capitalize }
 						</p>
 
 						<p v-cloak class="has-text-grey-light is-size-4" v-if="!('council' in staff)">
@@ -93,7 +93,7 @@
 					<div class="column is-one-third has-text-centered">
 						<h3 class="has-text-grey-light is-size-3">Head Coders</h3>
 						<p v-cloak class="is-size-4" v-for="headcoder in staff.headcoder">
-							${ headcoder }
+							${ headcoder | capitalize }
 						</p>
 						
 						<p v-cloak class="has-text-grey-light is-size-4" v-if="!('headcoder' in staff)">

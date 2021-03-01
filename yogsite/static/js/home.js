@@ -11,7 +11,15 @@ window.addEventListener("load", function () {
 		mounted: function() {
 			load_frontpage_staff();
 			load_server_stats_loop();
-		}
+		},
+
+		filters: {
+			capitalize: function (value) {
+			  if (!value) return ''
+			  value = value.toString()
+			  return value.charAt(0).toUpperCase() + value.slice(1)
+			}
+		  }
 	})
 
 })
