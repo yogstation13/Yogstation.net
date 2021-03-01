@@ -40,15 +40,10 @@
 
 				<div v-cloak class="field is-grouped is-grouped-multiline">
 					<div class="control" v-for="(classes, category, index) in category_color_classes">
-						<div class="tags has-addons">
-							<div class="tag checkbox">
-								<input v-cloak type="checkbox" v-model="enabled_categories" :value="category" />
-							</div>
-	
-							<div class="tag" v-bind:class="classes">
-								${ category }
-							</div>
-						</div>
+						<label class="tag checkbox" v-bind:class="classes" style="user-select: none;">
+							<input v-cloak type="checkbox" v-model="enabled_categories" :value="category" />
+							&nbsp;${ category }
+						</label>
 					</div>
 				</div>
 
@@ -59,7 +54,7 @@
 
 				<br/>
 
-				<table class="table is-striped is-hoverable is-fullwidth">
+				<table class="table is-striped is-hoverable is-fullwidth fixed-table">
 					<thead>
 						<tr>
 							<th width="200px">Time Stamp</th>
@@ -69,12 +64,12 @@
 					</thead>
 			
 					<tbody>
-							<tr v-cloak v-for="entry in filtered_log_entries">
+							<tr v-cloak v-for="entry in displayed_log_entries">
 								<td>${ format_datetime_local(entry.timestamp) }</td>
 								
 								<td class="has-text-centered"><div style="width: 85px;" class="tag" v-bind:class="category_color_classes[entry.category]">${ entry.category }</div></td>
 								
-								<td>${ entry.content }</td>
+								<td class="wrap-break-word">${ entry.content }</td>
 							</tr>
 					</tbody>
 				</table>

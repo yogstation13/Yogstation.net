@@ -23,6 +23,7 @@ window.addEventListener("load", function () {
 		data: {
 			query: "",
 			log_entries: [],
+			category_color_classes: category_color_classes,
 			enabled_categories: Object.keys(category_color_classes),
 			seek: 0
 		},
@@ -38,10 +39,12 @@ window.addEventListener("load", function () {
 							this.enabled_categories.includes(entry.category);
 				})
 				
-				temp_log_entries = temp_log_entries.slice(Math.floor(this.seek/10000*temp_log_entries.length), Math.floor(this.seek/10000*temp_log_entries.length)+50)
-				
 				return temp_log_entries;
 			},
+
+			displayed_log_entries() {
+				return this.filtered_log_entries.slice(Math.floor(this.seek/10000*(Math.max(this.filtered_log_entries.length-50, 0))), Math.floor(this.seek/10000*(this.filtered_log_entries.length))+50)
+			}
 		},
 
 		methods: {

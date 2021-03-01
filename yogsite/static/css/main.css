@@ -13,3 +13,11 @@ input[type=range].slider::-webkit-slider-runnable-track {
 [v-cloak] {
 	display: none !important;
 }
+
+.wrap-break-word {
+	word-wrap: break-word;
+}
+
+.fixed-table {
+	table-layout: fixed;
+}
