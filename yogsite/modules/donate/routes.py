@@ -11,5 +11,5 @@ def page_donate():
 
 @blueprint.route("/api/paypal_donate", methods=["GET", "POST"])
 def page_api_paypal_donate():
-	print(request.args, request.form)
+	print(request.args, request.form, request.url)
 	return ""
