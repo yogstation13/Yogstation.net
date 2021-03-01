@@ -31,7 +31,7 @@
 								<div class="columns">
 									<div class="column is-one-quarter">
 										<p class="title is-3">${ server.info.name }</p>
-										<p class="subtitle is-5">${ server.info.host }:${ server.info.port }</p>
+										<a class="subtitle is-5" :href="'byond://'+server.info.host+':'+server.info.port">${ server.info.host }:${ server.info.port }</a>
 									</div>
 									
 									<div class="column has-text-centered">
