@@ -18,50 +18,52 @@
 
 			{{ pagination(page, page_count) }}
 
-			<table class="table is-striped is-hoverable is-fullwidth">
-				<thead>
-					<tr>
-						<th>Round ID</th>
-						<th width="200px">Start Time</th>
-						<th>Duration</th>
-						<th>Game Mode</th>
-						<th>Map Name</th>
-						<th width="300px">Station Name</th>
-						<th>Tools</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for round in rounds %}
+			<div class="box">
+				<table class="table is-striped is-hoverable is-fullwidth">
+					<thead>
 						<tr>
-							<td>{{ round.id }}</td>
-
-							<td><time datetime="{{ round.start_datetime }}">{{ round.start_datetime }}</time></td>
-
-							{% if round.end_datetime %}
-								<td>{{ round.end_datetime - round.start_datetime }}</td>
-							{% else %}
-								<td>In Progress</td>
-							{% endif %}
-
-							<td>{{ round.game_mode }}</td>
-
-							<td>{{ round.map_name }}</td>
-
-							<td>{{ round.station_name }}</td>
-
-							<td>
-								<div class="buttons">
-									<a class="button" href="https://yogstation13.github.io/demo-viewer/?roundid={{ round.id }}" target="_blank">Replay</a>
-									{% if g.current_user.has_perms("round.logs") %}
-										<a class="button" href="/rounds/{{ round.id }}/logs">Logs</a>
-									{% endif %}
-								</div>
-							</td>
+							<th>Round ID</th>
+							<th width="200px">Start Time</th>
+							<th>Duration</th>
+							<th>Game Mode</th>
+							<th>Map Name</th>
+							<th width="300px">Station Name</th>
+							<th>Tools</th>
 						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{% for round in rounds %}
+							<tr>
+								<td>{{ round.id }}</td>
 
+								<td><time datetime="{{ round.start_datetime }}">{{ round.start_datetime }}</time></td>
+
+								{% if round.end_datetime %}
+									<td>{{ round.end_datetime - round.start_datetime }}</td>
+								{% else %}
+									<td>In Progress</td>
+								{% endif %}
+
+								<td>{{ round.game_mode }}</td>
+
+								<td>{{ round.map_name }}</td>
+
+								<td>{{ round.station_name }}</td>
+
+								<td>
+									<div class="buttons">
+										<a class="button" href="https://yogstation13.github.io/demo-viewer/?roundid={{ round.id }}" target="_blank">Replay</a>
+										{% if g.current_user.has_perms("round.logs") %}
+											<a class="button" href="/rounds/{{ round.id }}/logs">Logs</a>
+										{% endif %}
+									</div>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			
 			{{ pagination(page, page_count) }}
 		</div>
 	</div>
