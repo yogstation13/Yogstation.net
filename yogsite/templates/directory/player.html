@@ -124,7 +124,9 @@
 
 			<h2 class="title is-3 has-text-centered">Bans</h2>
 
-			<a href="/bans/add?ckey={{ player.ckey }}" class="button is-primary is-pulled-right">Add Ban</a>
+			<div class="buttons is-right">
+				<a href="/bans/add?ckey={{ player.ckey }}" class="button is-primary">Add Ban</a>
+			</div>
 
 			{% if player.bans %}
 				{{ ban_listing(player.bans, show_ckey=False) }}
