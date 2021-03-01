@@ -12,11 +12,22 @@
 
 	<div class="columns is-centered">
 		<div class="column is-half">
-			<form id="donate-form">
+			<form id="donate-form" action="{{ cfg.get('paypal.form_url') }}" method="POST">
+
+				<input type="hidden" name="cmd" value="_xclick" />
+				<input type="hidden" name="business" value="{{ cfg.get('paypal.email') }}" />
+				<input type="hidden" name="item_name" value="{{ cfg.get('paypal.item_name') }}" />
+				<input type="hidden" name="currency_code" value="{{ cfg.get('paypal.currency_code') }}" />
+				<input type="hidden" name="no_shipping" value="1" />
+				<input type="hidden" name="no_note" value="1" />
+				<input type="hidden" name="rm" value="1" />
+				<input type="hidden" name="return" value="{{ cfg.get('baseurl') + cfg.get('paypal.return_url') }}" />
+				<input type="hidden" name="notify_url" value="{{ cfg.get('baseurl') + cfg.get('paypal.notify_url') }}" />
+
 				<div class="field">
 					<div class="label">CKEY</div>
 					<div class="control has-icons-left">
-						<input class="input" type="text" placeholder="Type your ckey here" />
+						<input class="input" type="text" name="custom" placeholder="Type your ckey here" />
 
 						<span class="icon is-small is-left">
 							<i class="fas fa-user"></i>
@@ -27,7 +38,7 @@
 				<div class="field">
 					<div class="label">Amount</div>
 					<div class="control has-icons-left">
-						<input class="input" type="number" step="0.25" placeholder="7.00" min="1"
+						<input class="input" type="number" name="amount" step="0.25" placeholder="7.00" min="1"
 							v-on:change="donate_amount = $event.target.value; setTwoNumberDecimal"
 							v-bind:value="donate_amount"
 						/>
