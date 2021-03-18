@@ -43,8 +43,8 @@
 		{% for admin_group in admin_groups %}
 		<div class="control">
 			<label class="tag checkbox" style="user-select: none;">
-				<input v-cloak type="checkbox" v-model="enabled_ranks" value="{{ admin_group['user_group_id'] }}" />
-				&nbsp;{{ admin_group["title"] }}
+				<input v-cloak type="checkbox" v-model="enabled_ranks" value="{{ admin_group.group_id }}" />
+				&nbsp;{{ admin_group.name }}
 			</label>
 		</div>
 		{% endfor %}
@@ -66,7 +66,7 @@
 				</td>
 			</tr>
 			<tr v-for="admin in leaderboard">
-				<td>${ admin["rank"] }</td>
+				<td>${ admin["highest_group_name"] }</td>
 
 				<td><a :href="'/players/' + admin['ckey']">${ admin["ckey"] }</a></td>
 

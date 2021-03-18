@@ -1,5 +1,5 @@
 from yogsite import db
-from yogsite.util.xenforo import get_xenforo_ckeys_from_groups
+from yogsite.util.xenforo import get_xenforo_users_from_groups
 
 from datetime import timedelta, date
 
@@ -10,10 +10,7 @@ import math
 
 class AdminActivityAnalytics():
 	def __init__(self, start_date, end_date, enabled_ranks):
-		admin_ckeys = get_xenforo_ckeys_from_groups(enabled_ranks)
-
-		self.admins = db.game_db.query(db.Admin).filter(db.Admin.ckey.in_(admin_ckeys)).all()
-
+		self.admins = get_xenforo_users_from_groups(enabled_ranks)
 		self.start_date = start_date
 		self.end_date = end_date
 
@@ -37,6 +34,6 @@ class AdminActivityAnalytics():
 		leaderboard = []
 		
 		for admin in self.admins:
-			leaderboard.append({"rank": admin.rank,"ckey": admin.ckey, "playtime": self.admin_playtime(admin.ckey).total_seconds()})
+			leaderboard.append({"highest_group_name": admin.get_highest_group().name, "ckey": admin.ckey, "playtime": self.admin_playtime(admin.ckey).total_seconds()})
 		
 		return sorted(leaderboard, key=lambda e: e["playtime"], reverse=True)

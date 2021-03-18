@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask import flash
 from flask import g # what a terrible name
+from flask import jsonify
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -32,6 +33,10 @@ def page_bans():
 	page_count = math.ceil(bans_query.count() / cfg.get("items_per_page")) # Selecting only the id on a count is faster than selecting the entire row
 
 	displayed_bans = bans_query.limit(cfg.get("items_per_page")).offset((page - 1) * cfg.get("items_per_page"))
+
+	if request.args.get("json"):
+		bans_json = []
+		return jsonify(bans_json)
 
 	return render_template("bans/bans.html", bans=displayed_bans, page=page, page_count=page_count, search_query=search_query)
 
