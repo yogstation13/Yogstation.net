@@ -81,8 +81,6 @@ def get_xenforo_users_from_groups(group_ids):
 
 	xenforo_users = {}
 
-	print(request.json())
-
 	for group_dict in request.json()["groups"]:
 		group = XenforoGroup(name=group_dict["name"], group_id=int(group_dict["user_group_id"]), priority=group_dict["priority"])
 
