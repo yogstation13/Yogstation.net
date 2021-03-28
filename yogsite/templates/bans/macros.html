@@ -1,4 +1,4 @@
-{% from 'util/macros.html' import ckey_link, render_datetime_as_delta with context %}
+{% from 'util/macros.html' import ckey_link, render_datetime_as_delta, abbreviate with context %}
 
 {% macro ban_listing(bans, show_ckey=True) %}
 	<table class="table is-striped is-hoverable is-fullwidth">
@@ -27,7 +27,7 @@
 					{% endif %}
 
 					<td>
-						{{ ", ".join(ban.roles.split(",")) }}
+						{{ abbreviate(", ".join(ban.roles.split(",")), 30) }}
 						{# This is because the delimiter is ',' and I can't change it anywhere
 						else so I guess I'll just have to change it here in the view #}
 					</td>

@@ -89,7 +89,7 @@
 
 {% macro abbreviate(content, maxlength) %}
 	{% if content | length > maxlength %}
-		<abbr title="{{ content }}">{{ content | truncate(maxlength) }}</abbr>
+		<abbr title="{{ content }}">{{ content | truncate(maxlength, True) }}</abbr>
 	{% else %}
 		{{ content }}
 	{% endif %}
