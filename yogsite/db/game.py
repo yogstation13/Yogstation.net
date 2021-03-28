@@ -18,6 +18,7 @@ from sqlalchemy import Date
 from sqlalchemy import DateTime
 from sqlalchemy import Enum
 from sqlalchemy import ForeignKey
+from sqlalchemy import func
 from sqlalchemy import Integer
 from sqlalchemy import SmallInteger
 from sqlalchemy import String
@@ -57,7 +58,6 @@ class Player(flask_db_ext.Model):
 	job_whitelisted		= Column('job_whitelisted',		SmallInteger())
 
 	notes				= relationship('Note',	primaryjoin = 'Player.ckey == Note.ckey', order_by="desc(Note.timestamp)")
-	bans				= relationship('Ban',	primaryjoin = 'Player.ckey == Ban.ckey', order_by="desc(Ban.bantime)")
 
 	connections		= relationship('Connection',	primaryjoin = 'Player.ckey == Connection.ckey')
 
@@ -79,7 +79,7 @@ class Player(flask_db_ext.Model):
 		return game_db.query(Connection.round_id).filter(Connection.ckey == self.ckey).distinct(Connection.round_id).count()
 
 	def get_bans(self):
-		return game_db.query(Ban).filter(Ban.ckey == self.ckey).all()
+		return query_grouped_bans().filter(Ban.ckey == self.ckey).all()
 	
 	def get_role_time(self, role):
 		try:
@@ -236,6 +236,19 @@ class Ban(flask_db_ext.Model):
 
 		game_db.commit()
 
+def query_grouped_bans(order_by=Ban.id.desc(), search_query=None):
+	query=game_db.query(
+		*([c for c in Ban.__table__.c]+[func.group_concat(Ban.role).label("roles")])
+	) # All columns from ban + the grouped by role
+
+	query=query.group_by(Ban.bantime, Ban.ckey)
+
+	if order_by is not None:
+		query = query.order_by(order_by)
+	if search_query:
+		query = query.filter(Ban.ckey.like(search_query))
+	
+	return query
 
 class Connection(flask_db_ext.Model):
 	__tablename__ = "erro_connection_log"

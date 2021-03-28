@@ -23,16 +23,11 @@ def page_bans():
 
 	search_query = request.args.get('query', type=str, default=None)
 
-	if search_query:
-		bans_query = db.game_db.query(db.Ban).filter(
-			db.Ban.ckey.like(search_query)
-		).order_by(db.Ban.id.desc())
-	else:
-		bans_query = db.game_db.query(db.Ban).order_by(db.Ban.id.desc())
+	bans_query = db.query_grouped_bans(search_query=search_query)
 
 	page_count = math.ceil(bans_query.count() / cfg.get("items_per_page")) # Selecting only the id on a count is faster than selecting the entire row
 
-	displayed_bans = bans_query.limit(cfg.get("items_per_page")).offset((page - 1) * cfg.get("items_per_page"))
+	displayed_bans = bans_query.offset((page-1)*cfg.get("items_per_page")).limit(cfg.get("items_per_page"))
 
 	if request.args.get("json"):
 		bans_json = []

@@ -128,8 +128,9 @@
 				<a href="/bans/add?ckey={{ player.ckey }}" class="button is-primary">Add Ban</a>
 			</div>
 
-			{% if player.bans %}
-				{{ ban_listing(player.bans, show_ckey=False) }}
+			{% set bans = player.get_bans() %}
+			{% if bans %}
+				{{ ban_listing(bans, show_ckey=False) }}
 			{% else %}
 				<div class="box has-text-centered">
 					<p class="subtitle is-5">This user has no bans in the database</p>

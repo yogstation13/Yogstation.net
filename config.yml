@@ -1,3 +1,5 @@
+development_env: $DEVELOPMENT_ENV
+
 baseurl: "https://dev.yogstation.net"
 
 db:

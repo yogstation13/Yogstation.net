@@ -1,3 +1,5 @@
+from yogsite.config import cfg
+
 # Dear future dev who comes across this file and thinks "is this some dumb magic?"
 
 # Yes. Yes it is.
@@ -21,6 +23,8 @@ class User():
 		return user
 	
 	def has_perms(self, *perms):
+		if cfg.get("development_env"): return True # in dev have all perms
+
 		for perm in perms:
 			if perm not in self.permissions:
 				return False
