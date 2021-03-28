@@ -123,10 +123,12 @@
 			<br/>
 
 			<h2 class="title is-3 has-text-centered">Bans</h2>
-
-			<div class="buttons is-right">
-				<a href="/bans/add?ckey={{ player.ckey }}" class="button is-primary">Add Ban</a>
-			</div>
+			
+			{% if g.current_user.has_perms("ban.manage") %}
+				<div class="buttons is-right">
+					<a href="/bans/add?ckey={{ player.ckey }}" class="button is-primary">Add Ban</a>
+				</div>
+			{% endif %}
 
 			{% set bans = player.get_bans() %}
 			{% if bans %}
