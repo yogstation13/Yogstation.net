@@ -35,7 +35,7 @@
 
 								<td>{{ book.author }}</td>
 								
-								<td><div class="tag is-medium is-primary">{{ book.category }}</div></td>
+								<td><a href="?query={{ book.category }}" class="tag is-medium is-primary">{{ book.category }}</a></td>
 								
 								<td>{{ render_datetime_as_delta(book.datetime) }}</time></td>
 
