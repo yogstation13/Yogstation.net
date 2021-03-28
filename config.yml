@@ -34,6 +34,7 @@ xenforo_key: $XENFORO_AUTH_KEY
 
 # KEEP THIS IN SYNC WITH THE GAME OR YOU WILL NOT BE ABLE TO EDIT BANS TO NEW ROLES IN GAME
 roles: [
+  "Server",
   "Captain",
   "Head of Personnel",
   "Head of Security",
@@ -66,7 +67,6 @@ roles: [
   "Security Officer",
   "AI",
   "Cyborg",
-  "Server",
   "Syndicate",
   "Traitor",
   "Operative",

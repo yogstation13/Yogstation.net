@@ -41,7 +41,7 @@ def page_bans():
 @perms_required("ban.manage")
 def page_ban_edit(ban_id):
 
-	ban = db.Ban.from_id(ban_id)
+	grouped_ban = db.Ban.grouped_from_id(ban_id)
 
 	form_ban_edit = BanEditForm(request.form, prefix="form_ban_edit")
 
@@ -49,23 +49,25 @@ def page_ban_edit(ban_id):
 		print(request.form)
 		if form_ban_edit.validate():
 			print("VALID", request.form, form_ban_edit)
-			ban.apply_edit_form(form_ban_edit)
+
+			single_ban = db.Ban.from_id(ban_id) # Can't apply stuff to the grouped result
+			new_single_ban = single_ban.apply_edit_form(form_ban_edit)
 
 			flash("Ban Successfully Edited", "success")
 
-			return redirect(url_for("bans.page_ban_edit", ban_id=ban.id))
+			return redirect(url_for("bans.page_ban_edit", ban_id=new_single_ban.id))
 
 	else:
 		# this absolute bs makes it so it only sets default values on the first get, and then every time you update with a post
 		# it populates them with the new values from the post
-		form_ban_edit.ckey.data = ban.ckey
-		form_ban_edit.reason.data = ban.reason
-		form_ban_edit.role.data = ban.role
-		form_ban_edit.expiration_time.data = ban.expiration_time
-		form_ban_edit.ip.data = IPAddress(ban.ip)
-		form_ban_edit.computerid.data = ban.computerid
+		form_ban_edit.ckey.data = grouped_ban.ckey
+		form_ban_edit.reason.data = grouped_ban.reason
+		form_ban_edit.roles.data = [role for role in grouped_ban.roles.split(",")]
+		form_ban_edit.expiration_time.data = grouped_ban.expiration_time
+		form_ban_edit.ip.data = IPAddress(grouped_ban.ip)
+		form_ban_edit.computerid.data = grouped_ban.computerid
 
-	return render_template("bans/edit.html", ban=ban, form=form_ban_edit)
+	return render_template("bans/edit.html", ban=grouped_ban, form=form_ban_edit)
 
 
 @blueprint.route("/bans/add", methods=["GET", "POST"])
@@ -87,13 +89,11 @@ def page_ban_add():
 			return redirect(url_for("bans.page_ban_add"))
 
 	else:
-		# this absolute bs makes it so it only sets default values on the first get, and then every time you update with a post
-		# it populates them with the new values from the post
 		if request.args.get("ckey"):
 			form_ban_edit.ckey.data = request.args.get("ckey")
-			form_ban_edit.role.data = "Server" # Default to a server ban, not a job ban
+		form_ban_edit.roles.data = ["Server"] # Default to a server ban, not a job ban
 	
-	return render_template("bans/add.html", form=form_ban_edit)
+	return render_template("bans/edit.html", form=form_ban_edit)
 
 @blueprint.route("/bans/<int:ban_id>/<string:action>")
 @login_required

@@ -26,6 +26,7 @@ from sqlalchemy import Text
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.session import make_transient
 
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
@@ -162,33 +163,25 @@ class Ban(flask_db_ext.Model):
 
 	@classmethod
 	def add_from_form(cls, form):
-		entry = cls(
-			ckey = form.ckey.data,
-			a_ckey = g.current_user.ckey,
-			bantime = datetime.utcnow(),
-			expiration_time = form.expiration_time.data if form.expiration_time.data else None,
-			role = form.role.data,
-			ip = int(IPAddress(form.ip.data)),
-			computerid = form.computerid.data,
-			reason = form.reason.data,
-			## Defaults ##
-			server_ip = 0,
-			server_port = 0,
-			round_id = 0,
-			applies_to_admins = 0,
-			edits = None,
-			unbanned_datetime = None,
-			unbanned_ckey = None,
-			unbanned_round_id = None,
-			a_ip = int(IPAddress(request.remote_addr)),
-			a_computerid = 0,
-			who = "",
-			adminwho = "",
-			unbanned_ip = None,
-			unbanned_computerid = None
-		)
-		
-		game_db.add(entry)
+		bantime = datetime.utcnow() # Want all of the jobban entries to have the same time
+
+		for role in form.roles.data:
+			entry = cls(
+				ckey = form.ckey.data,
+				a_ckey = g.current_user.ckey,
+				bantime = bantime,
+				expiration_time = form.expiration_time.data if form.expiration_time.data else None,
+				role = role,
+				ip = int(IPAddress(form.ip.data)),
+				computerid = form.computerid.data,
+				reason = form.reason.data,
+				## Defaults ##
+				server_ip = 0, server_port = 0, round_id = 0, applies_to_admins = 0, edits = None,
+				unbanned_datetime = None, unbanned_ckey = None, unbanned_round_id = None, a_ip = int(IPAddress(request.remote_addr)),
+				a_computerid = 0, who = "", adminwho = "", unbanned_ip = None, unbanned_computerid = None
+			)
+			game_db.add(entry)
+
 		game_db.commit()
 
 	@classmethod
@@ -197,26 +190,61 @@ class Ban(flask_db_ext.Model):
 			return game_db.query(cls).filter(cls.id == id).one()
 		except NoResultFound:
 			return None
+	
+	@classmethod
+	def grouped_from_id(cls, id): # For getting job bans with the roles grouped as a seperate field, yep it's a headache
+		try:
+			single_from_id = cls.from_id(id)
+
+			return game_db.query(
+				*([c for c in cls.__table__.c]+[func.group_concat(Ban.role).label("roles")])
+			).group_by(cls.bantime, cls.ckey).filter(cls.ckey==single_from_id.ckey, cls.bantime==single_from_id.bantime).one()
+
+		except NoResultFound:
+			return None
 
 	def apply_edit_form(self, form):
 		"""
 		Take the data from the form and update this record with it, then commit the change to the db
 		There is almost definitely a better way to do this
+
+		This is a complete headache especially when it comes to editing job bans
 		"""
 
-		self.ckey = form.ckey.data
-		self.reason = form.reason.data
-		self.role = form.role.data
+		grouped_bans = Ban.query.filter(Ban.bantime==self.bantime, Ban.ckey==self.ckey).all()
 
-		if form.expiration_time.data:
-			self.expiration_time = form.expiration_time.data # yes this is parsed by the form already
-		else:
-			self.expiration_time = None
+		roles_to_add = form.roles.data.copy() # We will remove all the ones we already have next, so we don't re-add them
 
-		self.ip = int(IPAddress(form.ip.data))
-		self.computerid = form.computerid.data
+		for ban in grouped_bans:
+			if ban.role not in form.roles.data: # If we removed that role then delete the ban associated to it
+				game_db.delete(ban)
+			else:
+				roles_to_add.remove(ban.role)
+		
+		for role in roles_to_add:
+			non_pk_columns = [k for k in self.__table__.columns.keys() if k not in self.__table__.primary_key]
+			data = {c: getattr(self, c) for c in non_pk_columns}
+			data["role"] = role
+			print(data)
+			clone = Ban(**data)
 
+			game_db.add(clone)
+
+		update_dict = {
+			Ban.ckey: form.ckey.data,
+			Ban.reason: form.reason.data,
+			Ban.expiration_time: form.expiration_time.data if form.expiration_time.data else None,
+			Ban.ip: int(IPAddress(form.ip.data)),
+			Ban.computerid: form.computerid.data
+		}
+
+		new_bans = Ban.query.filter(Ban.bantime==self.bantime, Ban.ckey==self.ckey)
+
+		new_bans.update(update_dict)
 		game_db.commit()
+
+		return new_bans.first() # Return the first ban so we have a new ID to redirect them to in case they delete the old one they were editing
+		# (by removing the role associated with it from the job ban group)
 	
 	def revoke(self, admin_ckey):
 		"""

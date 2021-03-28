@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 
-from wtforms import SelectField
+from wtforms import SelectMultipleField
 from wtforms import TextAreaField
 from wtforms import TextField
 from wtforms.fields.html5 import DateTimeLocalField
@@ -8,7 +8,7 @@ from wtforms.validators import AnyOf, DataRequired, InputRequired, IPAddress, Le
 
 
 from yogsite.config import cfg
-from yogsite.util import validator_is_ckey
+from yogsite.util import validator_is_ckey, MultiCheckboxField
 
 class BanEditForm(FlaskForm):
 	ckey = TextField("CKEY", [InputRequired(), validator_is_ckey])
@@ -17,7 +17,7 @@ class BanEditForm(FlaskForm):
 
 	expiration_time = DateTimeLocalField("Expiration Time", [Optional()], format="%Y-%m-%dT%H:%M")
 
-	role = SelectField("Role", [AnyOf(cfg.get("roles"))], choices=list(zip(cfg.get("roles"), cfg.get("roles"))))
+	roles = MultiCheckboxField("Role", [InputRequired()], choices=list(zip(cfg.get("roles"), cfg.get("roles"))))
 
 	ip = TextField("IP", [IPAddress()])
 

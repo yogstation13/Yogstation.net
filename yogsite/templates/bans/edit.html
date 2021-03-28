@@ -2,7 +2,7 @@
 
 {% from 'util/macros.html' import form_errors with context %}
 
-{% block title %}Bans - {{ ban.id }} - Edit{% endblock %}
+{% block title %}{% if ban %}Bans - {{ ban.id }} - Edit{% else %}Bans - Add{% endif %}{% endblock %}
 
 {% block head %}
 	<script src="/static/js/bans/edit_ban.js"></script>
@@ -10,7 +10,11 @@
 
 {% block content %}
 
-	<h2 class="title is-2 has-text-centered">Editing Ban #{{ ban.id }}</h2>
+	{% if ban %}
+		<h2 class="title is-2 has-text-centered">Editing Ban #{{ ban.id }}</h2>
+	{% else %}
+		<h2 class="title is-2 has-text-centered">Adding Ban</h2>
+	{% endif %}
 
 	<div class="columns is-centered">
 		<div class="column is-four-fifths">
@@ -19,9 +23,7 @@
 				{{ form.csrf_token }}
 
 				<div class="columns">
-
 					<div class="column is-half">
-						
 						<div class="field">
 							<div class="label">CKEY</div>
 							<div class="control has-icons-left">
@@ -40,10 +42,6 @@
 							</div>
 						</div>
 
-					</div>
-
-					<div class="column is-half">
-
 						<div class="field">
 							<div class="label">Expiration Time</div>
 							<div class="control has-icons-left">
@@ -51,16 +49,6 @@
 								<span class="icon is-small is-left">
 									<i class="fas fa-clock"></i>
 								</span>
-							</div>
-						</div>
-
-						<div class="field">
-							<div class="label">Ban Role</div>
-							<div class="control">
-								
-								<div class="select is-fullwidth">
-									{{ form.role() }}
-								</div>
 							</div>
 						</div>
 
@@ -109,11 +97,28 @@
 								</div>
 							</div>
 						</div>
+					</div>
+
+					<div class="column is-half">
+						<div class="field">
+							<div class="label">Ban Roles</div>
+							<div class="control">
+								
+								<div class="is-fullwidth" style="overflow-y: auto; height: 100%;">
+									{% for role in form.roles %}
+										<label class="checkbox">
+											{{ role() }}
+											{{ role.label() }}
+										</label>&nbsp;&nbsp;
+									{% endfor %}
+								</div>
+							</div>
+						</div>
 
 						<div class="columns">
 							<div class="column is-half">
 								<div class="control">
-									<a class="button is-danger is-fullwidth is-pulled-left">Discard Edits</a>
+									<a class="button is-danger is-fullwidth is-pulled-left">{% if ban %}Discard Edits{% else %}Discard Ban{% endif %}</a>
 								</div>
 							</div>
 
@@ -121,11 +126,10 @@
 
 							<div class="column is-half">
 								<div class="control">
-									<button class="button is-primary is-fullwidth is-pulled-right">Submit Edits</button>
+									<button class="button is-primary is-fullwidth is-pulled-right">{% if ban %}Submit Edits{% else %}Submit Ban{% endif %}</button>
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</form>
