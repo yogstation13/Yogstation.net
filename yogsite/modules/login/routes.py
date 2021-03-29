@@ -16,7 +16,7 @@ import requests
 from yogsite import db
 from yogsite.config import cfg
 from yogsite.config import XENFORO_HEADERS
-from yogsite.util import is_safe_redirect
+from yogsite.util import is_safe_redirect, byondname_to_ckey
 from yogsite.util.xenforo import validate_xenforo_credentials
 
 from .models import User
@@ -26,7 +26,6 @@ blueprint = Blueprint("login", __name__)
 @blueprint.route("/login", methods=["GET", "POST"])
 def page_login():
 	# Intercepting the password to then send it to xenforo is very cringe and often considered a security flaw but big boy xenforo isn't big boy enough to have basic oauth like any reasonable software
-
 	if request.method == "POST":
 		uname = request.form.get("username")
 		passwd = request.form.get("password")
@@ -35,12 +34,17 @@ def page_login():
 		if auth_request.status_code == 200: # Success AHHH I HATE THIS THIS IS SO INSECUREEE
 			user_data = auth_request.json()["user"]
 
-			if user_data["linked_accounts"] and ("byond" in user_data["linked_accounts"]):
-				# All the stars align, log this boy in
+			byond_account = None
+			if user_data["linked_accounts"]:
+				for acc in user_data["linked_accounts"]:
+					if acc["account_type"] == "byond":
+						byond_account = acc["account_id"]
 
+			if byond_account:
+				# All the stars align, log this boy in
 				session["username"] = user_data["username"] # Should in the future be moved somewhere else
 				session["permissions"] = user_data["permissions"]
-				session["ckey"] = user_data["linked_accounts"]["byond"]
+				session["ckey"] = byondname_to_ckey(byond_account) # Just in case the byond names are stored there for some reason
 
 				flash("Successfully Logged In", "success")
 
