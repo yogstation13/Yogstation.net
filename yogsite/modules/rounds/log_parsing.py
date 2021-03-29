@@ -31,14 +31,24 @@ class RoundLogs():
 	def __init__(self, round_id):
 		self.round_id = round_id
 		self.entries = []
-
-		self.load_entries()
 	
 	def get_directory(self):
 		matches = glob.glob(f"{cfg.get('logs.directory')}/*/*/*/round-{self.round_id}")
 
 		if matches:
 			return matches[0]
+	
+	def find_demo_file(self):
+		directory = self.get_directory()
+		files = os.listdir(directory)
+
+		if "demo.gz.txt" in files:
+			return os.path.join(directory, "demo.gz.txt")
+
+		elif "demo.txt" in files:
+			return os.path.join(directory, "demo.txt")
+		
+		return None
 
 	def load_entries(self):
 
@@ -50,6 +60,8 @@ class RoundLogs():
 		self.parse_directory(directory)
 
 		self.entries = sorted(self.entries, key=lambda x: x.timestamp)
+
+		return self.entries
 
 	def parse_text(self, text, category):
 		matches = GAME_LOG_REGEX.findall(text)

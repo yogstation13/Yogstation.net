@@ -372,6 +372,12 @@ class Round(flask_db_ext.Model):
 			return game_db.query(cls).filter(cls.id == id).one()
 		except NoResultFound:
 			return None
+	
+	def in_progress(self):
+		if self.shutdown_datetime:
+			return False
+		
+		return True
 
 class RoleTime(flask_db_ext.Model):
 	__tablename__ = 'erro_role_time'

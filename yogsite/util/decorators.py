@@ -27,7 +27,7 @@ def perms_required(*perms):
 		@wraps(view_function)
 		
 		def decorated_function(*args, **kwargs):
-			if g.current_user.has_perms(*perms) or cfg.get("development_env"):
+			if g.current_user.has_perms(*perms):
 				return view_function(*args, **kwargs)
 			
 			return abort(401) # User doesn't have perms, get out of here

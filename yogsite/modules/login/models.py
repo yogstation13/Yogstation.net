@@ -23,8 +23,6 @@ class User():
 		return user
 	
 	def has_perms(self, *perms):
-		if cfg.get("development_env"): return True # in dev have all perms
-
 		for perm in perms:
 			if perm not in self.permissions:
 				return False
