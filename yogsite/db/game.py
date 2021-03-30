@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import g # dumb dumb stupid varname
 from flask import request
 
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 from sqlalchemy import BigInteger
 from sqlalchemy import create_engine
 from sqlalchemy import Column
@@ -58,8 +58,6 @@ class Player(flask_db_ext.Model):
 	antag_weight		= Column('antag_weight',		Integer())
 	job_whitelisted		= Column('job_whitelisted',		SmallInteger())
 
-	notes				= relationship('Note',	primaryjoin = 'Player.ckey == Note.ckey', order_by="desc(Note.timestamp)")
-
 	connections		= relationship('Connection',	primaryjoin = 'Player.ckey == Connection.ckey')
 
 	@classmethod
@@ -81,6 +79,12 @@ class Player(flask_db_ext.Model):
 
 	def get_bans(self):
 		return query_grouped_bans().filter(Ban.ckey == self.ckey).all()
+	
+	def get_notes(self):
+		return game_db.query(Note).filter(Note.targetckey == self.ckey)
+	
+	def get_visible_notes(self):
+		return self.get_notes().filter(Note.deleted == 0, or_(Note.expire_timestamp == None, Note.expire_timestamp > datetime.utcnow()))
 	
 	def get_role_time(self, role):
 		try:
@@ -115,24 +119,55 @@ class Player(flask_db_ext.Model):
 			return None
 
 class Note(flask_db_ext.Model):
-	__tablename__ = 'erro_notes'
+	__tablename__ = 'erro_messages'
 
 	id					= Column('id',					Integer(), primary_key=True)
-	ckey				= Column('ckey',				String(32), ForeignKey('erro_player.ckey'))
-	timestamp			= Column('timestamp',			DateTime())
-	notetext			= Column('notetext',			String(16777215))
+	type				= Column('type',				String(32))
+	targetckey			= Column('targetckey',			String(32), ForeignKey('erro_player.ckey'))
 	adminckey			= Column('adminckey',			String(32))
+	text				= Column('text',				String(16777215))
+	timestamp			= Column('timestamp',			DateTime())
 	server				= Column('server',				String(32))
+	server_ip			= Column('server_ip',			Integer())
+	server_port			= Column('server_port',			Integer())
+	round_id			= Column('round_id',			Integer())
 	secret				= Column('secret',				SmallInteger())
-	last_editor			= Column('last_editor',			String(32))
+	expire_timestamp	= Column('expire_timestamp',	DateTime())
+	lasteditor			= Column('lasteditor',			String(32))
 	edits				= Column('edits',				Text())
+	deleted				= Column('deleted',				SmallInteger())
 
 	@classmethod
-	def add(cls, ckey, admin, description):
-		entry = cls(ckey=ckey, adminckey=admin, notetext=description, timestamp=datetime.utcnow(), server="Webpanel", secret=1, last_editor="", edits="")
-		game_db.add(entry)
+	def add_from_form(cls, form, ckey):
+		note = cls(
+			type = form.type.data,
+			targetckey = ckey,
+			adminckey = g.current_user.ckey,
+			text = form.text.data,
+			timestamp = datetime.utcnow(),
+			server = "Webpanel",
+			server_ip = 0,
+			server_port = 0,
+			round_id = 0,
+			deleted = 0
+		)
+
+		game_db.add(note)
 		game_db.commit()
 
+	@classmethod
+	def from_id(cls, id):
+		try:
+			return game_db.query(cls).filter(cls.id == id).one()
+		except NoResultFound:
+			return None
+
+	def set_deleted(self, deleted):
+		"""
+		Mark a note as deleted, or not
+		"""
+		self.deleted = int(deleted) # int so we can pass bools
+		game_db.commit()
 
 class Ban(flask_db_ext.Model):
 	__tablename__ = 'erro_ban'

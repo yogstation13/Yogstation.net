@@ -105,9 +105,25 @@ def page_ban_action(ban_id, action):
 	if action == "revoke":
 		db.ActionLog.add(g.current_user.ckey, ban.ckey, f"Revoked ban {ban.id}")
 		ban.revoke(g.current_user.ckey)
+		flash("Ban Successfully Revoked", "success")
 	
 	elif action == "reinstate":
 		db.ActionLog.add(g.current_user.ckey, ban.ckey, f"Reinstated ban {ban.id}")
 		ban.reinstate()
+		flash("Ban Successfully Reinstated", "success")
+	
+	return redirect(request.referrer)
+
+@blueprint.route("/notes/<int:note_id>/<string:action>")
+@login_required
+@perms_required("note.manage")
+def page_note_action(note_id, action):
+
+	note = db.Note.from_id(note_id)
+
+	if action == "delete":
+		db.ActionLog.add(g.current_user.ckey, note.targetckey, f"Deleted note {note.id}")
+		note.set_deleted(True)
+		flash("Note Successfully Deleted", "success")
 	
 	return redirect(request.referrer)

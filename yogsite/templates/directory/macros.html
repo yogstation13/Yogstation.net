@@ -1,4 +1,4 @@
-{% from 'util/macros.html' import render_datetime_as_delta with context %}
+{% from 'util/macros.html' import render_datetime_as_delta, ckey_link with context %}
 
 {% macro note_listing(notes, show_ckey=True) %}
 	<table class="table is-striped is-hoverable is-fullwidth">
@@ -7,7 +7,8 @@
 				{% if show_ckey %}
 					<th>CKEY</th>
 				{% endif %}
-				
+
+				<th>Type</th>
 				<th width="200px">Date</th>
 				<th>Text</th>
 				<th>Admin</th>
@@ -19,8 +20,12 @@
 			{% for note in notes %}
 				<tr>
 					{% if show_ckey %}
-						<td>{{ note.ckey }}</td>
+						<td>{{ ckey_link(note.targetckey) }}</td>
 					{% endif %}
+
+					<td>
+						<div class="tag is-medium is-primary">{{ note.type }}</div>
+					</td>
 
 					<td>
 						{% if note.timestamp %}
@@ -30,15 +35,16 @@
 						{% endif %}
 					</td>
 				
-					<td>{{ note.notetext }}</td>
+					<td>{{ note.text }}</td>
 
-					<td>{{ note.adminckey }}</td>
+					<td>{{ ckey_link(note.adminckey) }}</td>
 
 					<td>
-						<div class="buttons">
-							<a class="button" href="/notes/{{ note.id }}/edit">Edit</a>
-							<a class="button" href="/notes/{{ note.id }}/delete">Delete</a>
-						</div>
+						{% if g.current_user.has_perms("note.manage") %}
+							<div class="buttons">
+								<a class="button" href="/notes/{{ note.id }}/delete">Delete</a>
+							</div>
+						{% endif %}
 					</td>
 				</tr>
 			{% endfor %}

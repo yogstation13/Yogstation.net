@@ -56,9 +56,9 @@ def page_player(ckey):
 		if form_note_add.validate_on_submit():
 			if g.current_user.has_perms("note.manage"):
 
-				db.Note.add(ckey=ckey, admin=g.current_user.ckey, description=form_note_add.description.data)
+				db.Note.add_from_form(form_note_add, ckey)
 
-				db.ActionLog.add(g.current_user.ckey, ckey, f"Added note \"{form_note_add.description.data}\"")
+				db.ActionLog.add(g.current_user.ckey, ckey, f"Added note of type {form_note_add.type.data}: \"{form_note_add.text.data}\"")
 
 				flash("Note Successfully Added", "success")
 

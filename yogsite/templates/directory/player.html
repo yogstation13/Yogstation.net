@@ -93,12 +93,18 @@
 				<h2 class="title is-3 has-text-centered">Notes</h2>
 				
 				{% if g.current_user.has_perms("note.manage") %}
+					{{ form_errors(form_note_add) }}
 					<form id="edit-ban-form" method="POST">
 						{{ form_note_add.csrf_token }}
 
 						<div class="field has-addons">
 							<div class="control is-expanded">
-								{{ form_note_add.description(class_="input is-fullwidth", placeholder="Type out the note you wish to add...") }}
+								{{ form_note_add.text(class_="input is-fullwidth", placeholder="Type out the note you wish to add...") }}
+							</div>
+							<div class="control">
+								<div class="select">
+									{{ form_note_add.type() }}
+								</div>
 							</div>
 
 							<div class="control">
@@ -108,11 +114,12 @@
 					</form>
 
 					<br/>
-					{{ form_errors(form_note_add) }}
+					
 				{% endif %}
 
-				{% if player.notes %}
-					{{ note_listing(player.notes, show_ckey=False) }}
+				{% set notes = player.get_visible_notes() %}
+				{% if notes %}
+					{{ note_listing(notes, show_ckey=False) }}
 				{% else %}
 					<div class="box has-text-centered">
 						<p class="subtitle is-5">This user has no notes in the database</p>
