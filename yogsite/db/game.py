@@ -145,7 +145,7 @@ class Note(flask_db_ext.Model):
 			adminckey = g.current_user.ckey,
 			text = form.text.data,
 			timestamp = datetime.utcnow(),
-			server = "Webpanel",
+			server = "webmin",
 			server_ip = 0,
 			server_port = 0,
 			round_id = 0,
