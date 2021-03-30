@@ -19,6 +19,6 @@ class BanEditForm(FlaskForm):
 
 	roles = MultiCheckboxField("Role", [InputRequired()], choices=list(zip(cfg.get("roles"), cfg.get("roles"))))
 
-	ip = TextField("IP", [IPAddress()])
+	ip = TextField("IP", [Optional(), IPAddress()])
 
-	computerid = TextField("CID", [])
+	computerid = TextField("CID", [Optional()])

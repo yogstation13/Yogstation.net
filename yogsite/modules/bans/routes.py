@@ -1,3 +1,4 @@
+from flask import abort
 from flask import Blueprint
 from flask import flash
 from flask import g # what a terrible name
@@ -11,7 +12,7 @@ import math
 
 from yogsite.config import cfg
 from yogsite import db
-from yogsite.util import login_required, perms_required, IPAddress
+from yogsite.util import byondname_to_ckey, login_required, perms_required, IPAddress
 
 from .forms import BanEditForm
 
@@ -34,6 +35,25 @@ def page_bans():
 		return jsonify(bans_json)
 
 	return render_template("bans/bans.html", bans=displayed_bans, page=page, page_count=page_count, search_query=search_query)
+
+
+@blueprint.route("/api/last_ip_cid")
+@perms_required("ban.manage") # Hopefully the permissions system is secure or else rip everyone's ip and cid
+def page_api_last_ip_cid():
+	ckey = byondname_to_ckey(request.args.get("ckey", type=str))
+
+	if not ckey:
+		return jsonify({"success": False, "error": "You must specify a ckey"}), 400
+	
+	last_connection = db.game_db.query(db.Connection).filter(db.Connection.ckey == ckey).order_by(db.Connection.datetime.desc()).first()
+
+	if not last_connection:
+		return jsonify({"success": False, "error": "No connections found for this ckey"}), 404
+	
+	return jsonify({"success": True, "data": {	# considering were just sending over ip and cid, we should probably
+		"ip": last_connection.ip,				# make sure that this is a good deal secure, wouldn't you think?
+		"computerid": last_connection.computerid
+	}})
 
 
 @blueprint.route("/bans/<int:ban_id>/edit", methods=["GET", "POST"])
@@ -64,7 +84,7 @@ def page_ban_edit(ban_id):
 		form_ban_edit.reason.data = grouped_ban.reason
 		form_ban_edit.roles.data = [role for role in grouped_ban.roles.split(",")]
 		form_ban_edit.expiration_time.data = grouped_ban.expiration_time
-		form_ban_edit.ip.data = IPAddress(grouped_ban.ip)
+		form_ban_edit.ip.data = IPAddress(grouped_ban.ip) if grouped_ban.ip else None
 		form_ban_edit.computerid.data = grouped_ban.computerid
 
 	return render_template("bans/edit.html", ban=grouped_ban, form=form_ban_edit)

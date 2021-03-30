@@ -36,6 +36,8 @@ from yogsite.const import *
 
 from yogsite.extensions import flask_db_ext
 
+from yogsite.util import byondname_to_ckey
+
 game_db = flask_db_ext.session
 
 class Player(flask_db_ext.Model):
@@ -202,13 +204,13 @@ class Ban(flask_db_ext.Model):
 
 		for role in form.roles.data:
 			entry = cls(
-				ckey = form.ckey.data,
+				ckey = byondname_to_ckey(form.ckey.data),
 				a_ckey = g.current_user.ckey,
 				bantime = bantime,
 				expiration_time = form.expiration_time.data if form.expiration_time.data else None,
 				role = role,
-				ip = int(IPAddress(form.ip.data)),
-				computerid = form.computerid.data,
+				ip = int(IPAddress(form.ip.data)) if form.ip.data else None,
+				computerid = form.computerid.data if form.computerid.data else None,
 				reason = form.reason.data,
 				## Defaults ##
 				server_ip = 0, server_port = 0, round_id = 0, applies_to_admins = 0, edits = None,
@@ -266,11 +268,11 @@ class Ban(flask_db_ext.Model):
 			game_db.add(clone)
 
 		update_dict = {
-			Ban.ckey: form.ckey.data,
+			Ban.ckey: byondname_to_ckey(form.ckey.data),
 			Ban.reason: form.reason.data,
 			Ban.expiration_time: form.expiration_time.data if form.expiration_time.data else None,
-			Ban.ip: int(IPAddress(form.ip.data)),
-			Ban.computerid: form.computerid.data
+			Ban.ip: int(IPAddress(form.ip.data)) if form.ip.data else None,
+			Ban.computerid: form.computerid.data if form.computerid.data else None
 		}
 
 		new_bans = Ban.query.filter(Ban.bantime==self.bantime, Ban.ckey==self.ckey)
