@@ -23,8 +23,9 @@ def page_api_paypal_donate():
 
 	verification_request = requests.get(response_request_url, headers={"User-Agent": "IPN-VerificationScript"})
 
-	print(verification_request.content, verification_request.json())
+	print(verification_request.content, verification_request)
 
+	print(request.args)
 	payment_amount = request.args.get("mc_gross", type=float)
 	ckey = request.args.get("custom")
 
