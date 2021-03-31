@@ -80,7 +80,7 @@
 {% endmacro %}
 
 {% macro ckey_link(ckey) %}
-	<a href="/players/{{ ckey }}">{{ ckey }}</a>
+	<a href="/players/{{ util.byondname_to_ckey(ckey) }}">{{ util.byondname_to_ckey(ckey) }}</a>
 {% endmacro %}
 
 {% macro render_datetime_as_delta(dt) %}
