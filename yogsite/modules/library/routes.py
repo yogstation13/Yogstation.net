@@ -8,8 +8,6 @@ from yogsite.config import cfg
 from yogsite import db
 from yogsite.util import login_required, perms_required
 
-from .forms import BookEditForm
-
 blueprint = Blueprint("library", __name__)
 
 @blueprint.route("/library")
