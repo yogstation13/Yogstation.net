@@ -132,3 +132,9 @@ paypal:
   currency_code: "USD"
   return_url: "/donate?confirm=1"
   notify_url: "/api/paypal_donate"
+
+donation_amounts:
+  - amount: 7.00
+    months: 1
+  - amount: 14.00
+    months: 3
