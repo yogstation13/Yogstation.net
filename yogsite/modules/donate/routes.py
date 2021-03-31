@@ -53,7 +53,7 @@ def page_api_paypal_donate():
 
 	print(verification_request.content, verification_request)
 
-	if r.text == "VERIFIED":
+	if verification_request.text == "VERIFIED":
 		print("IT WORKED")
 	else:
 		print("it didn't work...")
@@ -64,4 +64,4 @@ def page_api_paypal_donate():
 
 	print(payment_amount, ckey)
 
-	return ""
+	return verification_request
