@@ -20,7 +20,7 @@ def page_api_paypal_donate():
 	print(request.full_path, request.path)
 
 	args_string = ""
-	request.parameter_storage_class = ImmutableOrderedMultiDict() # so it retains order, because paypal needs that for some reason
+	request.parameter_storage_class = ImmutableOrderedMultiDict # so it retains order, because paypal needs that for some reason
 	for x, y in request.form.items():
 		args_string += f"&{x}={y}"
 

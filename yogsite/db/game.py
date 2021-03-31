@@ -17,6 +17,7 @@ from sqlalchemy import Column
 from sqlalchemy import Date
 from sqlalchemy import DateTime
 from sqlalchemy import Enum
+from sqlalchemy import Float
 from sqlalchemy import ForeignKey
 from sqlalchemy import func
 from sqlalchemy import Integer
@@ -502,3 +503,17 @@ class ActionLog(flask_db_ext.Model):
 		entry = cls(adminid=admin_ckey, target=target_ckey, description=description)
 		game_db.add(entry)
 		game_db.commit()
+
+class Donation(flask_db_ext.Model):
+	__tablename__ = 'erro_donors'
+
+	id 					= Column('id',					Integer(), primary_key=True)
+	ckey				= Column('ckey',				String(32))
+	discord_id			= Column('discord_id',			String(32))
+	transaction_id		= Column('transaction_id',		String(70))
+	amount				= Column('firstseen_round_id',	Float())
+	datetime			= Column('datetime',			DateTime())
+	expiration_time		= Column('expiration_time',		DateTime())
+	revoked				= Column('revoked',				SmallInteger())
+	revoked_ckey		= Column('revoked_ckey',		String(32))
+	revoked_time		= Column('revoked_time',		DateTime())
