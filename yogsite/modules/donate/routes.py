@@ -5,6 +5,8 @@ from flask import request
 
 from yogsite.config import cfg
 
+from werkzeug.datastructures import ImmutableOrderedMultiDict
+
 import requests
 
 blueprint = Blueprint("donate", __name__)
