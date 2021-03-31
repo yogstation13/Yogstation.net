@@ -1,15 +1,15 @@
 """
 This file is for stuff that will talk to the game servers via topic requests
 """
-from yogsite.config import cfg
-
-from cachetools import cached
-from cachetools import TTLCache
+from cachetools import cached, TTLCache
 
 import socket
+
 import struct
 
 import urllib.parse
+
+from yogsite.config import cfg
 
 def topic_query(server, query, args=None):
 	"""

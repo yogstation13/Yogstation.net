@@ -1,8 +1,6 @@
-import re
+from wtforms import SelectMultipleField, ValidationError, widgets
 
-from wtforms import SelectMultipleField
-from wtforms import ValidationError
-from wtforms import widgets
+import re
 
 from .converters import byondname_to_ckey
 

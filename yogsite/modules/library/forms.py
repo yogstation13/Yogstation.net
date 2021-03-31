@@ -1,8 +1,6 @@
 from flask_wtf import FlaskForm
 
-from wtforms import SelectField
-from wtforms import TextAreaField
-from wtforms import TextField
+from wtforms import SelectField, TextAreaField, TextField
 from wtforms.fields.html5 import DateTimeLocalField
 from wtforms.validators import AnyOf, DataRequired, InputRequired, IPAddress, Length, Optional
 

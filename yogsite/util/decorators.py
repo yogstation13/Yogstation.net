@@ -1,7 +1,8 @@
-from yogsite.config import cfg
+from flask import abort, g, redirect, request, url_for
 
 from functools import wraps
-from flask import abort, g, redirect, request, url_for
+
+from yogsite.config import cfg
 
 def login_required(view_function):
 	"""

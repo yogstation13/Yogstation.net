@@ -1,9 +1,4 @@
-from flask import abort
-from flask import Blueprint
-from flask import jsonify
-from flask import redirect
-from flask import request
-from flask import session
+from flask import abort, Blueprint, jsonify, redirect, request, session
 
 import math
 
@@ -12,7 +7,6 @@ from yogsite import db
 from yogsite.util import query_server_status
 
 blueprint = Blueprint("api", __name__)
-
 
 @blueprint.route("/api/stats")
 def page_api_stats():
@@ -29,6 +23,7 @@ def page_api_stats():
 		})
 
 	return jsonify(server_stats)
+
 
 @blueprint.route("/api/stats/<string:server_id>")
 def page_api_stats_server_id(server_id):

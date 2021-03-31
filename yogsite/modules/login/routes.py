@@ -1,13 +1,6 @@
 from datetime import datetime
 
-from flask import abort
-from flask import Blueprint
-from flask import flash
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import session
-from flask import url_for
+from flask import abort, Blueprint, flash, redirect, render_template, request, session, url_for
 
 import math
 
@@ -15,7 +8,6 @@ import requests
 
 from yogsite import db
 from yogsite.config import cfg
-from yogsite.config import XENFORO_HEADERS
 from yogsite.util import is_safe_redirect, byondname_to_ckey
 from yogsite.util.xenforo import validate_xenforo_credentials
 
@@ -64,6 +56,7 @@ def page_login():
 			flash("Unknown Error, Please Report", "error")
 
 	return render_template("login/login.html")
+
 
 @blueprint.route("/logout")
 def page_logout():

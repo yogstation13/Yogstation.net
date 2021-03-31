@@ -1,16 +1,8 @@
-from flask import abort
-from flask import Blueprint
-from flask import flash
-from flask import g
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import url_for
-
-from sqlalchemy import and_
-from sqlalchemy import or_
+from flask import abort, Blueprint, flash, g, redirect, render_template, request, url_for
 
 import math
+
+from sqlalchemy import and_, or_
 
 from yogsite.config import cfg
 from yogsite import db
@@ -27,7 +19,7 @@ def page_directory():
 
 	players_query = db.game_db.query(db.Player)
 
-	if search_query: # TODO: put this somewhere else
+	if search_query:
 		players_query = players_query.filter(
 			or_(
 				db.Player.ckey.like(f"%{search_query}%"),

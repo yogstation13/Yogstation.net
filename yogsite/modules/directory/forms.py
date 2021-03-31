@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
 
-from wtforms import SelectField
-from wtforms import TextField
+from wtforms import SelectField, TextField
 from wtforms.validators import AnyOf, DataRequired, Length
 
 class NoteAddForm(FlaskForm):

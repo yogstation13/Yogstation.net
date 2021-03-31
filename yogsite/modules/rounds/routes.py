@@ -1,22 +1,14 @@
-from flask import abort
-from flask import Blueprint
-from flask import g
-from flask import jsonify
-from flask import render_template
-from flask import request
-from flask import Response
-from flask import stream_with_context
-
-from sqlalchemy import or_
+from flask import abort, Blueprint, g, jsonify, render_template, request, Response, stream_with_context
 
 import math
+
+from sqlalchemy import or_
 
 from yogsite.config import cfg
 from yogsite import db
 from yogsite.util import login_required, perms_required, yield_file_chunks
 
 from .log_parsing import RoundLogs
-
 
 blueprint = Blueprint("rounds", __name__)
 
@@ -51,6 +43,7 @@ def page_rounds():
 
 	return render_template("rounds/rounds.html", rounds=displayed_rounds, page=page, page_count=page_count, search_query=search_query)
 
+
 @blueprint.route("/rounds/<int:round_id>/logs")
 @login_required
 @perms_required("round.logs")
@@ -61,6 +54,7 @@ def page_round_logs(round_id):
 		return abort(404)
 
 	return render_template("rounds/log_viewer/log_viewer.html", round=round)
+
 
 @blueprint.route("/rounds/<int:round_id>/replay")
 def page_round_replay(round_id):
@@ -84,6 +78,7 @@ def page_round_replay(round_id):
 		stream_with_context(yield_file_chunks(demo_file)),
 		mimetype='text/plain'
 	)
+
 
 @blueprint.route("/api/rounds/<int:round_id>/logs")
 @perms_required("round.logs")

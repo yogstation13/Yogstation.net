@@ -1,19 +1,18 @@
-from flask import abort
-from flask import Blueprint
-from flask import render_template
-from flask import request
+from datetime import datetime
+
+from dateutil.relativedelta import relativedelta
+
+from flask import abort, Blueprint, render_template, request
+
+import math
+
+import requests
 
 from yogsite.config import cfg
 from yogsite import db
 from yogsite.util import byondname_to_ckey, login_required, perms_required
 
 from werkzeug.datastructures import ImmutableOrderedMultiDict
-
-import requests
-import math
-
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
 
 blueprint = Blueprint("donate", __name__)
 
@@ -40,6 +39,7 @@ def page_admin_donors():
 	displayed_donations = donations_query.offset((page-1)*cfg.get("items_per_page")).limit(cfg.get("items_per_page"))
 
 	return render_template("donate/donation_log.html", donations=displayed_donations, page=page, page_count=page_count, search_query=search_query)
+
 
 @blueprint.route("/api/paypal_donate", methods=["POST"])
 def page_api_paypal_donate():

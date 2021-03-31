@@ -1,32 +1,18 @@
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from hashlib import sha256
 
 from netaddr import IPAddress
 
+from flask import g, request # dumb dumb stupid varname
+
 from flask_sqlalchemy import SQLAlchemy
 
-from flask import g # dumb dumb stupid varname
-from flask import request
+from sqlalchemy import (and_, or_, BigInteger, create_engine, Column, Date, DateTime,
+	Enum, Float, ForeignKey, func, Integer, SmallInteger, String, Text)
 
-from sqlalchemy import and_, or_
-from sqlalchemy import BigInteger
-from sqlalchemy import create_engine
-from sqlalchemy import Column
-from sqlalchemy import Date
-from sqlalchemy import DateTime
-from sqlalchemy import Enum
-from sqlalchemy import Float
-from sqlalchemy import ForeignKey
-from sqlalchemy import func
-from sqlalchemy import Integer
-from sqlalchemy import SmallInteger
-from sqlalchemy import String
-from sqlalchemy import Text
 from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.orm.session import make_transient
 
 from werkzeug.security import check_password_hash
@@ -34,9 +20,7 @@ from werkzeug.security import generate_password_hash
 
 from yogsite.config import cfg
 from yogsite.const import *
-
 from yogsite.extensions import flask_db_ext
-
 from yogsite.util import byondname_to_ckey
 
 game_db = flask_db_ext.session

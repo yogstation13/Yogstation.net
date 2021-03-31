@@ -1,12 +1,11 @@
-from yogsite import db
-from yogsite.util.xenforo import get_xenforo_users_from_groups
-
 from datetime import timedelta, date
 
-from sqlalchemy import and_
-from sqlalchemy import func
-
 import math
+
+from sqlalchemy import and_, func
+
+from yogsite import db
+from yogsite.util.xenforo import get_xenforo_users_from_groups
 
 class AdminActivityAnalytics():
 	def __init__(self, start_date, end_date, enabled_ranks):

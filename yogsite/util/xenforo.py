@@ -1,10 +1,8 @@
+from cachetools import cached, TTLCache
+
 import requests
 
-from cachetools import cached
-from cachetools import TTLCache
-
-from yogsite.config import cfg
-from yogsite.config import XENFORO_HEADERS
+from yogsite.config import cfg, XENFORO_HEADERS
 
 from .converters import byondname_to_ckey
 

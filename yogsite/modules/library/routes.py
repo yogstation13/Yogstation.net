@@ -1,15 +1,8 @@
-from flask import abort
-from flask import Blueprint
-from flask import g
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import url_for
-
-from sqlalchemy import and_
-from sqlalchemy import or_
+from flask import abort, Blueprint, g, redirect, render_template, request, url_for
 
 import math
+
+from sqlalchemy import and_, or_
 
 from yogsite.config import cfg
 from yogsite import db
@@ -30,7 +23,7 @@ def page_library():
 	if not (g.current_user.has_perms("book.delete") or g.current_user.has_perms("book.deleted")):
 		books_query = books_query.filter(db.Book.deleted.is_(None))
 
-	if search_query: # TODO: put this somewhere else
+	if search_query:
 		books_query = books_query.filter(
 			or_(
 				db.Book.title.like(f"%{search_query}%"),
@@ -77,30 +70,3 @@ def page_book_action(book_id, action):
 		book.set_deleted(False)
 
 	return redirect(request.referrer)
-
-""" Disabled because not complete and it's not on my todo list atm
-@blueprint.route("/library/<int:book_id>/edit", methods=["GET", "POST"])
-def page_book_edit(book_id):
-
-	book = db.Book.from_id(book_id)
-
-	form_book_edit = BookEditForm(request.form, prefix="form_book_edit")
-
-
-	if request.method == "POST":
-		print(request.form)
-		if form_book_edit.validate():
-			book.apply_edit_form(form_book_edit)
-
-			return redirect(url_for("library.page_book", book_id=book.id))
-
-	else:
-		# this absolute bs makes it so it only sets default values on the first get, and then every time you update with a post
-		# it populates them with the new values from the post
-		form_book_edit.title.data = book.title
-		form_book_edit.author.data = book.author
-		form_book_edit.content.data = book.content
-		form_book_edit.category.data = book.category
-
-	return render_template("library/edit.html", book=book, form=form_book_edit)
-"""

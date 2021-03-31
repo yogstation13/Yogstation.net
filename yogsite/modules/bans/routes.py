@@ -1,12 +1,4 @@
-from flask import abort
-from flask import Blueprint
-from flask import flash
-from flask import g # what a terrible name
-from flask import jsonify
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import url_for
+from flask import abort, Blueprint, flash, g, jsonify, redirect, render_template, request, url_for
 
 import math
 
@@ -115,6 +107,7 @@ def page_ban_add():
 	
 	return render_template("bans/edit.html", form=form_ban_edit)
 
+
 @blueprint.route("/bans/<int:ban_id>/<string:action>")
 @login_required
 @perms_required("ban.manage")
@@ -133,6 +126,7 @@ def page_ban_action(ban_id, action):
 		flash("Ban Successfully Reinstated", "success")
 	
 	return redirect(request.referrer)
+
 
 @blueprint.route("/notes/<int:note_id>/<string:action>")
 @login_required

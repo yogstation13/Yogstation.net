@@ -1,21 +1,18 @@
 from datetime import datetime
 
-from flask import Flask
-from flask import g
-from flask import session
-from flask import send_from_directory
-
-from yogsite.config import cfg
-from yogsite import util
-import yogsite.db
-
-from yogsite.extensions import flask_db_ext
-
-from yogsite.modules.login import User
+from flask import Flask, g, session, send_from_directory
 
 import os
+
 import time
+
 import uuid
+
+from yogsite.config import cfg
+from yogsite import db
+from yogsite.extensions import flask_db_ext
+from yogsite.modules.login import User
+from yogsite import util
 
 def register_extensions(app):
 	flask_db_ext.init_app(app)
@@ -56,6 +53,8 @@ def debug_ses():
 def context_processor():
 	return dict(datetime=datetime, cfg=cfg, db=db, util=util)
 
+
+# Sue me
 from yogsite.modules.admin import blueprint as bp_admin
 from yogsite.modules.api import blueprint as bp_api
 from yogsite.modules.bans import blueprint as bp_bans

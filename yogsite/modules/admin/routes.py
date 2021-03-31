@@ -1,22 +1,13 @@
 from datetime import datetime, timedelta, date
 
-from flask import abort
-from flask import Blueprint
-from flask import flash
-from flask import g
-from flask import jsonify
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import session
-from flask import url_for
-
-from sqlalchemy import or_, and_
+from flask import abort, Blueprint, flash, g, jsonify, redirect, render_template, request, session, url_for
 
 import math
 
-from yogsite import db
+from sqlalchemy import or_, and_
+
 from yogsite.config import cfg
+from yogsite import db
 from yogsite.util import login_required, perms_required
 from yogsite.util.xenforo import get_xenforo_groups
 
@@ -76,6 +67,7 @@ def page_activity():
 
 	return render_template("admin/activity_tracker.html", admin_groups=admin_groups)
 
+
 @blueprint.route("/api/admin/activity")
 @login_required
 @perms_required("activity.access")
@@ -90,6 +82,7 @@ def page_api_activity():
 	analytics = AdminActivityAnalytics(datetime.strptime(start_date, "%Y-%m-%d").date(), datetime.strptime(end_date, "%Y-%m-%d").date(), enabled_ranks=enabled_ranks)
 	
 	return jsonify(analytics.admin_leaderboard())
+
 
 @blueprint.route("/admin/action_log")
 @login_required
@@ -115,4 +108,3 @@ def page_action_log():
 	displayed_logs = action_log_query.limit(cfg.get("items_per_page")).offset((page - 1) * cfg.get("items_per_page"))
 
 	return render_template("admin/action_log.html", action_log=displayed_logs, page=page, page_count=page_count, search_query=search_query)
-
