@@ -3,6 +3,8 @@ from flask import Blueprint
 from flask import render_template
 from flask import request
 
+from yogsite.config import cfg
+
 import requests
 
 blueprint = Blueprint("donate", __name__)
