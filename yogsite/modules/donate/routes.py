@@ -4,16 +4,35 @@ from flask import render_template
 from flask import request
 
 from yogsite.config import cfg
+from yogsite import db
 
 from werkzeug.datastructures import ImmutableOrderedMultiDict
 
 import requests
+import math
 
 blueprint = Blueprint("donate", __name__)
 
 @blueprint.route("/donate")
 def page_donate():
-	return render_template("donate.html")
+	return render_template("donate/donate.html")
+
+@blueprint.route("/admin/donors")
+def page_admin_donors():
+	page = request.args.get('page', type=int, default=1)
+
+	search_query = request.args.get('query', type=str, default=None)
+
+	donations_query = db.game_db.query(db.Donation).order_by(db.Donation.datetime.desc())
+
+	if search_query:
+		donations_query = donations_query.filter(db.Donation.ckey.like(search_query))
+
+	page_count = math.ceil(donations_query.count() / cfg.get("items_per_page")) # Selecting only the id on a count is faster than selecting the entire row
+
+	displayed_donations = donations_query.offset((page-1)*cfg.get("items_per_page")).limit(cfg.get("items_per_page"))
+
+	return render_template("donate/donation_log.html", donations=displayed_donations, page=page, page_count=page_count, search_query=search_query)
 
 @blueprint.route("/api/paypal_donate", methods=["GET", "POST"])
 def page_api_paypal_donate():

@@ -511,7 +511,7 @@ class Donation(flask_db_ext.Model):
 	ckey				= Column('ckey',				String(32))
 	discord_id			= Column('discord_id',			String(32))
 	transaction_id		= Column('transaction_id',		String(70))
-	amount				= Column('firstseen_round_id',	Float())
+	amount				= Column('amount',				Float())
 	datetime			= Column('datetime',			DateTime())
 	expiration_time		= Column('expiration_time',		DateTime())
 	revoked				= Column('revoked',				SmallInteger())
