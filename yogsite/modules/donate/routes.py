@@ -15,9 +15,16 @@ def page_donate():
 
 @blueprint.route("/api/paypal_donate", methods=["GET", "POST"])
 def page_api_paypal_donate():
-	args_string = request.full_path.replace(request.path, "").lstrip("?") # Get just the arguments portion of the url
-	
-	response_request_url = f"{cfg.get('paypal.ipn_url')}?cmd=_notify-validate&{args_string}"
+	print(request.full_path, request.path)
+
+	args_string = ""
+	request.parameter_storage_class = ImmutableOrderedMultiDict() # so it retains order, because paypal needs that for some reason
+	for x, y in request.form.items():
+		args_string += f"&{x}={y}"
+
+	print(args_string)
+
+	response_request_url = f"{cfg.get('paypal.ipn_url')}?cmd=_notify-validate{args_string}"
 
 	print("Response Request Url:", response_request_url)
 
@@ -25,7 +32,12 @@ def page_api_paypal_donate():
 
 	print(verification_request.content, verification_request)
 
-	print(request.args)
+	if r.text == "VERIFIED":
+		print("IT WORKED")
+	else:
+		print("it didn't work...")
+
+	print(request.args, request.form)
 	payment_amount = request.args.get("mc_gross", type=float)
 	ckey = request.args.get("custom")
 
