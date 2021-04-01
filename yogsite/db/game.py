@@ -272,8 +272,10 @@ class Ban(flask_db_ext.Model):
 		"""
 		Revoke a ban by setting the unbanned datetime
 		"""
-		self.unbanned_ckey = admin_ckey
-		self.unbanned_datetime = datetime.utcnow() # Set the time of unbanning to now so the server knows that if we are past now, they should be unbanned
+		Ban.query.filter(Ban.bantime==self.bantime, Ban.ckey==self.ckey).update({
+			Ban.unbanned_ckey: admin_ckey,
+			Ban.unbanned_datetime: datetime.utcnow() # Set the time of unbanning to now so the server knows that if we are past now, they should be unbanned
+		})
 
 		game_db.commit()
 
@@ -281,8 +283,10 @@ class Ban(flask_db_ext.Model):
 		"""
 		Reinstate a ban by clearing the unbanned datetime
 		"""
-		self.unbanned_ckey = None
-		self.unbanned_datetime = None
+		Ban.query.filter(Ban.bantime==self.bantime, Ban.ckey==self.ckey).update({
+			Ban.unbanned_ckey: None,
+			Ban.unbanned_datetime: None
+		})
 
 		game_db.commit()
 
