@@ -8,7 +8,6 @@
 {% endblock %}
 
 {% block content %}
-
 	<h2 class="title is-2 has-text-centered">Donation Log</h2>
 	<div class="columns is-centered">
 		<div class="column is-four-fifths">
@@ -36,7 +35,13 @@
 								<td>{{ ckey_link(donation.ckey) }}</td>
 								<td>{{ "${:,.2f}".format(donation.amount) }}</td>
 								<td>{{ render_datetime_as_delta(donation.datetime) }}</td>
-								<td>{{ render_datetime_as_delta(donation.expiration_time) }}</td>
+								<td>
+									{% if donation.expiration_time %}
+										{{ render_datetime_as_delta(donation.expiration_time) }}
+									{% else %}
+										N/A
+									{% endif %}
+								</td>
 
 								<td>
 									{% if donation.revoked %}
