@@ -45,7 +45,9 @@
 
 								<td>
 									{% if donation.revoked %}
-										<div title="{{ donation.revoked_ckey }}" class="tag is-warning is-medium is-light has-text-centered">Revoked</div>
+										<div class="tag is-warning is-medium is-light has-text-centered">
+											<abbr title="{{ donation.revoked_ckey }}">Revoked</abbr>
+										</div>
 									{% else %}
 										{% if donation.valid %}
 											<div class="tag is-success is-medium has-text-centered">Valid</div>
