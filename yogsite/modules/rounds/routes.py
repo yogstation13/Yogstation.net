@@ -86,4 +86,6 @@ def page_round_logs_api(round_id):
 	logs = RoundLogs(round_id)
 	entries = logs.load_entries()
 
+	db.ActionLog.add(g.current_user.ckey, g.current_user.ckey, f"Looked at logs for round {round_id}")
+
 	return jsonify([entry.to_dict() for entry in entries])

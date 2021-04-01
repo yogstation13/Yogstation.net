@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import abort, Blueprint, flash, redirect, render_template, request, session, url_for
+from flask import abort, Blueprint, flash, g, redirect, render_template, request, session, url_for
 
 import math
 
@@ -38,6 +38,8 @@ def page_login():
 				session["permissions"] = user_data["permissions"]
 				session["ckey"] = byondname_to_ckey(byond_account) # Just in case the byond names are stored there for some reason
 
+				db.ActionLog.add(session["ckey"], session["ckey"], "Logged in")
+
 				flash("Successfully Logged In", "success")
 
 				redirect_url = request.args.get('next') # Can specify where to go after login on the next arg
@@ -60,6 +62,7 @@ def page_login():
 
 @blueprint.route("/logout")
 def page_logout():
+	db.ActionLog.add(g.current_user.ckey, g.current_user.ckey, "Logged out")
 	session.clear()
 	flash("Successfully Logged Out", "success")
 	return redirect("/")

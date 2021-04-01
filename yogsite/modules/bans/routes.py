@@ -67,6 +67,15 @@ def page_ban_edit(ban_id):
 			single_ban = db.Ban.from_id(ban_id) # Can't apply stuff to the grouped result
 			new_single_ban = single_ban.apply_edit_form(form_ban_edit)
 
+			db.ActionLog.add(g.current_user.ckey, new_single_ban.ckey,
+				f"Edited ban {new_single_ban.id}: " +
+				f"roles={','.join(form_ban_edit.roles.data)} " +
+				f"reason={form_ban_edit.reason.data} " +
+				f"expiration_time={form_ban_edit.expiration_time.data} " +
+				f"ip={form_ban_edit.ip.data} " +
+				f"computerid={form_ban_edit.computerid.data}"
+			)
+
 			flash("Ban Successfully Edited", "success")
 
 			return redirect(url_for("bans.page_ban_edit", ban_id=new_single_ban.id))
