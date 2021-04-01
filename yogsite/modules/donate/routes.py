@@ -1,7 +1,3 @@
-from datetime import datetime
-
-from dateutil.relativedelta import relativedelta
-
 from flask import abort, Blueprint, render_template, request
 
 import math
@@ -13,6 +9,8 @@ from yogsite import db
 from yogsite.util import byondname_to_ckey, login_required, perms_required
 
 from werkzeug.datastructures import ImmutableOrderedMultiDict
+
+from .transaction_processing import process_ipn_notification
 
 blueprint = Blueprint("donate", __name__)
 
@@ -43,57 +41,21 @@ def page_admin_donors():
 
 @blueprint.route("/api/paypal_donate", methods=["POST"])
 def page_api_paypal_donate():
-	print(request.full_path, request.path)
-
 	args_string = ""
 	request.parameter_storage_class = ImmutableOrderedMultiDict # so it retains order, because paypal needs that for some reason
 	for x, y in request.form.items():
 		args_string += f"&{x}={y}"
 
-	print(args_string)
-
 	response_request_url = f"{cfg.get('paypal.ipn_url')}?cmd=_notify-validate{args_string}"
-
-	print("Response Request Url:", response_request_url)
 
 	verification_request = requests.get(response_request_url, headers={"User-Agent": "IPN-VerificationScript"})
 
-	print(verification_request.content, verification_request)
-
 	if verification_request.text == "VERIFIED":
 		print("IT WORKED")
-		amount = request.form.get("mc_gross", type=float)
-
-		# Get how many months they earn from this donation amount
-		months = 0
-		for tier in cfg.get("donation.tiers"):
-			if amount >= tier["amount"]:
-				if tier["months"] > months:
-					months = tier["months"]
-
-		donate_time = datetime.utcnow()
-		expiration_time = donate_time + relativedelta(months=months)
-
-		ckey = byondname_to_ckey(request.form.get("custom", type=str))
-
-		donation = db.Donation(
-			ckey = ckey,
-			transaction_id = request.form.get("txn_id", type=str),
-			amount = request.form.get("mc_gross", type=float),
-			datetime = donate_time,
-			expiration_time = expiration_time
-		)
-
-		db.game_db.add(donation)
-		db.game_db.commit()
-		
+		process_ipn_notification(request.form)		
 	else:
 		print("it didn't work...")
 
 	print(request.form)
-	payment_amount = request.form.get("mc_gross", type=float)
-	ckey = request.form.get("custom")
-
-	print(payment_amount, ckey)
 
 	return verification_request.text # Resend them back what they sent us to verify that we understood

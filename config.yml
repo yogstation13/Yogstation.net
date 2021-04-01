@@ -12,7 +12,6 @@ db:
 
 items_per_page: 20
 
-
 servers:
   main:
     id: "main"

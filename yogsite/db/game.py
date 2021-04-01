@@ -501,3 +501,7 @@ class Donation(flask_db_ext.Model):
 	revoked				= Column('revoked',				SmallInteger())
 	revoked_ckey		= Column('revoked_ckey',		String(32))
 	revoked_time		= Column('revoked_time',		DateTime())
+	payer_email			= Column('payer_email',			String(256))
+	status				= Column('status',				String(32))
+	notes				= Column('notes',				String(1024))
+	valid				= Column('valid',				SmallInteger())

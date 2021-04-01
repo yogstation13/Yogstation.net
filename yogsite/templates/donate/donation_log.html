@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% from 'util/macros.html' import pagination, search_form, ckey_link, render_datetime_as_delta with context %}
+{% from 'util/macros.html' import pagination, search_form, ckey_link, render_datetime_as_delta, abbreviate with context %}
 
 {% block title %}Panel - Donation Log{% endblock %}
 
@@ -26,7 +26,7 @@
 							<th width="150px">Donate Date</th>
 							<th width="150px">Expire Date</th>
 							<th>Status</th>
-							<th>Revoker</th>
+							<th>Notes</th>
 						</tr>
 					</thead>
 			
@@ -40,13 +40,23 @@
 
 								<td>
 									{% if donation.revoked %}
-										<div class="tag is-warning is-medium has-text-centered">Revoked</div>
+										<div title="{{ donation.revoked_ckey }}" class="tag is-warning is-light has-text-centered">Revoked</div>
 									{% else %}
-										<div class="tag is-success is-medium has-text-centered">Active</div>
+										{% if donation.valid %}
+											<div class="tag is-success is-medium has-text-centered">Valid</div>
+										{% else %}
+											{% if donation.status == "pending" %}
+												<div class="tag is-primary is-medium has-text-centered">Pending</div>
+											{% elif donation.status == "denied" %}
+												<div class="tag is-danger is-medium has-text-centered">Denied</div>
+											{% elif donation.status == "completed" %}
+												<div class="tag is-warning is-medium has-text-centered">Invalid</div>
+											{% endif %}
+										{% endif %}
 									{% endif %}
 								</td>
 			
-								<td>{{ ckey_link(donation.revoked_ckey) if donation.revoked_ckey else "N/A" }}</td>
+								<td>{{ abbreviate(donation.notes, 30) }}</td>
 							</tr>
 						{% endfor %}
 					</tbody>
