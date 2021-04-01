@@ -10,12 +10,13 @@ import uuid
 
 from yogsite.config import cfg
 from yogsite import db
-from yogsite.extensions import flask_db_ext
+from yogsite.extensions import flask_db_ext, flask_limiter_ext
 from yogsite.modules.login import User
 from yogsite import util
 
 def register_extensions(app):
 	flask_db_ext.init_app(app)
+	flask_limiter_ext.init_app(app)
 
 def create_app():
 	app = Flask(__name__)

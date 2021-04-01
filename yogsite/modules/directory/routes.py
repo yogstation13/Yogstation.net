@@ -6,6 +6,7 @@ from sqlalchemy import and_, or_
 
 from yogsite.config import cfg
 from yogsite import db
+from yogsite.extensions import flask_limiter_ext
 
 from .forms import NoteAddForm
 
@@ -36,8 +37,8 @@ def page_directory():
 
 	return render_template("directory/directory.html", players=displayed_players, page=page, page_count=page_count, search_query=search_query)
 
-
 @blueprint.route("/players/<string:ckey>", methods=["GET", "POST"])
+@flask_limiter_ext.limit("10 per minute")
 def page_player(ckey):
 
 	player = db.Player.from_ckey(ckey)

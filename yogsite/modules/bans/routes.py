@@ -4,6 +4,7 @@ import math
 
 from yogsite.config import cfg
 from yogsite import db
+from yogsite.extensions import flask_limiter_ext
 from yogsite.util import byondname_to_ckey, login_required, perms_required, IPAddress
 
 from .forms import BanEditForm
@@ -11,6 +12,7 @@ from .forms import BanEditForm
 blueprint = Blueprint("bans", __name__)
 
 @blueprint.route("/bans")
+@flask_limiter_ext.limit("45 per minute")
 def page_bans():
 	page = request.args.get('page', type=int, default=1)
 

@@ -8,6 +8,7 @@ from sqlalchemy import or_, and_
 
 from yogsite.config import cfg
 from yogsite import db
+from yogsite.extensions import flask_limiter_ext
 from yogsite.util import login_required, perms_required
 from yogsite.util.xenforo import get_xenforo_groups
 
@@ -60,6 +61,7 @@ def page_loa_action(loa_id, action):
 
 
 @blueprint.route("/admin/activity")
+@flask_limiter_ext.limit("10 per minute")
 @login_required
 @perms_required("activity.access")
 def page_activity():
