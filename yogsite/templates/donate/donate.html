@@ -11,68 +11,89 @@
 	<h2 class="title is-2 has-text-centered">Donation Form</h2>
 
 	<div class="columns is-centered">
-		<div class="column is-half">
-			<form id="donate-form" action="{{ cfg.get('paypal.form_url') }}" method="POST">
+		<div class="column is-two-thirds">
+			<div class="box">
+				<form id="donate-form" action="{{ cfg.get('paypal.form_url') }}" method="POST">
 
-				<input type="hidden" name="cmd" value="_xclick" />
-				<input type="hidden" name="business" value="{{ cfg.get('paypal.email') }}" />
-				<input type="hidden" name="item_name" value="{{ cfg.get('paypal.item_name') }}" />
-				<input type="hidden" name="currency_code" value="{{ cfg.get('paypal.currency_code') }}" />
-				<input type="hidden" name="no_shipping" value="1" />
-				<input type="hidden" name="no_note" value="1" />
-				<input type="hidden" name="rm" value="1" />
-				<input type="hidden" name="return" value="{{ cfg.get('baseurl') + cfg.get('paypal.return_url') }}" />
-				<input type="hidden" name="notify_url" value="{{ cfg.get('baseurl') + cfg.get('paypal.notify_url') }}" />
+					<input type="hidden" name="cmd" value="_xclick" />
+					<input type="hidden" name="business" value="{{ cfg.get('paypal.email') }}" />
+					<input type="hidden" name="item_name" value="{{ cfg.get('paypal.item_name') }}" />
+					<input type="hidden" name="currency_code" value="{{ cfg.get('paypal.currency_code') }}" />
+					<input type="hidden" name="no_shipping" value="1" />
+					<input type="hidden" name="no_note" value="1" />
+					<input type="hidden" name="rm" value="1" />
+					<input type="hidden" name="return" value="{{ cfg.get('baseurl') + cfg.get('paypal.return_url') }}" />
+					<input type="hidden" name="notify_url" value="{{ cfg.get('baseurl') + cfg.get('paypal.notify_url') }}" />
 
-				<div class="field">
-					<div class="label">CKEY</div>
-					<div class="control has-icons-left">
-						<input class="input" type="text" name="custom" placeholder="Type your ckey here" />
+					<div class="field">
+						<div class="label">CKEY</div>
+						<div class="control has-icons-left">
+							<input class="input" type="text" name="custom" placeholder="Type your ckey here" />
 
-						<span class="icon is-small is-left">
-							<i class="fas fa-user"></i>
-						</span>
+							<span class="icon is-small is-left">
+								<i class="fas fa-user"></i>
+							</span>
+						</div>
 					</div>
-				</div>
 
-				<div class="field">
-					<div class="label">Amount</div>
-					<div class="control has-icons-left">
-						<input class="input" type="number" name="amount" step="0.25" placeholder="7.00" min="1"
-							v-on:change="donate_amount = $event.target.value; setTwoNumberDecimal"
+					<div class="field">
+						<div class="label">Amount</div>
+						<div class="control has-icons-left">
+							<input class="input" type="number" name="amount" step="0.25" placeholder="7.00" min="1"
+								v-on:change="donate_amount = $event.target.value; setTwoNumberDecimal"
+								v-bind:value="donate_amount"
+							/>
+							
+							<span class="icon is-small is-left">
+								<i class="fas fa-dollar-sign"></i>
+							</span>
+						</div>
+
+						<input class="slider is-fullwidth is-success is-circle" step="0.25" value="7" min="1" max="30" type="range"
+							v-bind:class="{ 'is-danger' : donate_amount < 7, 'is-success': donate_amount >= 7 }"
+							v-on:input="donate_amount = $event.target.value"
 							v-bind:value="donate_amount"
-						/>
-						
-						<span class="icon is-small is-left">
-							<i class="fas fa-dollar-sign"></i>
-						</span>
+						>
 					</div>
 
-					<input class="slider is-fullwidth is-success is-circle" step="0.25" value="7" min="1" max="30" type="range"
-						v-bind:class="{ 'is-danger' : donate_amount < 7, 'is-success': donate_amount >= 7 }"
-						v-on:input="donate_amount = $event.target.value"
-						v-bind:value="donate_amount"
-					>
-				</div>
+					<div class="field">
+						<div class="control">
+							<div class="columns">
+								<div class="column is-two-thirds">
+									<p v-cloak class="notification background-transition has-text-centered is-success is-fullwidth pt-2 pb-2"
+										v-bind:class="{ 'is-warning' : donate_amount < 7, 'is-success': donate_amount >= 7 }"
+									>
+										<b>${ benefit_message }</b>
+									</p>
+								</div>
 
-				<div class="field">
-					<div class="control">
-						<div class="columns">
-							<div class="column is-two-thirds">
-								<p v-cloak class="notification background-transition has-text-centered is-success is-fullwidth pt-2 pb-2"
-									v-bind:class="{ 'is-warning' : donate_amount < 7, 'is-success': donate_amount >= 7 }"
-								>
-									<b>${ benefit_message }</b>
-								</p>
-							</div>
-
-							<div class="column">
-								<button class="button is-link is-pulled-right">Donate with PayPal</button>
+								<div class="column">
+									<button class="button is-link is-pulled-right">Donate with PayPal</button>
+								</div>
 							</div>
 						</div>
 					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<br><br>
+
+	<div class="columns is-centered">
+		<div class="column is-three-quarters">
+			<h2 class="title is-2 has-text-centered">Donation Benefits</h2>
+
+			{% for benefit in cfg.get("donation.benefits") %}
+				<div class="message is-success" style="background-color: #36343d;">
+					<div class="message-header">
+						{{ benefit["caption"] }}
+					</div>
+					<div class="message-body" style="color: #fff;">
+						{{ benefit["details"] }}
+					</div>
 				</div>
-			</form>
+			{% endfor %}
 		</div>
 	</div>
 {% endblock %}

@@ -66,7 +66,7 @@ def page_api_paypal_donate():
 
 		# Get how many months they earn from this donation amount
 		months = 0
-		for tier in cfg.get("donation_amounts"):
+		for tier in cfg.get("donation.tiers"):
 			if amount >= tier["amount"]:
 				if tier["months"] > months:
 					months = tier["months"]

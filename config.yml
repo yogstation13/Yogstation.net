@@ -133,8 +133,31 @@ paypal:
   return_url: "/donate?confirm=1"
   notify_url: "/api/paypal_donate"
 
-donation_amounts:
-  - amount: 7.00
-    months: 1
-  - amount: 14.00
-    months: 3
+donation:
+  tiers:
+    - amount: 7.00
+      months: 1
+    - amount: 14.00
+      months: 3
+  
+  benefits:
+    - caption: "Hats"
+      details: "When creating a character, you get a choice of hats in the creation menu which you spawn with every time until your donorship expires."
+    - caption: "Quiet Round Mode"
+      details: "When creating a character, you get the choice of toggling the quiet round mode. You will opt out of becoming an antag, but also never be an antags target. It's a round perfect for those wishing to learn a job role peacefully. Of course, we cannot guarantee you will not be collateral!"
+    - caption: "Donor Chat"
+      details: "You get to use a private chat only donors and staff can see. In chat, type \"donor\" then spacebar to toggle donorchat (getting rid of say\")"
+    - caption: "Byond Donor Effects"
+      details: "You get the standard byond donor attire such as custom ghosts, custom OOC colour, etc. The only benefit you do not get is the ability to join the server instantly ad-free, unfortunately."
+    - caption: "Fancy PDA"
+      details: "You get to choose your PDA's style. This can be found in the character selection menu."
+    - caption: "Forum Username Color"
+      details: "When you donate, you get the fancy golden forum \"donator\" tag for as long as you donate."
+    - caption: "Discord Donor Rank"
+      details: "When you donate, you will get a donator role on our Discord, which will give you access to the donator-only channel. Keep in mind, your Discord account has to be linked on our forums."
+    - caption: "More Character Creation Slots"
+      details: "You can create more game characters and save them for later!"
+    - caption: "Purrbation"
+      details: "You have the option to spawn with purrbation enabled, which gives you cat ears and a tail. Why you would want this? Well, who knows, but we threw it in anyway."
+    - caption: "New HUDs"
+      details: "You get to select a fancy new HUD. That's pretty cool I guess..."
