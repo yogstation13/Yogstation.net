@@ -19,6 +19,7 @@ blueprint = Blueprint("admin", __name__)
 
 @blueprint.route("/admin/loa", methods=["GET", "POST"])
 @login_required
+@perms_required("loa.add")
 def page_loa():
 	form_set_loa = SetLOAForm(request.form, prefix="form_set_loa")
 
@@ -49,9 +50,13 @@ def page_loa():
 
 @blueprint.route("/admin/loa/<int:loa_id>/<string:action>")
 @login_required
+@perms_required("loa.add")
 def page_loa_action(loa_id, action):
 
 	loa = db.LOA.from_id(loa_id)
+
+	if loa.ckey != g.current_user.ckey and not g.current_user.has_perms("loa.others"):
+		return abort(401) # Can't revoke other people's LOAs unless we have the perm for that
 
 	if action == "revoke":
 		loa.set_revoked(True)

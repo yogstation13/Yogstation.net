@@ -92,7 +92,7 @@ def page_ban_edit(ban_id):
 
 @blueprint.route("/bans/add", methods=["GET", "POST"])
 @login_required
-@perms_required("ban.manage")
+@perms_required("ban.add")
 def page_ban_add():
 
 	form_ban_edit = BanEditForm(request.form, prefix="form_ban_edit") # We can use the same form as editing since it has the same fields

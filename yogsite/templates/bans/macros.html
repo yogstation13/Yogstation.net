@@ -14,7 +14,9 @@
 				<th width="150px">Expire Date</th>
 				<th>Admin</th>
 				<th>Status</th>
-				<th>Tools</th>
+				{% if g.current_user.has_perms("ban.manage") %}
+					<th>Tools</th>
+				{% endif %}
 			</tr>
 		</thead>
 
@@ -59,8 +61,9 @@
 						{% endif %}
 					</td>
 
-					<td>
-						{% if g.current_user.has_perms("ban.manage") %}
+					
+					{% if g.current_user.has_perms("ban.manage") %}
+						<td>
 							<div class="buttons">
 								<a class="button" href="/bans/{{ ban.id }}/edit">Edit</a>
 
@@ -70,8 +73,8 @@
 									<a class="button" href="/bans/{{ ban.id }}/revoke">Revoke</a>
 								{% endif %}
 							</div>
-						{% endif %}
-					</td>
+						</td>
+					{% endif %}
 				</tr>
 			{% endfor %}
 		</tbody>

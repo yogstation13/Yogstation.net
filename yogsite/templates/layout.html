@@ -59,11 +59,27 @@
 							<a class="navbar-link">Admin</a>
 
 							<div class="navbar-dropdown">
-								<a class="navbar-item" href="/bans/add">Add Ban</a>
-								<a class="navbar-item" href="/admin/action_log">Action Log</a>
-								<a class="navbar-item" href="/admin/loa">LOAs</a>
-								<a class="navbar-item" href="/admin/donors">Donors</a>
-								<a class="navbar-item" href="/admin/activity">Activity</a>
+								{% if g.current_user.has_perms("ban.add") %}
+									<a class="navbar-item" href="/bans/add">Add Ban</a>
+								{% endif %}
+
+								{% if g.current_user.has_perms("action_log.access") %}
+									<a class="navbar-item" href="/admin/action_log">Action Log</a>
+								{% endif %}
+
+								{% if g.current_user.has_perms("loa.add") %}
+									<a class="navbar-item" href="/admin/loa">LOAs</a>
+								{% endif %}
+
+								{% if g.current_user.has_perms("transaction_log.access") %}
+									<a class="navbar-item" href="/admin/donors">Donors</a>
+								{% endif %}
+
+								{% if g.current_user.has_perms("activity.access") %}
+									<a class="navbar-item" href="/admin/activity">Activity</a>
+								{% endif %}
+
+								<a class="navbar-item" href="/logout">Logout</a>
 							</div>
 						</div>
 					{% endif %}
