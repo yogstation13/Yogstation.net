@@ -56,7 +56,13 @@
 									{% endif %}
 								</td>
 			
-								<td>{{ abbreviate(donation.notes, 30) }}</td>
+								<td>
+									{% if donation.notes %}
+										{{ abbreviate(donation.notes, 30) }}
+									{% else %}
+										N/A
+									{% endif %}
+								</td>
 							</tr>
 						{% endfor %}
 					</tbody>
