@@ -26,7 +26,7 @@ def process_ipn_notification(ipn_args):
 
 	transaction_id = ipn_args.get("txn_id", type=str)
 
-	status = ipn_args.get("payment_status")
+	status = ipn_args.get("payment_status").lower()
 	pending_reason = ipn_args.get("pending_reason")
 
 	payer_email = ipn_args.get("payer_email")
