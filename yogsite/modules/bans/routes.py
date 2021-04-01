@@ -60,10 +60,7 @@ def page_ban_edit(ban_id):
 	form_ban_edit = BanEditForm(request.form, prefix="form_ban_edit")
 
 	if request.method == "POST":
-		print(request.form)
 		if form_ban_edit.validate():
-			print("VALID", request.form, form_ban_edit)
-
 			single_ban = db.Ban.from_id(ban_id) # Can't apply stuff to the grouped result
 			new_single_ban = single_ban.apply_edit_form(form_ban_edit)
 
@@ -101,10 +98,7 @@ def page_ban_add():
 	form_ban_edit = BanEditForm(request.form, prefix="form_ban_edit") # We can use the same form as editing since it has the same fields
 
 	if request.method == "POST":
-		print(request.form)
 		if form_ban_edit.validate():
-			print("VALID", request.form, form_ban_edit)
-
 			db.Ban.add_from_form(form_ban_edit)
 
 			flash("Ban Successfully Added", "success")

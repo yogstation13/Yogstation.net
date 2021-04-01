@@ -51,11 +51,6 @@ def page_api_paypal_donate():
 	verification_request = requests.get(response_request_url, headers={"User-Agent": "IPN-VerificationScript"})
 
 	if verification_request.text == "VERIFIED":
-		print("IT WORKED")
 		process_ipn_notification(request.form)		
-	else:
-		print("it didn't work...")
-
-	print(request.form)
 
 	return verification_request.text # Resend them back what they sent us to verify that we understood

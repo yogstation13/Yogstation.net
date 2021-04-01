@@ -247,7 +247,6 @@ class Ban(flask_db_ext.Model):
 			non_pk_columns = [k for k in self.__table__.columns.keys() if k not in self.__table__.primary_key]
 			data = {c: getattr(self, c) for c in non_pk_columns}
 			data["role"] = role
-			print(data)
 			clone = Ban(**data)
 
 			game_db.add(clone)
