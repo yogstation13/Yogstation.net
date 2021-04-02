@@ -58,31 +58,30 @@ def page_round_logs(round_id):
 
 @blueprint.route("/rounds/<int:round_id>/replay")
 def page_round_replay(round_id):
+	headers = {}
+
+	origin = request.environ.get("HTTP_ORIGIN")
+	if origin == cfg.get("replay_viewer.origin"):
+		headers["Access-Control-Allow-Credentials"] = "true"
+	headers["Access-Control-Expose-Headers"] = "X-Allow-SS13-Replay-Streaming"
+	headers["Access-Control-Allow-Origin"] = origin if origin else "*"
+
 	round = db.Round.from_id(round_id)
 
 	if not round:
-		return abort(404)
+		return Response("Round does not exist", status=404, headers=headers)
 
-	in_progress = round.in_progress()
+	if round.in_progress() and not g.current_user.has_perms("round.logs"):
+		return Response("Round in progress, unauthorized", status=401, headers=headers)
 
-	if in_progress:
-		if not g.current_user.has_perms("round.logs"):
-			return abort(401) # The round is ongoing and the user doesn't have access to live round logs, unauthorized
-	
 	logs = RoundLogs(round_id)
-
 	demo_file = logs.find_demo_file()
 
 	if not demo_file: # There is no replay for this one
-		abort(404)
+		return Response("No replay file found", status=404, headers=headers)
 
 	response = send_file(demo_file, conditional=True)
-
-	# Header hell
-	origin = request.environ.get("HTTP_ORIGIN")
-
-	response.headers.add("Access-Control-Expose-Headers", "X-Allow-SS13-Replay-Streaming")
-	response.headers.add("Access-Control-Allow-Origin", origin if origin else "*")
+	response.headers.update(headers)
 
 	if demo_file.endswith(".gz"):
 		response.headers.add("Content-Encoding", "gzip")
@@ -92,9 +91,6 @@ def page_round_replay(round_id):
 	if demo_file.endswith(".gz") or not round.in_progress():
 		response.headers.add("Cache-Control", f"public,max-age={cfg.get('replay_viewer.max_cache_age')},immutable")
 
-	if origin == cfg.get("replay_viewer.origin"):
-		response.headers.add("Access-Control-Allow-Credentials", "true")
-	
 	return response
 
 
