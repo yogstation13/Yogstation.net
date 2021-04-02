@@ -1,6 +1,6 @@
 development_env: $DEVELOPMENT_ENV
 
-baseurl: "https://dev.yogstation.net"
+baseurl: "https://yogstation.net"
 
 db:
   game:
@@ -124,8 +124,8 @@ xenforo:
     headcoder: 30
 
 paypal:
-  form_url: "https://sandbox.paypal.com/cgi-bin/webscr"
-  ipn_url: "https://ipnpb.sandbox.paypal.com/cgi-bin/webscr"
+  form_url: "https://paypal.com/cgi-bin/webscr"
+  ipn_url: "https://ipnpb.paypal.com/cgi-bin/webscr"
   email: "PayPal@yogstation.net"
   item_name: "Donation to Yogstation" # Description of what people are paying for when they donate
   currency_code: "USD"
