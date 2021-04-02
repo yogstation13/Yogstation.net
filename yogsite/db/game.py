@@ -96,7 +96,9 @@ class Player(flask_db_ext.Model):
 				and_(
 					RoleTime.ckey == self.ckey,
 					RoleTime.job != "Living",		# probably not the best way to do this but.... UGHHH
-					RoleTime.job != "Ghost"
+					RoleTime.job != "Ghost",
+					RoleTime.job != "Admin",
+					RoleTime.job != "Mentor"
 				)
 			).order_by(RoleTime.minutes.desc()).first()
 
