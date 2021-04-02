@@ -65,10 +65,10 @@ class Player(flask_db_ext.Model):
 		return game_db.query(Connection.round_id).filter(Connection.ckey == self.ckey).distinct(Connection.round_id).count()
 
 	def get_bans(self):
-		return query_grouped_bans().filter(Ban.ckey == self.ckey).all()
+		return query_grouped_bans().filter(Ban.ckey == self.ckey).order_by(Ban.bantime.desc()).all()
 	
 	def get_notes(self):
-		return game_db.query(Note).filter(Note.targetckey == self.ckey)
+		return game_db.query(Note).filter(Note.targetckey == self.ckey).order_by(Note.timestamp.desc())
 	
 	def get_visible_notes(self):
 		return self.get_notes().filter(Note.deleted == 0, or_(Note.expire_timestamp == None, Note.expire_timestamp > datetime.utcnow()))
