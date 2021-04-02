@@ -88,7 +88,7 @@ def page_round_replay(round_id):
 	else:
 		response.headers.add("X-Allow-SS13-Replay-Streaming", "true")
 	
-	if demo_file.endswith(".gz") or not round.in_progress():
+	if not round.in_progress():
 		response.headers.add("Cache-Control", f"public,max-age={cfg.get('replay_viewer.max_cache_age')},immutable")
 
 	return response
