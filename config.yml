@@ -160,3 +160,7 @@ donation:
       details: "You have the option to spawn with purrbation enabled, which gives you cat ears and a tail. Why you would want this? Well, who knows, but we threw it in anyway."
     - caption: "New HUDs"
       details: "You get to select a fancy new HUD. That's pretty cool I guess..."
+
+replay_viewer:
+  origin: "https://yogstation13.github.io"
+  max_cache_age: "31536000"

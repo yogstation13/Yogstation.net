@@ -1,4 +1,4 @@
-from flask import abort, Blueprint, g, jsonify, render_template, request, Response, stream_with_context
+from flask import abort, Blueprint, g, jsonify, render_template, request, Response, send_file
 
 import math
 
@@ -6,7 +6,7 @@ from sqlalchemy import or_
 
 from yogsite.config import cfg
 from yogsite import db
-from yogsite.util import login_required, perms_required, yield_file_chunks
+from yogsite.util import login_required, perms_required
 
 from .log_parsing import RoundLogs
 
@@ -62,8 +62,10 @@ def page_round_replay(round_id):
 
 	if not round:
 		return abort(404)
-	
-	if round.in_progress():
+
+	in_progress = round.in_progress()
+
+	if in_progress:
 		if not g.current_user.has_perms("round.logs"):
 			return abort(401) # The round is ongoing and the user doesn't have access to live round logs, unauthorized
 	
@@ -74,10 +76,26 @@ def page_round_replay(round_id):
 	if not demo_file: # There is no replay for this one
 		abort(404)
 
-	return Response(
-		stream_with_context(yield_file_chunks(demo_file)),
-		mimetype='text/plain'
-	)
+	response = send_file(demo_file, conditional=True)
+
+	# Header hell
+	origin = request.environ.get("HTTP_ORIGIN")
+
+	response.headers.add("Access-Control-Expose-Headers", "X-Allow-SS13-Replay-Streaming")
+	response.headers.add("Access-Control-Allow-Origin", origin if origin else "*")
+
+	if demo_file.endswith(".gz"):
+		response.headers.add("Content-Encoding", "gzip")
+	else:
+		response.headers.add("X-Allow-SS13-Replay-Streaming", "true")
+	
+	if demo_file.endswith(".gz") or not round.in_progress():
+		response.headers.add("Cache-Control", f"public,max-age={cfg.get("replay_viewer.max_cache_age")},immutable")
+
+	if origin == cfg.get("replay_viewer.origin"):
+		response.headers.add("Access-Control-Allow-Credentials", "true")
+	
+	return response
 
 
 @blueprint.route("/api/rounds/<int:round_id>/logs")
