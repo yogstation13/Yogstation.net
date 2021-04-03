@@ -33,7 +33,11 @@
 							<tr>
 								<td>{{ book.title }}</td>
 
-								<td>{{ book.author }}</td>
+								<td>
+									<abbr title="{{ book.ckey }}">
+										{{ book.author }}
+									</abbr>
+								</td>
 								
 								<td><a href="?query={{ book.category }}" class="tag is-medium is-primary">{{ book.category }}</a></td>
 								
