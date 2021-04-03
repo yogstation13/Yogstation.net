@@ -6,6 +6,8 @@ import os
 
 import time
 
+from urllib.parse import quote_plus
+
 import uuid
 
 from yogsite.config import cfg
@@ -13,6 +15,9 @@ from yogsite import db
 from yogsite.extensions import flask_db_ext, flask_limiter_ext
 from yogsite.modules.login import User
 from yogsite import util
+
+def add_custom_filters(app):
+	app.jinja_env.filters['quote_plus'] = lambda u: quote_plus(u)
 
 def register_extensions(app):
 	flask_db_ext.init_app(app)
@@ -34,6 +39,7 @@ def create_app():
 	)
 
 	register_extensions(app)
+	add_custom_filters(app)
 
 	return app
 
