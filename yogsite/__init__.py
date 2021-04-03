@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Flask, g, session, send_from_directory
+from flask import Flask, g, request, session, send_from_directory
 
 import os
 
@@ -9,6 +9,8 @@ import time
 from urllib.parse import quote_plus
 
 import uuid
+
+from werkzeug.urls import url_encode
 
 from yogsite.config import cfg
 from yogsite import db
@@ -60,6 +62,14 @@ def debug_ses():
 def context_processor():
 	return dict(datetime=datetime, cfg=cfg, db=db, util=util)
 
+@app.template_global()
+def modify_query(**new_values):
+    args = request.args.copy()
+
+    for key, value in new_values.items():
+        args[key] = value
+
+    return '{}?{}'.format(request.path, url_encode(args))
 
 # Sue me
 from yogsite.modules.admin import blueprint as bp_admin
