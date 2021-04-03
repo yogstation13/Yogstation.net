@@ -45,7 +45,7 @@ class RoundLogs():
 		directory = self.get_directory()
 		files = os.listdir(directory)
 
-		if "demo.gz.txt" in files:
+		if "demo.txt.gz" in files:
 			return os.path.join(directory, "demo.txt.gz")
 
 		elif "demo.txt" in files:
