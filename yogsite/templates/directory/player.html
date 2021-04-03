@@ -26,21 +26,21 @@
 			<h2 class="title is-3 has-text-centered">Statistics</h2>
 
 			<div class="columns">
-				<div class="column is-one-fourth">
+				<div class="column is-one-third">
 					<div class="box has-text-centered">
 						<p class="title is-4">Connections</p>
 						<p class="subtitle is-4">{{ player.get_connection_count() }}</p>
 					</div>
 				</div>
 
-				<div class="column is-one-fourth">
+				<div class="column is-one-third">
 					<div class="box has-text-centered">
 						<p class="title is-4">Deaths</p>
 						<p class="subtitle is-4">{{ player.get_death_count() }}</p>
 					</div>
 				</div>
 
-				<div class="column is-one-fourth">
+				<div class="column is-one-third">
 					<div class="box has-text-centered">
 						<p class="title is-4">Rounds Played</p>
 						<p class="subtitle is-4">{{ player.get_round_count() }}</p>
@@ -52,26 +52,26 @@
 
 			<h2 class="title is-3 has-text-centered">Play Time</h2>
 
-			<div class="columns">
-				<div class="column is-one-fourth">
+			<div class="columns is-multiline">
+				<div class="column is-one-quarter">
 					<div class="box has-text-centered">
 						<p class="title is-4">Total</p>
 						<p class="subtitle is-4">{{ (player.get_total_playtime() / 60) | round | int }} hours</p> {# TODO: optimize #}
 					</div>
 				</div>
-				<div class="column is-one-fourth">
+				<div class="column is-one-quarter">
 					<div class="box has-text-centered">
 						<p class="title is-4">Living</p>
 						<p class="subtitle is-4">{{ (player.get_role_time("Living") / 60) | round | int }} hours</p>
 					</div>
 				</div>
-				<div class="column is-one-fourth">
+				<div class="column is-one-quarter">
 					<div class="box has-text-centered">
 						<p class="title is-4">Ghost</p>
 						<p class="subtitle is-4">{{ (player.get_role_time("Ghost") / 60) | round | int }} hours</p>
 					</div>
 				</div>
-				<div class="column is-one-fourth">
+				<div class="column is-one-quarter">
 					<div class="box has-text-centered">
 						<p class="title is-4">Favorite Job</p>
 
@@ -84,6 +84,25 @@
 								None
 							{% endif %}
 						</p>
+					</div>
+				</div>
+				<!-- Next row -->
+				<div class="column is-one-third">
+					<div class="box has-text-centered">
+						<p class="title is-4">First Seen</p>
+						<p class="subtitle is-4" title="{{ player.firstseen }}">{{ player.firstseen.date() }}</p>
+					</div>
+				</div>
+				<div class="column is-one-third">
+					<div class="box has-text-centered">
+						<p class="title is-4">Last Seen</p>
+						<p class="subtitle is-4" title="{{ player.lastseen }}">{{ player.lastseen.date() }}</p>
+					</div>
+				</div>
+				<div class="column is-one-third">
+					<div class="box has-text-centered">
+						<p class="title is-4">Account Created</p>
+						<p class="subtitle is-4">{{ player.accountjoindate or "Unknown" }}</p>
 					</div>
 				</div>
 			</div>
