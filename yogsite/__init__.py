@@ -19,7 +19,7 @@ from yogsite.modules.login import User
 from yogsite import util
 
 def add_custom_filters(app):
-	app.jinja_env.filters['quote_plus'] = lambda u: quote_plus(u)
+	app.jinja_env.filters['quote_plus'] = lambda u: quote_plus(str(u))
 
 def register_extensions(app):
 	flask_db_ext.init_app(app)

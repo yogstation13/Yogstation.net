@@ -44,9 +44,23 @@
 									<td>In Progress</td>
 								{% endif %}
 
-								<td><a href="?query={{ round.game_mode | quote_plus }}" class="tag is-medium is-primary">{{ round.game_mode }}</a></td>
+								<td>
+									<a
+										{% if round.game_mode %}
+											href="?query={{ round.game_mode | quote_plus }}"
+										{% endif %}
+										class="tag is-medium is-primary">{{ round.game_mode }}
+									</a>
+								</td>
 
-								<td><a href="?query={{ round.map_name | quote_plus }}" class="tag is-medium is-info">{{ round.map_name }}</a></td>
+								<td>
+									<a
+										{% if round.map_name %}
+											href="?query={{ round.map_name | quote_plus }}"
+										{% endif %}
+										class="tag is-medium is-primary">{{ round.map_name }}
+									</a>
+								</td>
 
 								<td>{{ round.station_name }}</td>
 
