@@ -21,13 +21,25 @@
 						</div>
 					</div>
 		
-					<div class="field">
-						<div class="label">Expiration Date</div>
-						<div class="control has-icons-left">
-							{{ form_set_loa.expiration_time(class_="input is-fullwidth") }}
-							<span class="icon is-small is-left">
-								<i class="fas fa-clock"></i>
-							</span>
+					<div class="columns">
+						<div class="field column">
+							<div class="label">CKEY</div>
+							<div class="control has-icons-left">
+								{{ form_set_loa.ckey(class_="input is-fullwidth", placeholder="Enter the CKEY of the user...", readonly=not g.current_user.has_perms("loa.others")) }}
+								<span class="icon is-small is-left">
+									<i class="fas fa-user"></i>
+								</span>
+							</div>
+						</div>
+
+						<div class="field column">
+							<div class="label">Expiration Date</div>
+							<div class="control has-icons-left">
+								{{ form_set_loa.expiration_time(class_="input is-fullwidth") }}
+								<span class="icon is-small is-left">
+									<i class="fas fa-clock"></i>
+								</span>
+							</div>
 						</div>
 					</div>
 
@@ -45,8 +57,8 @@
 					<thead>
 						<tr>
 							<th>CKEY</th>
-							<th>Start Time</th>
-							<th>Expiry Time</th>
+							<th>Start Date</th>
+							<th>Expiry Date</th>
 							<th>Reason</th>
 							<th>Tools</th>
 						</tr>

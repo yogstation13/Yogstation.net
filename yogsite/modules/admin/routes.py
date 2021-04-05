@@ -38,10 +38,20 @@ def page_loa():
 
 	if request.method == "POST":
 		if form_set_loa.validate_on_submit():
-			db.LOA.add(g.current_user.ckey, reason=form_set_loa.reason.data, expiry_time=form_set_loa.expiration_time.data)
+
+			if g.current_user.has_perms("loa.others"):
+				ckey = form_set_loa.ckey.data
+			else:
+				ckey = g.current_user.ckey	# If they dont have the perm they should never be able to set it to
+											# anything else anyway so the only reason this is used is if an
+											# admin is tampering with something
+
+			db.LOA.add(admin_ckey=ckey, reason=form_set_loa.reason.data, expiry_time=form_set_loa.expiration_time.data)
 			flash("Successfully Set LOA", "success")
 			
 			return redirect(url_for("admin.page_loa"))
+	else:
+		form_set_loa.ckey.data = g.current_user.ckey
 
 	return render_template("admin/loa_manager.html", 
 		loas = loas, form_set_loa = form_set_loa
