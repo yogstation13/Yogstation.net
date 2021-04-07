@@ -25,7 +25,19 @@ def page_bans():
 	displayed_bans = bans_query.offset((page-1)*cfg.get("items_per_page")).limit(cfg.get("items_per_page"))
 
 	if request.args.get("json"):
-		bans_json = []
+		bans_json = [{
+			"id": ban.id,
+			"bantime": str(ban.bantime),
+			"round_id": ban.round_id,
+			"expiration_time": str(ban.expiration_time) if ban.expiration_time else None,
+			"reason": ban.reason,
+			"ckey": ban.ckey,
+			"a_ckey": ban.a_ckey,
+			"unbanned_datetime": str(ban.unbanned_datetime) if ban.unbanned_datetime else None,
+			"unbanned_ckey": ban.unbanned_ckey,
+			"roles": ban.roles.split(",")
+		} for ban in displayed_bans]
+
 		return jsonify(bans_json)
 
 	return render_template("bans/bans.html", bans=displayed_bans, page=page, page_count=page_count, search_query=search_query)
