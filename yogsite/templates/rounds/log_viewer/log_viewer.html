@@ -26,14 +26,23 @@
 			</div>
 			
 			<div class="box">
+				<div class="field has-addons">
+					<div class="control has-icons-left is-expanded">
+						
+						<input class="input" type="text" placeholder="Filter logs..." v-on:input="query = $event.target.value" 
+						:class="{'is-danger': !regex_valid}" />
 
-				<div class="control has-icons-left">
-					
-					<input class="input" type="text" placeholder="Filter logs..." v-on:input="query = $event.target.value" />
+						<span class="icon is-small is-left">
+							<i class="fas fa-search"></i>
+						</span>
+					</div>
 
-					<span class="icon is-small is-left">
-						<i class="fas fa-search"></i>
-					</span>
+					<div class="control">
+						<input id="regex-toggle" class="button" type="checkbox" v-model="regex_enabled" style="display: none;" />
+						<label for="regex-toggle" class="button" :class="{'is-success': regex_enabled}" style="font-family: monospace;">
+							<b>.*</b>
+						</label>
+					</div>
 				</div>
 
 				<br/>

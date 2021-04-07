@@ -9,7 +9,7 @@ import re	# it begins
 from yogsite.config import cfg
 
 
-GAME_LOG_REGEX = re.compile(r"^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\]([\s\S]*?)\n(?=(?:^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\]|\Z))", re.M) # wew
+GAME_LOG_REGEX = re.compile(r"^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\] ([\s\S]*?)\n(?=(?:^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\]|\Z))", re.M) # wew
 
 
 class RoundLogs():

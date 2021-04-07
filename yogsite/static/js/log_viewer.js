@@ -25,7 +25,9 @@ window.addEventListener("load", function () {
 			log_entries: [],
 			category_color_classes: category_color_classes,
 			enabled_categories: Object.keys(category_color_classes),
-			seek: 0
+			seek: 0,
+			regex_enabled: false,
+			regex_valid: true
 		},
 
 		mounted: function() {
@@ -35,8 +37,19 @@ window.addEventListener("load", function () {
 		computed: {
 			filtered_log_entries() {
 				var temp_log_entries = this.log_entries.filter(entry => {
-					return	entry.content.toLowerCase().includes(this.query.toLowerCase()) &&
-							this.enabled_categories.includes(entry.category);
+					if (this.regex_enabled) {
+						try {
+							var regex = new RegExp(this.query, "gim");
+							this.regex_valid = true;
+							return regex.test(entry.content) && this.enabled_categories.includes(entry.category);
+						} catch (e) {
+							this.regex_valid = false;
+							return [];
+						}
+					} else {
+						return entry.content.toLowerCase().includes(this.query.toLowerCase()) &&
+								this.enabled_categories.includes(entry.category);
+					}
 				})
 				
 				return temp_log_entries;
