@@ -189,6 +189,9 @@ class Ban(flask_db_ext.Model):
 	def add_from_form(cls, form):
 		bantime = datetime.utcnow() # Want all of the jobban entries to have the same time
 
+		current_round = Round.get_latest()
+		round_id = current_round.id if current_round else 0
+
 		for role in form.roles.data:
 			entry = cls(
 				ckey = byondname_to_ckey(form.ckey.data),
@@ -199,8 +202,9 @@ class Ban(flask_db_ext.Model):
 				ip = int(IPAddress(form.ip.data)) if form.ip.data else None,
 				computerid = form.computerid.data if form.computerid.data else None,
 				reason = form.reason.data,
+				round_id = round_id,
 				## Defaults ##
-				server_ip = 0, server_port = 0, round_id = 0, applies_to_admins = 0, edits = None,
+				server_ip = 0, server_port = 0, applies_to_admins = 0, edits = None,
 				unbanned_datetime = None, unbanned_ckey = None, unbanned_round_id = None, a_ip = int(IPAddress(request.remote_addr)),
 				a_computerid = 0, who = "", adminwho = "", unbanned_ip = None, unbanned_computerid = None
 			)
@@ -399,6 +403,10 @@ class Round(flask_db_ext.Model):
 			return game_db.query(cls).filter(cls.id == id).one()
 		except NoResultFound:
 			return None
+	
+	@classmethod
+	def get_latest(cls):
+		return game_db.query(cls).order_by(cls.id.desc()).first()
 	
 	def in_progress(self):
 		if self.shutdown_datetime:

@@ -20,9 +20,14 @@ def page_bans():
 
 	bans_query = db.query_grouped_bans(search_query=search_query)
 
+	if not g.current_user.has_perms("ban.manage"):
+		current_round = db.Round.get_latest()
+
+		bans_query = bans_query.filter(db.Ban.round_id != current_round.id) # Don't let normal users see bans from the current round
+
 	page_count = math.ceil(bans_query.count() / cfg.get("items_per_page")) # Selecting only the id on a count is faster than selecting the entire row
 
-	displayed_bans = bans_query.offset((page-1)*cfg.get("items_per_page")).limit(cfg.get("items_per_page"))
+	bans_query = bans_query.offset((page-1)*cfg.get("items_per_page")).limit(cfg.get("items_per_page"))
 
 	if request.args.get("json"):
 		bans_json = [{
@@ -36,11 +41,11 @@ def page_bans():
 			"unbanned_datetime": str(ban.unbanned_datetime) if ban.unbanned_datetime else None,
 			"unbanned_ckey": ban.unbanned_ckey,
 			"roles": ban.roles.split(",")
-		} for ban in displayed_bans]
+		} for ban in bans_query]
 
 		return jsonify(bans_json)
 
-	return render_template("bans/bans.html", bans=displayed_bans, page=page, page_count=page_count, search_query=search_query)
+	return render_template("bans/bans.html", bans=bans_query, page=page, page_count=page_count, search_query=search_query)
 
 
 @blueprint.route("/api/last_ip_cid")
