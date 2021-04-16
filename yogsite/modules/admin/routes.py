@@ -81,8 +81,9 @@ def page_loa_action(loa_id, action):
 @perms_required("activity.access")
 def page_activity():
 	admin_groups = get_xenforo_groups()
+	enabled_groups = [group for group in admin_groups if group.group_id not in cfg.get("activity_tracker.excluded_groups")]
 
-	return render_template("admin/activity_tracker.html", admin_groups=admin_groups)
+	return render_template("admin/activity_tracker.html", admin_groups=enabled_groups)
 
 
 @blueprint.route("/api/admin/activity")
@@ -91,12 +92,12 @@ def page_activity():
 def page_api_activity():
 	start_date = request.args.get("start_date")
 	end_date = request.args.get("end_date")
-	enabled_ranks = request.args.getlist("enabled_ranks[]")
+	enabled_groups = request.args.getlist("enabled_ranks[]")
 
 	if start_date == None or end_date == None:
 		return abort(400)
 	
-	analytics = AdminActivityAnalytics(datetime.strptime(start_date, "%Y-%m-%d").date(), datetime.strptime(end_date, "%Y-%m-%d").date(), enabled_ranks=enabled_ranks)
+	analytics = AdminActivityAnalytics(datetime.strptime(start_date, "%Y-%m-%d").date(), datetime.strptime(end_date, "%Y-%m-%d").date(), enabled_groups=enabled_groups)
 	
 	return jsonify(analytics.admin_leaderboard())
 

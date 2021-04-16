@@ -164,3 +164,8 @@ donation:
 replay_viewer:
   origin: "https://yogstation13.github.io"
   max_cache_age: "31536000"
+
+activity_tracker:
+  excluded_groups: [
+    2 # Registered
+  ]

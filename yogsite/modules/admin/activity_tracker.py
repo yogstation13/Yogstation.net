@@ -4,12 +4,15 @@ import math
 
 from sqlalchemy import and_, func
 
+from yogsite.config import cfg
 from yogsite import db
 from yogsite.util.xenforo import get_xenforo_users_from_groups
 
 class AdminActivityAnalytics():
-	def __init__(self, start_date, end_date, enabled_ranks):
-		self.admins = get_xenforo_users_from_groups(enabled_ranks)
+	def __init__(self, start_date, end_date, enabled_groups):
+		enabled_groups = [group_id for group_id in enabled_groups if group_id not in cfg.get("activity_tracker.excluded_groups")]
+
+		self.admins = get_xenforo_users_from_groups(enabled_groups)
 		self.start_date = start_date
 		self.end_date = end_date
 
