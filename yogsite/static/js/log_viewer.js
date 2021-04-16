@@ -6,13 +6,17 @@ var category_color_classes = {
 	"map_errors": "is-danger is-light",
 	"telecomms": "is-success",
 	"pda": "is-success is-light",
+	"ntsl": "is-success is-light",
+	"paper": "is-light",
 	"sql": "is-info",
 	"tgui": "is-link",
 	"hrefs": "is-link is-light",
 	"job_debug": "is-warning is-light",
 	"mecha": "is-warning is-light",
+	"cloning": "is-secondary is-light",
 	"asset": "is-primary is-light",
-	"manifest": "is-info is-light"
+	"manifest": "is-info is-light",
+	"virus": "is-danger is-light"
 }
 
 var default_enabled_classes = [

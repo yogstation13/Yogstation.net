@@ -17,6 +17,7 @@ class RoundLogs():
 	files_to_parse = [ # We will ignore any file not in this
 		"asset.log",
 		"attack.log",
+		"cloning.log",
 		"config_error.log",
 		"game.log",
 		"hrefs.log",
@@ -24,11 +25,14 @@ class RoundLogs():
 		"manifest.log",
 		"map_errors.log",
 		"mecha.log",
+		"ntsl.log",
+		"paper.log",
 		"pda.log",
 		"runtime.log",
 		"sql.log",
 		"telecomms.log",
-		"tgui.log"
+		"tgui.log",
+		"virus.log"
 	]
 
 	def __init__(self, round_id):
