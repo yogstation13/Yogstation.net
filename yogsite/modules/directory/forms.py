@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 
-from wtforms import SelectField, TextField
+from wtforms import SelectField, TextField, BooleanField
 from wtforms.validators import AnyOf, DataRequired, Length
 
 class NoteAddForm(FlaskForm):
@@ -15,3 +15,5 @@ class NoteAddForm(FlaskForm):
 		)),
 		validators=[DataRequired()]
 	)
+
+	secret = BooleanField("Secret")

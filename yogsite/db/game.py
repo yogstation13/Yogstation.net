@@ -138,7 +138,8 @@ class Note(flask_db_ext.Model):
 			server_ip = 0,
 			server_port = 0,
 			round_id = 0,
-			deleted = 0
+			deleted = 0,
+			secret = int(form.secret.data)
 		)
 
 		game_db.add(note)

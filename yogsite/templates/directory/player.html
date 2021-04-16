@@ -125,7 +125,12 @@
 									{{ form_note_add.type() }}
 								</div>
 							</div>
-
+							<div class="control">
+								<label class="checkbox button">
+									{{ form_note_add.secret() }}
+									<i class="fas fa-eye-slash" title="Secret"></i>
+								</label>
+							</div>
 							<div class="control">
 								<button class="button is-primary is-pulled-right">Add Note</button>
 							</div>
