@@ -15,6 +15,11 @@ var category_color_classes = {
 	"manifest": "is-info is-light"
 }
 
+var default_enabled_classes = [
+	"game",
+	"attack"
+]
+
 window.addEventListener("load", function () {
 
 	window.log_viewer = new Vue ({
@@ -24,7 +29,7 @@ window.addEventListener("load", function () {
 			query: "",
 			log_entries: [],
 			category_color_classes: category_color_classes,
-			enabled_categories: Object.keys(category_color_classes),
+			enabled_categories: [...default_enabled_classes],
 			seek: 0,
 			regex_enabled: false,
 			regex_valid: true
