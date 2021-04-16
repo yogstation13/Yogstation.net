@@ -12,7 +12,7 @@
 	<div class="columns is-centered">
 		<div class="column is-four-fifths">
 
-			{{ search_form(search_query, "Search by CKEY...") }}
+			{{ search_form(search_query, "Search by CKEY or Email...") }}
 
 			{{ pagination(page, page_count) }}
 
@@ -20,7 +20,7 @@
 				<table class="table is-striped is-hoverable is-fullwidth">
 					<thead>
 						<tr>
-							<th>CKEY</th>
+							<th>CKEY / Email</th>
 							<th>Amount</th>
 							<th width="150px">Donate Date</th>
 							<th width="150px">Expire Date</th>
@@ -32,7 +32,12 @@
 					<tbody>
 						{% for donation in donations %}
 							<tr>
-								<td>{{ ckey_link(donation.ckey) }}</td>
+								<td>
+									{{ ckey_link(donation.ckey) }}<br>
+									{% if donation.payer_email %}
+										<a href="mailto:{{ donation.payer_email }}">{{ donation.payer_email }}</a>
+									{% endif %}
+								</td>
 								<td>{{ "${:,.2f}".format(donation.amount) }}</td>
 								<td>{{ render_datetime_as_delta(donation.datetime) }}</td>
 								<td>

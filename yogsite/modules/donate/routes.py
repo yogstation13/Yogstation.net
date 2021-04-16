@@ -4,6 +4,8 @@ import math
 
 import requests
 
+from sqlalchemy import or_
+
 from yogsite.config import cfg
 from yogsite import db
 from yogsite.util import byondname_to_ckey, login_required, perms_required
@@ -30,7 +32,12 @@ def page_admin_donors():
 	donations_query = db.game_db.query(db.Donation).order_by(db.Donation.datetime.desc())
 
 	if search_query:
-		donations_query = donations_query.filter(db.Donation.ckey.like(search_query))
+		donations_query = donations_query.filter(
+			or_(
+				db.Donation.ckey.like(search_query),
+				db.Donation.payer_email.like(search_query)
+			)
+		)
 
 	page_count = math.ceil(donations_query.count() / cfg.get("items_per_page")) # Selecting only the id on a count is faster than selecting the entire row
 
