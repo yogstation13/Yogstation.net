@@ -80,7 +80,11 @@ def page_round_replay(round_id):
 	if not demo_file: # There is no replay for this one
 		return Response("No replay file found", status=404, headers=headers)
 
-	response = send_file(demo_file, conditional=True)
+	response = send_file(demo_file,
+		conditional=True, # Allow the file to be streamed with ranges
+		cache_timeout=-1 # Don't cache the file by default
+	)
+	
 	response.headers.update(headers)
 
 	if demo_file.endswith(".gz"):
@@ -90,6 +94,8 @@ def page_round_replay(round_id):
 	
 	if not round.in_progress():
 		response.headers.add("Cache-Control", f"public,max-age={cfg.get('replay_viewer.max_cache_age')},immutable")
+	else:
+		response.headers.remove("Cache-Control")
 
 	return response
 
