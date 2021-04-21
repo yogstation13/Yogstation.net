@@ -32,6 +32,9 @@ def create_app():
 
 	app.secret_key = cfg.get("secret_key") # Used for signing sessions
 
+	app.config['SESSION_COOKIE_SECURE'] = True
+	app.config['SESSION_COOKIE_SAMESITE'] = "Strict"
+
 	app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://{username}:{password}@{host}:{port}/{db}".format(
 		username	= cfg.get("db.game.user"),
 		password	= cfg.get("db.game.pass"),
