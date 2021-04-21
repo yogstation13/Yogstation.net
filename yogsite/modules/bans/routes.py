@@ -12,7 +12,7 @@ from .forms import BanEditForm
 blueprint = Blueprint("bans", __name__)
 
 @blueprint.route("/bans")
-@flask_limiter_ext.limit("45 per minute")
+@flask_limiter_ext.limit("60 per minute")
 def page_bans():
 	page = request.args.get('page', type=int, default=1)
 
@@ -25,11 +25,17 @@ def page_bans():
 
 		bans_query = bans_query.filter(db.Ban.round_id != current_round.id) # Don't let normal users see bans from the current round
 
-	page_count = math.ceil(bans_query.count() / cfg.get("items_per_page")) # Selecting only the id on a count is faster than selecting the entire row
+	page_length = cfg.get("items_per_page")
 
-	bans_query = bans_query.offset((page-1)*cfg.get("items_per_page")).limit(cfg.get("items_per_page"))
+	json_format = bool(request.args.get("json"))
+	if json_format:
+		page_length = max(1, min(request.args.get("amount", type=int, default=page_length), 1000))
 
-	if request.args.get("json"):
+	page_count = math.ceil(bans_query.count() / page_length) # Selecting only the id on a count is faster than selecting the entire row
+
+	bans_query = bans_query.offset((page-1)*page_length).limit(page_length)
+
+	if json_format:
 		bans_json = [{
 			"id": ban.id,
 			"bantime": str(ban.bantime),
