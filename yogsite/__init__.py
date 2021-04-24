@@ -14,7 +14,7 @@ from werkzeug.urls import url_encode
 
 from yogsite.config import cfg
 from yogsite import db
-from yogsite.extensions import flask_db_ext, flask_limiter_ext
+from yogsite.extensions import flask_csrf_ext, flask_db_ext, flask_limiter_ext
 from yogsite.modules.login import User
 from yogsite import util
 
@@ -22,6 +22,7 @@ def add_custom_filters(app):
 	app.jinja_env.filters['quote_plus'] = lambda u: quote_plus(str(u))
 
 def register_extensions(app):
+	flask_csrf_ext.init_app(app)
 	flask_db_ext.init_app(app)
 	flask_limiter_ext.init_app(app)
 

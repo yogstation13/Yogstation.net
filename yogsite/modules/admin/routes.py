@@ -58,7 +58,7 @@ def page_loa():
 	)
 
 
-@blueprint.route("/admin/loa/<int:loa_id>/<string:action>")
+@blueprint.route("/admin/loa/<int:loa_id>/<string:action>", methods=["POST"])
 @login_required
 @perms_required("loa.add")
 def page_loa_action(loa_id, action):

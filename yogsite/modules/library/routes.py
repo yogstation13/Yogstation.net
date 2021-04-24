@@ -52,7 +52,7 @@ def page_book(book_id):
 	return render_template("library/book.html", book=book)
 
 
-@blueprint.route("/library/<string:book_id>/<string:action>")
+@blueprint.route("/library/<string:book_id>/<string:action>", methods=["POST"])
 @login_required
 @perms_required("book.delete")
 def page_book_action(book_id, action):

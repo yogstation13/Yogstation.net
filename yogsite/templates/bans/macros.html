@@ -68,9 +68,15 @@
 								<a class="button" href="/bans/{{ ban.id }}/edit">Edit</a>
 
 								{% if ban.unbanned_datetime %}
-									<a class="button" href="/bans/{{ ban.id }}/reinstate">Reinstate</a>
+									<form method="post" action="/bans/{{ ban.id }}/reinstate">
+										<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+										<button class="button">Reinstate</button>
+									</form>
 								{% else %}
-									<a class="button" href="/bans/{{ ban.id }}/revoke">Revoke</a>
+									<form method="post" action="/bans/{{ ban.id }}/revoke">
+										<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+										<button class="button">Revoke</button>
+									</form>
 								{% endif %}
 							</div>
 						</td>

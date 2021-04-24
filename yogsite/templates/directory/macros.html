@@ -42,7 +42,10 @@
 					<td>
 						{% if g.current_user.has_perms("note.manage") %}
 							<div class="buttons">
-								<a class="button" href="/notes/{{ note.id }}/delete">Delete</a>
+								<form method="post" action="/notes/{{ note.id }}/delete">
+									<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+									<button class="button">Delete</button>
+								</form>
 							</div>
 						{% endif %}
 					</td>

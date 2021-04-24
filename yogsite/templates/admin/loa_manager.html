@@ -80,7 +80,10 @@
 
 								<td>
 									<div class="buttons">
-										<a class="button" href="/admin/loa/{{ loa.id }}/revoke">Revoke</a>
+										<form method="post" action="/admin/loa/{{ loa.id }}/revoke">
+											<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+											<button class="button">Revoke</button>
+										</form>
 									</div>
 								</td>
 							</tr>

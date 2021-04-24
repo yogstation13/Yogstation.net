@@ -136,7 +136,7 @@ def page_ban_add():
 	return render_template("bans/edit.html", form=form_ban_edit)
 
 
-@blueprint.route("/bans/<int:ban_id>/<string:action>")
+@blueprint.route("/bans/<int:ban_id>/<string:action>", methods=["POST"])
 @login_required
 @perms_required("ban.manage")
 def page_ban_action(ban_id, action):
@@ -156,7 +156,7 @@ def page_ban_action(ban_id, action):
 	return redirect(request.referrer)
 
 
-@blueprint.route("/notes/<int:note_id>/<string:action>")
+@blueprint.route("/notes/<int:note_id>/<string:action>", methods=["POST"])
 @login_required
 @perms_required("note.manage")
 def page_note_action(note_id, action):

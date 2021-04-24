@@ -46,15 +46,17 @@
 								<td>
 									<div class="buttons">
 										<a class="button" href="/library/{{ book.id }}">View</a>
-
-										<!-- Disabled until further notice
-											<a class="button" href="/library/{{ book.id }}/edit">Edit</a>
-										-->
 										{% if g.current_user.has_perms("book.delete") %}
 											{% if book.deleted %}
-												<a class="button is-success" href="/library/{{ book.id }}/restore">Restore</a>
+												<form method="post" action="/library/{{ book.id }}/restore">
+													<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+													<button class="button is-success">Restore</button>
+												</form>
 											{% else %}
-												<a class="button is-danger" href="/library/{{ book.id }}/delete">Delete</a>
+												<form method="post" action="/library/{{ book.id }}/delete">
+													<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+													<button class="button is-danger">Delete</button>
+												</form>
 											{% endif %}
 										{% endif %}
 									</div>
