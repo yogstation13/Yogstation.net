@@ -8,6 +8,7 @@ from sqlalchemy import or_
 
 from yogsite.config import cfg
 from yogsite import db
+from yogsite.extensions import flask_csrf_ext
 from yogsite.util import byondname_to_ckey, login_required, perms_required
 
 from werkzeug.datastructures import ImmutableOrderedMultiDict
@@ -47,6 +48,7 @@ def page_admin_donors():
 
 
 @blueprint.route("/api/paypal_donate", methods=["POST"])
+@flask_csrf_ext.exempt
 def page_api_paypal_donate():
 	args_string = ""
 	request.parameter_storage_class = ImmutableOrderedMultiDict # so it retains order, because paypal needs that for some reason
