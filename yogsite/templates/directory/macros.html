@@ -27,7 +27,7 @@
 						<td>
 							<div class="tags">
 								<div class="tag is-medium is-primary">
-									{{ note.type }}
+									{{ note.type.title() }}
 								</div>
 								{% if note.secret %}
 									<div class="tag is-medium is-danger">
