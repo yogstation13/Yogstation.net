@@ -210,6 +210,28 @@ class Ban(flask_db_ext.Model):
 				a_computerid = 0, who = "", adminwho = "", unbanned_ip = None, unbanned_computerid = None
 			)
 			game_db.add(entry)
+		
+		note_text = f"""Banned from {
+			"the server" if form.roles.data[0] == "Server" else f"Roles: {', '.join(form.roles.data)}"
+		} {
+			(f"until {form.expiration_time.data}") if form.expiration_time.data else "permanently"
+		} - {form.reason.data}"""
+
+		ban_note = Note(
+			type = "note",
+			targetckey = form.ckey.data,
+			adminckey = g.current_user.ckey,
+			text = note_text,
+			timestamp = datetime.utcnow(),
+			server = "webmin",
+			server_ip = 0,
+			server_port = 0,
+			round_id = 0,
+			deleted = 0,
+			secret = 0
+		)
+
+		game_db.add(ban_note)
 
 		game_db.commit()
 
