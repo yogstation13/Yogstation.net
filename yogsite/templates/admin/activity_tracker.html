@@ -38,16 +38,26 @@
 		</div>
 	</div>
 
-	<div class="label">Rank Filter</div>
-	<div v-cloak class="field is-grouped is-grouped-multiline">
-		{% for admin_group in admin_groups %}
-		<div class="control">
-			<label class="tag checkbox" style="user-select: none;">
-				<input v-cloak type="checkbox" v-model="enabled_ranks" value="{{ admin_group.group_id }}" />
-				&nbsp;{{ admin_group.name }}
-			</label>
+	<div class="columns">
+		<div class="column is-9">
+			<div class="label">Rank Enable</div>
+			<div v-cloak class="field is-grouped is-grouped-multiline">
+				{% for admin_group in admin_groups %}
+				<div class="control">
+					<label class="tag checkbox" style="user-select: none;">
+						<input v-cloak type="checkbox" v-model="enabled_ranks" value="{{ admin_group.group_id }}" />
+						&nbsp;{{ admin_group.name }}
+					</label>
+				</div>
+				{% endfor %}
+			</div>
 		</div>
-		{% endfor %}
+		<div class="column is-3">
+			<div class="label">Ckey Include</div>
+			<div class="field">
+				<textarea class="textarea" v-model="included_ckeys" placeholder="List one or more space seperated CKEYs to include..."></textarea>
+			</div>
+		</div>
 	</div>
 
 
@@ -66,7 +76,7 @@
 				</td>
 			</tr>
 			<tr v-for="admin in leaderboard">
-				<td>${ admin["highest_group_name"] }</td>
+				<td>${ admin["highest_group_name"] || "None" }</td>
 
 				<td><a :href="'/players/' + admin['ckey']">${ admin["ckey"] }</a></td>
 

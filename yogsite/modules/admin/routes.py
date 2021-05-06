@@ -93,11 +93,12 @@ def page_api_activity():
 	start_date = request.args.get("start_date")
 	end_date = request.args.get("end_date")
 	enabled_groups = request.args.getlist("enabled_ranks[]")
+	included_ckeys = request.args.getlist("included_ckeys[]")
 
 	if start_date == None or end_date == None:
 		return abort(400)
 	
-	analytics = AdminActivityAnalytics(datetime.strptime(start_date, "%Y-%m-%d").date(), datetime.strptime(end_date, "%Y-%m-%d").date(), enabled_groups=enabled_groups)
+	analytics = AdminActivityAnalytics(datetime.strptime(start_date, "%Y-%m-%d").date(), datetime.strptime(end_date, "%Y-%m-%d").date(), enabled_groups=enabled_groups, included_ckeys=included_ckeys)
 	
 	return jsonify(analytics.admin_leaderboard())
 

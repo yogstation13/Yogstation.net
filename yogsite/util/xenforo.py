@@ -32,7 +32,7 @@ class XenforoUser():
 
 	def __init__(self, ckey=None, groups=None):
 		self.ckey = ckey
-		self.groups = groups
+		self.groups = groups if groups else []
 	
 	def has_group(self, group_id):
 		for group in self.groups:
@@ -90,7 +90,7 @@ def get_xenforo_users_from_groups(group_ids):
 			else:
 				xenforo_users[ckey] = XenforoUser(ckey=ckey, groups=[group])
 
-	return xenforo_users.values()
+	return list(xenforo_users.values())
 
 @cached(cache=TTLCache(ttl=36000, maxsize=1)) # 10 hour cache because screw doing a ton of http requests a ton of times
 def get_frontpage_staff():

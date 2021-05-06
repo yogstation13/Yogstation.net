@@ -6,13 +6,13 @@ from sqlalchemy import and_, func
 
 from yogsite.config import cfg
 from yogsite import db
-from yogsite.util.xenforo import get_xenforo_users_from_groups
+from yogsite.util.xenforo import get_xenforo_users_from_groups, XenforoUser
 
 class AdminActivityAnalytics():
-	def __init__(self, start_date, end_date, enabled_groups):
+	def __init__(self, start_date, end_date, enabled_groups, included_ckeys):
 		enabled_groups = [group_id for group_id in enabled_groups if group_id not in cfg.get("activity_tracker.excluded_groups")]
 
-		self.admins = get_xenforo_users_from_groups(enabled_groups)
+		self.admins = get_xenforo_users_from_groups(enabled_groups) + [XenforoUser(ckey=ckey) for ckey in included_ckeys]
 		self.start_date = start_date
 		self.end_date = end_date
 
@@ -36,6 +36,10 @@ class AdminActivityAnalytics():
 		leaderboard = []
 		
 		for admin in self.admins:
-			leaderboard.append({"highest_group_name": admin.get_highest_group().name, "ckey": admin.ckey, "playtime": self.admin_playtime(admin.ckey).total_seconds()})
+			leaderboard.append({
+				"highest_group_name": admin.get_highest_group().name if len(admin.groups) else None,
+				"ckey": admin.ckey,
+				"playtime": self.admin_playtime(admin.ckey).total_seconds()
+			})
 		
 		return sorted(leaderboard, key=lambda e: e["playtime"], reverse=True)
