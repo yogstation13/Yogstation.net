@@ -51,7 +51,7 @@
 										{% if round.game_mode %}
 											href="?query={{ round.game_mode | quote_plus }}"
 										{% endif %}
-										class="tag is-medium is-primary">{{ round.game_mode.title() }}
+										class="tag is-medium is-primary">{{ (round.game_mode or "None").title() }}
 									</a>
 								</td>
 
@@ -60,7 +60,7 @@
 										{% if round.map_name %}
 											href="?query={{ round.map_name | quote_plus }}"
 										{% endif %}
-										class="tag is-medium is-primary">{{ round.map_name.title() }}
+										class="tag is-medium is-primary">{{ (round.map_name or "None").title() }}
 									</a>
 								</td>
 
