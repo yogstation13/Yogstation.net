@@ -1,65 +1,67 @@
 {% from 'util/macros.html' import render_datetime_as_delta, ckey_link with context %}
 
 {% macro note_listing(notes, show_ckey=True) %}
-	<table class="table is-striped is-hoverable is-fullwidth">
-		<thead>
-			<tr>
-				{% if show_ckey %}
-					<th>CKEY</th>
-				{% endif %}
-
-				<th>Type</th>
-				<th width="200px">Date</th>
-				<th>Text</th>
-				<th>Admin</th>
-				<th>Tools</th>
-			</tr>
-		</thead>
-
-		<tbody>
-			{% for note in notes %}
+	<div style="overflow-x: auto;">
+		<table class="table is-striped is-hoverable is-fullwidth">
+			<thead>
 				<tr>
 					{% if show_ckey %}
-						<td>{{ ckey_link(note.targetckey) }}</td>
+						<th>CKEY</th>
 					{% endif %}
 
-					<td>
-						<div class="tags">
-							<div class="tag is-medium is-primary">
-								{{ note.type }}
+					<th>Type</th>
+					<th width="200px">Date</th>
+					<th>Text</th>
+					<th>Admin</th>
+					<th>Tools</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{% for note in notes %}
+					<tr>
+						{% if show_ckey %}
+							<td>{{ ckey_link(note.targetckey) }}</td>
+						{% endif %}
+
+						<td>
+							<div class="tags">
+								<div class="tag is-medium is-primary">
+									{{ note.type }}
+								</div>
+								{% if note.secret %}
+									<div class="tag is-medium is-danger">
+										<i class="fas fa-eye-slash" title="Secret"></i>
+									</div>
+								{% endif %}
 							</div>
-							{% if note.secret %}
-								<div class="tag is-medium is-danger">
-									<i class="fas fa-eye-slash" title="Secret"></i>
+						</td>
+
+						<td>
+							{% if note.timestamp %}
+								{{ render_datetime_as_delta(note.timestamp) }}
+							{% else %}
+								None
+							{% endif %}
+						</td>
+					
+						<td>{{ note.text }}</td>
+
+						<td>{{ ckey_link(note.adminckey) }}</td>
+
+						<td>
+							{% if g.current_user.has_perms("note.manage") %}
+								<div class="buttons">
+									<form method="post" action="/notes/{{ note.id }}/delete">
+										<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+										<button class="button">Delete</button>
+									</form>
 								</div>
 							{% endif %}
-						</div>
-					</td>
-
-					<td>
-						{% if note.timestamp %}
-							{{ render_datetime_as_delta(note.timestamp) }}
-						{% else %}
-							None
-						{% endif %}
-					</td>
-				
-					<td>{{ note.text }}</td>
-
-					<td>{{ ckey_link(note.adminckey) }}</td>
-
-					<td>
-						{% if g.current_user.has_perms("note.manage") %}
-							<div class="buttons">
-								<form method="post" action="/notes/{{ note.id }}/delete">
-									<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-									<button class="button">Delete</button>
-								</form>
-							</div>
-						{% endif %}
-					</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 {% endmacro %}

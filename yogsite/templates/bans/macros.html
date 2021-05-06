@@ -1,88 +1,90 @@
 {% from 'util/macros.html' import ckey_link, render_datetime_as_delta, abbreviate with context %}
 
 {% macro ban_listing(bans, show_ckey=True) %}
-	<table class="table is-striped is-hoverable is-fullwidth">
-		<thead>
-			<tr>
-				{% if show_ckey %}
-					<th>CKEY</th>
-				{% endif %}
-
-				<th>Type</th>
-				<th>Reason</th>
-				<th width="150px">Ban Date</th>
-				<th width="150px">Expire Date</th>
-				<th>Admin</th>
-				<th>Status</th>
-				{% if g.current_user.has_perms("ban.manage") %}
-					<th>Tools</th>
-				{% endif %}
-			</tr>
-		</thead>
-
-		<tbody>
-			{% for ban in bans %}
+	<div style="overflow-x: auto;">
+		<table class="table is-striped is-hoverable is-fullwidth">
+			<thead>
 				<tr>
 					{% if show_ckey %}
-						<td>{{ ckey_link(ban.ckey) }}</td>
+						<th>CKEY</th>
 					{% endif %}
 
-					<td>
-						{{ abbreviate(", ".join(ban.roles.split(",")), 30) }}
-						{# This is because the delimiter is ',' and I can't change it anywhere
-						else so I guess I'll just have to change it here in the view #}
-					</td>
-
-					<td>{{ ban.reason }}</td>
-
-					<td>{{ render_datetime_as_delta(ban.bantime) }}</td>
-					
-					{% if ban.expiration_time %}
-						<td>{{ render_datetime_as_delta(ban.expiration_time) }}</td>
-					{% else %}
-						<td>Never</td>
-					{% endif %}
-
-					<td>{{ ckey_link(ban.a_ckey) }}</td>
-
-					<td>
-						{% if ban.unbanned_datetime %}
-							<div class="tag is-success is-medium has-text-centered">
-								{% if ban.unbanned_ckey %}
-									<abbr title="{{ ban.unbanned_ckey }}">Revoked</abbr>
-								{% else %}
-									Revoked
-								{% endif %}								
-							</div>
-						{% elif ban.expiration_time and datetime.utcnow() > ban.expiration_time %}
-							<div class="tag is-primary is-medium has-text-centered">Expired</div>
-						{% else %}
-							<div class="tag is-danger is-medium has-text-centered">Active</div>
-						{% endif %}
-					</td>
-
-					
+					<th>Type</th>
+					<th>Reason</th>
+					<th width="150px">Ban Date</th>
+					<th width="150px">Expire Date</th>
+					<th>Admin</th>
+					<th>Status</th>
 					{% if g.current_user.has_perms("ban.manage") %}
-						<td>
-							<div class="buttons">
-								<a class="button" href="/bans/{{ ban.id }}/edit">Edit</a>
-
-								{% if ban.unbanned_datetime %}
-									<form method="post" action="/bans/{{ ban.id }}/reinstate">
-										<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-										<button class="button">Reinstate</button>
-									</form>
-								{% else %}
-									<form method="post" action="/bans/{{ ban.id }}/revoke">
-										<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-										<button class="button">Revoke</button>
-									</form>
-								{% endif %}
-							</div>
-						</td>
+						<th>Tools</th>
 					{% endif %}
 				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+			</thead>
+
+			<tbody>
+				{% for ban in bans %}
+					<tr>
+						{% if show_ckey %}
+							<td>{{ ckey_link(ban.ckey) }}</td>
+						{% endif %}
+
+						<td>
+							{{ abbreviate(", ".join(ban.roles.split(",")), 30) }}
+							{# This is because the delimiter is ',' and I can't change it anywhere
+							else so I guess I'll just have to change it here in the view #}
+						</td>
+
+						<td>{{ ban.reason }}</td>
+
+						<td>{{ render_datetime_as_delta(ban.bantime) }}</td>
+						
+						{% if ban.expiration_time %}
+							<td>{{ render_datetime_as_delta(ban.expiration_time) }}</td>
+						{% else %}
+							<td>Never</td>
+						{% endif %}
+
+						<td>{{ ckey_link(ban.a_ckey) }}</td>
+
+						<td>
+							{% if ban.unbanned_datetime %}
+								<div class="tag is-success is-medium has-text-centered">
+									{% if ban.unbanned_ckey %}
+										<abbr title="{{ ban.unbanned_ckey }}">Revoked</abbr>
+									{% else %}
+										Revoked
+									{% endif %}								
+								</div>
+							{% elif ban.expiration_time and datetime.utcnow() > ban.expiration_time %}
+								<div class="tag is-primary is-medium has-text-centered">Expired</div>
+							{% else %}
+								<div class="tag is-danger is-medium has-text-centered">Active</div>
+							{% endif %}
+						</td>
+
+						
+						{% if g.current_user.has_perms("ban.manage") %}
+							<td>
+								<div class="buttons">
+									<a class="button" href="/bans/{{ ban.id }}/edit">Edit</a>
+
+									{% if ban.unbanned_datetime %}
+										<form method="post" action="/bans/{{ ban.id }}/reinstate">
+											<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+											<button class="button">Reinstate</button>
+										</form>
+									{% else %}
+										<form method="post" action="/bans/{{ ban.id }}/revoke">
+											<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+											<button class="button">Revoke</button>
+										</form>
+									{% endif %}
+								</div>
+							</td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 {% endmacro %}
