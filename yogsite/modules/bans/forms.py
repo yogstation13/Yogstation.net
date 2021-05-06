@@ -12,6 +12,7 @@ class BanEditForm(FlaskForm):
 
 	reason = TextAreaField("Reason", [Optional(), Length(max=2048)])
 
+	expiration_date = 
 	expiration_time = DateTimeLocalField("Expiration Time", [Optional()], format="%Y-%m-%dT%H:%M")
 
 	roles = MultiCheckboxField("Role", [InputRequired()], choices=list(zip(cfg.get("roles"), cfg.get("roles"))))
