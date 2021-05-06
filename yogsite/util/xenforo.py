@@ -94,10 +94,11 @@ def get_xenforo_users_from_groups(group_ids):
 
 @cached(cache=TTLCache(ttl=36000, maxsize=1)) # 10 hour cache because screw doing a ton of http requests a ton of times
 def get_frontpage_staff():
-	frontpage_staff = get_xenforo_users_from_groups([cfg.get("xenforo.group_ids.host"), cfg.get("xenforo.group_ids.council"), cfg.get("xenforo.group_ids.headcoder")])
+	frontpage_staff = get_xenforo_users_from_groups([cfg.get("xenforo.group_ids.staff"), cfg.get("xenforo.group_ids.host"), cfg.get("xenforo.group_ids.council"), cfg.get("xenforo.group_ids.headcoder")])
 
 	sorted_frontpage_staff = {}
 
+	sorted_frontpage_staff["staff"] = [user.ckey for user in frontpage_staff if user.has_group(cfg.get("xenforo.group_ids.staff"))]
 	sorted_frontpage_staff["host"] = [user.ckey for user in frontpage_staff if user.has_group(cfg.get("xenforo.group_ids.host"))]
 	sorted_frontpage_staff["council"] = [user.ckey for user in frontpage_staff if user.has_group(cfg.get("xenforo.group_ids.council"))]
 	sorted_frontpage_staff["headcoder"] = [user.ckey for user in frontpage_staff if user.has_group(cfg.get("xenforo.group_ids.headcoder"))]

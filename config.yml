@@ -119,6 +119,7 @@ library:
 xenforo:
   apiurl: "https://forums.yogstation.net/api"
   group_ids: # For the sole purpose of getting them for the homepage. If these IDs magically change? Oops. Completely arbitrary.
+    staff: 28
     host: 43
     council: 8
     headcoder: 30

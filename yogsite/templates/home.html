@@ -103,8 +103,20 @@
 						</p>
 					</div>
 				</div>
+
+				
+				<div class="is-fullwidth has-text-centered">
+					<h3 class="has-text-grey-light is-size-3">Complete Staff Team</h3>
+					<span v-cloak class="is-size-5" v-for="member in staff.staff" style="margin: 0px 5px;">
+						${ member | capitalize } 
+					</span>
+					<p v-cloak class="has-text-grey-light is-size-4" v-if="!('headcoder' in staff)">
+						...
+					</p>
+				</div>
 			</div>
 		</div>
+
 
 	</div>
 {% endblock %}
