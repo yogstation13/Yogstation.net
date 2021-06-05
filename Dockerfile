@@ -6,6 +6,7 @@ COPY . /srv/www/yogsite
 COPY nginx.conf /etc/nginx/sites-available/ 
 
 RUN echo "deb http://deb.debian.org/debian experimental main" >>  /etc/apt/sources.list
+RUN echo "deb http://deb.debian.org/debian sid main" >>  /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install -y -t experimental ffmpeg
 
