@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}Voice Announcements{% endblock %}
+
+{% block head %}
+	<script>
+		const enable_robot_voice = {% if enable_robot_voice %}true{% else %}false{% endif %};
+	</script>
+	<script src="/static/js/voice_announce.js"></script>
+{% endblock %}
+
+{% block content %}
+	<h2 class="title is-2 has-text-centered">Voice Announcement System</h2>
+
+	<div class="columns is-centered">
+		<div class="column is-two-thirds">
+			<div class="box">
+				<p>WARNING: Misuse of this system will lead to a ban. You may only use this system to upload your own voice.</p>
+				<div class="field">
+					<div class="control">
+						<div class="columns">
+							<div class='column'>
+								<button class="button is-link is-pulled-left" id="va-button-record">Record</button>
+							</div>
+							<div class='column is-hidden va-record-show' id='va-time'>
+
+							</div>
+							<div class='column'>
+								<progress class="progress is-hidden va-record-show" value="0" max="100" id="va-level"></progress>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="field">
+					<div class="control">
+						<div class="columns">
+							<div class='column'>
+								<button class="button is-link is-pulled-left is-hidden" id="va-button-announce">Confirm Announcement</button>
+							</div>
+							<div class='column'>
+								<audio id='va-preview' class='is-hidden' controls></audio>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

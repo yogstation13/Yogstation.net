@@ -15,6 +15,7 @@ items_per_page: 20
 servers:
   main:
     id: "main"
+    sqlname: "yogstation"
     host: "game.yogstation.net"
     port: 4133
     name: "YogStation Main"
@@ -103,7 +104,11 @@ roles: [
   "gangster",
   "darkspawn",
   "Holoparasite",
-  "Zombie"
+  "Zombie",
+  "Appearance",
+  "Emote",
+  "OOC",
+  "Voice Announcements"
 ]
 
 library:
@@ -132,6 +137,9 @@ paypal:
   currency_code: "USD"
   return_url: "/donate?confirm=1"
   notify_url: "/api/paypal_donate"
+
+voice_announce:
+  directory: $GAME_VOICE_ANNOUNCE_DIR
 
 donation:
   tiers:
