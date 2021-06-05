@@ -16,10 +16,11 @@ servers:
   main:
     id: "main"
     sqlname: "yogstation"
-    host: "game.yogstation.net"
-    port: 4133
+    host: "localhost"
+    port: 6060
     name: "YogStation Main"
     primary: true
+    comms_key: $COMMS_KEY
 
 logs:
   directory: $GAME_LOGS_DIR
