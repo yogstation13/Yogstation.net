@@ -27,8 +27,6 @@ def page_voice_announce(serversqlname, id):
 		"voice_announce_query": id,
 		"key": server["comms_key"]
 	})
-	print(res["exists"])
-	print(int(res["exists"]))
 	if (not res) or (not int(res["exists"])):
 		return Response("Invalid voice announcement URL", status=404)
 	
@@ -60,10 +58,6 @@ def voice_announce_upload(serversqlname, id):
 	filename_base = id
 	filename = filename_base + "_base" + type_extensions[ct]
 	ogg_filename = filename_base + "_converted.ogg"
-
-	#if path.exists(path.join(dir, ogg_filename)):
-	#	return Response("URL already used", status=400)
-
 	with open(path.join(dir,filename), "wb") as file:
 		file.write(request.get_data())
 
