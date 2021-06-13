@@ -231,11 +231,11 @@ async function upload_button() {
 		}
 	}
 }
-
+/*
 window.addEventListener("DOMContentLoaded", () => {
 	document.getElementById("va-button-record").addEventListener("click", record_button);
 	document.getElementById("va-button-announce").addEventListener("click", upload_button);
-});
+});*/
 
 document.addEventListener("visibilitychange", () => {
 	let url = location.origin + location.pathname + "/cancel";
