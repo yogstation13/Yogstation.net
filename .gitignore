@@ -7,3 +7,5 @@ venv
 key_env.bat
 
 .vscode
+
+voice_announce_tmp

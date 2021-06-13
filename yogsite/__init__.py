@@ -85,6 +85,7 @@ from yogsite.modules.library import blueprint as bp_library
 from yogsite.modules.login import blueprint as bp_login
 from yogsite.modules.home import blueprint as bp_home
 from yogsite.modules.rounds import blueprint as bp_rounds
+from yogsite.modules.voice_announce import blueprint as bp_voice_announce
 
 app.register_blueprint(bp_admin)
 app.register_blueprint(bp_api)
@@ -95,3 +96,4 @@ app.register_blueprint(bp_home)
 app.register_blueprint(bp_library)
 app.register_blueprint(bp_login)
 app.register_blueprint(bp_rounds)
+app.register_blueprint(bp_voice_announce)
