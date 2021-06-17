@@ -1,8 +1,10 @@
+from os import path
 from flask import abort, Blueprint, g, jsonify, render_template, request, Response, send_file
 
 import math
 
 from sqlalchemy import or_
+from werkzeug.utils import secure_filename
 
 from yogsite.config import cfg
 from yogsite import db
@@ -55,6 +57,56 @@ def page_round_logs(round_id):
 
 	return render_template("rounds/log_viewer/log_viewer.html", round=round)
 
+@blueprint.route("/rounds/<int:round_id>/sounds")
+def page_round_sounds(round_id):
+	round = db.Round.from_id(round_id)
+
+	if not round:
+		return Response("Round does not exist", status=404)
+
+	if round.in_progress() and not g.current_user.has_perms("round.logs"):
+		return Response("Round in progress, unauthorized", status=401)
+
+	logs = RoundLogs(round_id)
+
+	return render_template("rounds/log_viewer/sounds.html", round=round, sounds=logs.get_sounds())
+
+public_extensions = [
+	".aac",
+	".mp3",
+	".ogg",
+	".opus",
+	".wav",
+	".weba"
+]
+
+@blueprint.route("/rounds/<int:round_id>/logs/<string:filename>")
+def page_round_log_file(round_id, filename):
+	filename = secure_filename(filename)
+
+	round = db.Round.from_id(round_id)
+
+	if not round:
+		return Response("Round does not exist", status=404)
+
+	if round.in_progress() and not g.current_user.has_perms("round.logs"):
+		return Response("Round in progress, unauthorized", status=401)
+	
+	extension = path.splitext(filename)[1]
+	
+	if not (extension in public_extensions) and not g.current_user.has_perms("round.logs"):
+		return Response("Access to this file is unauthorized", status=401)
+
+	logs = RoundLogs(round_id)
+	file = logs.find_log_file(filename)
+	if not file:
+		return Response("File not found", status=404)
+	
+	response = send_file(file,
+		cache_timeout=-1 # Don't cache the file by default
+	)
+
+	return response
 
 @blueprint.route("/rounds/<int:round_id>/replay")
 def page_round_replay(round_id):

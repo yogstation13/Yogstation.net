@@ -11,6 +11,12 @@ from yogsite.config import cfg
 
 GAME_LOG_REGEX = re.compile(r"^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\] ([\s\S]*?)\n(?=(?:^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\]|\Z))", re.M) # wew
 
+sound_extensions = [".aac",
+	".mp3",
+	".ogg",
+	".opus",
+	".wav",
+	".weba"]
 
 class RoundLogs():
 
@@ -55,6 +61,24 @@ class RoundLogs():
 		elif "demo.txt" in files:
 			return os.path.join(directory, "demo.txt")
 		
+		return None
+	
+	def get_sounds(self):
+		directory = self.get_directory()
+		files = os.listdir(directory)
+		sounds = []
+		for file in files:
+			extension = os.path.splitext(file)[1]
+			if extension in sound_extensions:
+				sounds.append(file)
+		return sounds
+
+	def find_log_file(self, filename):
+		directory = self.get_directory()
+		files = os.listdir(directory)
+
+		if filename in files:
+			return os.path.join(directory, filename)
 		return None
 
 	def load_entries(self):

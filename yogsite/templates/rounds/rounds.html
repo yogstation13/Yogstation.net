@@ -80,6 +80,12 @@
 										{% if g.current_user.has_perms("round.logs") %}
 											<a class="button" href="/rounds/{{ round.id }}/logs">Logs</a>
 										{% endif %}
+										{% if g.current_user.has_perms("round.logs") or not round.in_progress() %}
+											<a class="button"
+												href="/rounds/{{ round.id }}/sounds"
+												target="_blank">
+												Sounds
+											</a>
 									</div>
 								</td>
 							</tr>
