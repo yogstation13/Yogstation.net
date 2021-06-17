@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}Rounds - {{ round.id }} - Sounds{% endblock %}
+
+{% block content %}
+	<div id="log-viewer" class="columns is-centered">
+		<div class="column is-four-fifths">
+			<a class="button" href="javascript:history.back()">Back</a>
+			<br/><br/>
+			<div class="columns">
+				<div class="column is-two-thirds">
+					<h2 class="title is-2">Sounds for Round #{{ round.id }}</h2>
+				</div>
+			</div>
+			
+			{% for sound in sounds %}
+				<div>
+					<div>
+						{{ sound }}
+					</div>
+					<audio src='/rounds/{{ round.id }}/logs/{{ sound }}' controls></audio>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

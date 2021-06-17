@@ -20,9 +20,18 @@ type_extensions = {
 
 @blueprint.route("/voice_announce/<string:serversqlname>/<string:id>")
 def page_voice_announce(serversqlname, id):
+	#Test pages
+	if serversqlname == "test" and id == "test":
+		return render_template("voice_announce/voice_announce.html", enable_robot_voice = 0)
+	if serversqlname == "test" and id == "test_ai":
+		return render_template("voice_announce/voice_announce.html", enable_robot_voice = 1)
+	
+	server = None
 	for s in cfg.get("servers").values():
 		if s["sqlname"] == serversqlname:
 			server = s
+	if (not server):
+		return Response("Server doesn't exist", status=404)
 	res = topic_query(server, "", args = {
 		"voice_announce_query": id,
 		"key": server["comms_key"]
@@ -35,9 +44,12 @@ def page_voice_announce(serversqlname, id):
 @blueprint.route("/voice_announce/<string:serversqlname>/<string:id>/upload", methods=["POST"])
 @flask_csrf_ext.exempt
 def voice_announce_upload(serversqlname, id):
+	server = None
 	for s in cfg.get("servers").values():
 		if s["sqlname"] == serversqlname:
 			server = s
+	if (not server):
+		return Response("Server doesn't exist", status=404)
 	id = secure_filename(id)
 	dir = cfg.get('voice_announce.directory')
 	res = topic_query(server, "", args = {
@@ -90,9 +102,12 @@ def voice_announce_upload(serversqlname, id):
 @blueprint.route("/voice_announce/<string:serversqlname>/<string:id>/cancel", methods=["GET","POST"])
 @flask_csrf_ext.exempt
 def voice_announce_cancel(serversqlname, id):
+	server = None
 	for s in cfg.get("servers").values():
 		if s["sqlname"] == serversqlname:
 			server = s
+	if (not server):
+		return Response("Server doesn't exist", status=404)
 
 	topic_query(server, "", args = {
 		"voice_announce_cancel": id,
