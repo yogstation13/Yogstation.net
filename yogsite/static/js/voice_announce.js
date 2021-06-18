@@ -22,9 +22,10 @@ let recorded_blob;
 let recorded_blob_url;
 
 const audio_ctx = new AudioContext();
-
-const robot_freq = 59.94; // Our nanotrasen-brand AIs operate on NTSC, okay?
-const robot_cycles = 300;
+const worklet_load_promise = (async () => {
+	let text = await (await fetch('/static/js/voice_announce_worklet.js')).text();
+	await audio_ctx.audioWorklet.addModule('data:text/javascript;base64,' + btoa(text));
+})();
 
 function set_recording_state(state) {
 	let prev = recording_state;
@@ -75,32 +76,14 @@ let speaker_setups = [
 
 /**
  * 
- * @param {AudioParam} param 
- */
-function apply_robot_wave(param, time = audio_ctx.currentTime) {
-	console.log("Applying " + time + ", now: " + audio_ctx.currentTime);
-	let values = new Float32Array(robot_cycles * 2);
-	for(let i = 0; i < robot_cycles; i++) {
-		values[i*2] = 0;
-		values[i*2+1] = 1;
-	}
-	let duration = robot_cycles / robot_freq;
-	param.setValueCurveAtTime(values, time, duration);
-	setTimeout(() => {apply_robot_wave(param, time + duration + 0.001);}, ((time + duration - (duration/3)) - audio_ctx.currentTime) * 1000);
-}
-
-/**
- * 
  * @param {AudioNode} output 
  * @param {AudioNode} input 
  */
 function apply_effects(output, input) {
 	if(enable_robot_voice) {
-		// Apply a really primitive "robot voice" filter
-		let final_gain = audio_ctx.createGain();
-		input.connect(final_gain);
-		input = final_gain;
-		apply_robot_wave(final_gain.gain);
+		let worklet = new AudioWorkletNode(audio_ctx, 'voice-announce-processor', {processorOptions: {is_ai: true, sample_rate: audio_ctx.sampleRate}});
+		input.connect(worklet);
+		input = worklet;
 	}
 	analyser = audio_ctx.createAnalyser();
 	analyser.connect(output);
@@ -157,6 +140,7 @@ async function setup_media_stream() {
 	if(dest_media_stream) return;
 	
 	await audio_ctx.resume();
+	await worklet_load_promise;
 	mic_media_stream = await navigator.mediaDevices.getUserMedia({audio: true});
 	let stream_node = audio_ctx.createMediaStreamSource(mic_media_stream);
 	let dest_node = audio_ctx.createMediaStreamDestination();
