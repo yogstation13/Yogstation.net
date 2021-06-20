@@ -108,7 +108,7 @@ def page_round_log_file(round_id, filename):
 
 	return response
 
-@blueprint.route("/rounds/<int:round_id>/replay")
+@blueprint.route("/rounds/<int:round_id>/replay", methods=["GET", "OPTIONS"])
 def page_round_replay(round_id):
 	headers = {}
 
@@ -117,6 +117,10 @@ def page_round_replay(round_id):
 		headers["Access-Control-Allow-Credentials"] = "true"
 	headers["Access-Control-Expose-Headers"] = "X-Allow-SS13-Replay-Streaming"
 	headers["Access-Control-Allow-Origin"] = origin if origin else "*"
+	
+	if request.method == "OPTIONS":
+		return Response(status=204, headers=headers)
+		
 
 	round = db.Round.from_id(round_id)
 
