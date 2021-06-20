@@ -25,7 +25,11 @@
 				{% for ban in bans %}
 					<tr>
 						{% if show_ckey %}
-							<td>{{ ckey_link(ban.ckey) }}</td>
+							{% if ban.ckey %}
+								<td>{{ ckey_link(ban.ckey) }}</td>
+							{% else %}
+								<td>N/A</td>
+							{% endif %}
 						{% endif %}
 
 						<td>
