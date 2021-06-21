@@ -116,6 +116,7 @@ def page_round_replay(round_id):
 	if origin == cfg.get("replay_viewer.origin"):
 		headers["Access-Control-Allow-Credentials"] = "true"
 	headers["Access-Control-Expose-Headers"] = "X-Allow-SS13-Replay-Streaming"
+	headers["Access-Control-Allow-Headers"] = "Range"
 	headers["Access-Control-Allow-Origin"] = origin if origin else "*"
 	
 	if request.method == "OPTIONS":
