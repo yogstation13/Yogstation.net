@@ -34,6 +34,7 @@ def create_app():
 	app.secret_key = cfg.get("secret_key") # Used for signing sessions
 
 	app.config['SESSION_COOKIE_SECURE'] = True
+	app.config['SESSION_COOKIE_HTTPONLY'] = False
 	app.config['SESSION_COOKIE_SAMESITE'] = "None"
 
 	app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://{username}:{password}@{host}:{port}/{db}".format(
