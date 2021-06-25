@@ -57,6 +57,7 @@ def before_request():
 	g.request_duration = lambda: (time.time() - request_start_time)
 
 	g.current_user = User.from_session(session)
+	session.permanent = True
 
 @app.route("/ses")
 def debug_ses():
