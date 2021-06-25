@@ -53,6 +53,7 @@ app = create_app()
 
 @app.before_request
 def before_request():
+	session.permanent = True
 	request_start_time = time.time()
 	g.request_duration = lambda: (time.time() - request_start_time)
 
