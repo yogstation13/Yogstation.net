@@ -37,6 +37,7 @@ def page_login():
 				session["username"] = user_data["username"] # Should in the future be moved somewhere else
 				session["permissions"] = user_data["permissions"]
 				session["ckey"] = byondname_to_ckey(byond_account) # Just in case the byond names are stored there for some reason
+				session.permanent = True
 
 				db.ActionLog.add(session["ckey"], session["ckey"], "Logged in")
 
