@@ -35,6 +35,7 @@ def create_app():
 
 	app.config['SESSION_COOKIE_SECURE'] = True
 	app.config['SESSION_COOKIE_SAMESITE'] = "None"
+	app.config['SESSION_REFRESH_EACH_REQUEST'] = False
 
 	app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://{username}:{password}@{host}:{port}/{db}".format(
 		username	= cfg.get("db.game.user"),
