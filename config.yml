@@ -133,7 +133,7 @@ xenforo:
 paypal:
   form_url: "https://www.paypal.com/cgi-bin/webscr"
   ipn_url: "https://ipnpb.paypal.com/cgi-bin/webscr"
-  email: "PayPal@yogstation.net"
+  email: "payments@yogstation.net"
   item_name: "Donation to Yogstation" # Description of what people are paying for when they donate
   currency_code: "USD"
   return_url: "/donate?confirm=1"
