@@ -33,7 +33,8 @@ def page_rounds():
 			or_(
 				db.Round.id.like(search_query),
 				db.Round.game_mode.like(search_query),
-				db.Round.map_name.like(search_query)
+				db.Round.map_name.like(search_query),
+				db.Player.ckey.like(f"%{search_query}%")
 			)
 		)
 	
