@@ -60,6 +60,7 @@
 							<th>Start Date</th>
 							<th>Expiry Date</th>
 							<th>Reason</th>
+							<th>Revoked</th>
 							<th>Tools</th>
 						</tr>
 					</thead>
@@ -77,6 +78,8 @@
 								</td>
 
 								<td>{{ loa.reason }}</td>
+
+								<td>{{bool(loa.revoked)}}</td>
 
 								<td>
 									<div class="buttons">
