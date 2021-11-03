@@ -79,7 +79,15 @@
 
 								<td>{{ loa.reason }}</td>
 
-								<td>{{bool(loa.revoked)}}</td>
+								<td>
+									{% if loa.revoked %}
+									<div class="tag is-primary is-medium has-text-centered">Revoked</div>
+									{% elif datetime.utcnow() > loa.expiry_time %}
+									<div class="tag is-primary is-medium has-text-centered">Expired</div>
+									{% else %}
+									<div class="tag is-danger is-medium has-text-centered">Active</div>
+									{% endif %}
+								</td>
 
 								<td>
 									<div class="buttons">
