@@ -25,7 +25,7 @@ def page_loa():
 
 	loas = db.game_db.query(db.LOA).filter(
                 and_(
-                  db.LOA.expiry_time < (datetime.utcnow() + timedelta(years=1)).date(),
+                  db.LOA.expiry_time > (datetime.utcnow() + timedelta(years=1)).date(),
                   db.LOA.expiry_time > (datetime.utcnow() - timedelta(days=30)).date()
                 )
     ).order_by(db.LOA.id.desc()) # Get LOAs sorted by start time
