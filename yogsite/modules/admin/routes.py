@@ -24,7 +24,7 @@ def page_loa():
 	form_set_loa = SetLOAForm(request.form, prefix="form_set_loa")
 
 	loas = db.game_db.query(db.LOA).filter(
-		db.LOA.expiry_time > datetime.utcnow() - timedelta(days=30)
+		db.LOA.expiry_time > (datetime.utcnow() - timedelta(days=30)).date()
 	).order_by(db.LOA.id.desc()) # Get LOAs sorted by start time
 
 	if not g.current_user.has_perms("loa.others"):
