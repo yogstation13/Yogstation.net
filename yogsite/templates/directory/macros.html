@@ -56,6 +56,10 @@
 										<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 										<button class="button">Delete</button>
 									</form>
+									<form method="post" action="/notes/{{ note.id }}/edit">
+										<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+										<button class="button">Edit</button>
+									</form>
 								</div>
 							{% endif %}
 						</td>
