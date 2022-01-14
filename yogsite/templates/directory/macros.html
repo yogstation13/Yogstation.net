@@ -10,6 +10,7 @@
 					{% endif %}
 
 					<th>Type</th>
+					<th>Round ID</th>
 					<th width="200px">Date</th>
 					<th>Text</th>
 					<th>Admin</th>
@@ -36,6 +37,8 @@
 								{% endif %}
 							</div>
 						</td>
+
+						<td>{note.round_id}</td>
 
 						<td>
 							{% if note.timestamp %}
