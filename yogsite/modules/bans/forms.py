@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
 
-from wtforms import SelectMultipleField, TextAreaField, StringField
-from wtforms.fields.html5 import DateTimeLocalField
+from wtforms import SelectMultipleField, TextAreaField, StringField, DateTimeLocalField
 from wtforms.validators import AnyOf, DataRequired, InputRequired, IPAddress, Length, Optional
 
 from yogsite.config import cfg
