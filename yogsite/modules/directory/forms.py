@@ -1,10 +1,10 @@
 from flask_wtf import FlaskForm
 
-from wtforms import SelectField, TextField, BooleanField
+from wtforms import SelectField, StringField, BooleanField
 from wtforms.validators import AnyOf, DataRequired, Length
 
 class NoteAddForm(FlaskForm):
-	text = TextField("Text", [DataRequired(), Length(min=1, max=2048)])
+	text = StringField("Text", [DataRequired(), Length(min=1, max=2048)])
 
 	note_types = ["note", "message", "message sent", "watchlist entry"]
 	type = SelectField(
