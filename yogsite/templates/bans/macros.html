@@ -9,6 +9,7 @@
 						<th>CKEY</th>
 					{% endif %}
 
+					<th>Round ID</th>
 					<th>Type</th>
 					<th>Reason</th>
 					<th width="150px">Ban Date</th>
@@ -31,6 +32,8 @@
 								<td>N/A</td>
 							{% endif %}
 						{% endif %}
+
+						<td>{ban.round_id}</td>
 
 						<td>
 							{{ abbreviate(", ".join(ban.roles.split(",")), 30) }}
