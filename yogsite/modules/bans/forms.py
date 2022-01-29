@@ -13,7 +13,7 @@ class BanEditForm(FlaskForm):
 
 	expiration_time = DateTimeLocalField("Expiration Time", [Optional()], format="%Y-%m-%dT%H:%M")
 
-	roles = MultiCheckboxField("Role", [InputRequired()], choices=list(zip(cfg.get("roles"), cfg.get("roles"))))
+	roles = MultiCheckboxField("Role", [], choices=list(zip(cfg.get("roles"), cfg.get("roles"))))
 
 	ip = StringField("IP", [Optional(), IPAddress()])
 
