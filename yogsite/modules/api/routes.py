@@ -17,14 +17,14 @@ def page_api_stats():
 
 		if stats == None: continue
       
-    server_info = cfg.get("servers")[server_id]
+		server_info = cfg.get("servers")[server_id]
 
 		server_stats.append({
 			"info": {
-			    "name": server_info.name,
-			    "host": server_info.host,
-			    "port": server_info.port
-		        },
+				"name": server_info.name,
+				"host": server_info.host,
+				"port": server_info.port
+			},
 			"stats": stats
 		})
 
