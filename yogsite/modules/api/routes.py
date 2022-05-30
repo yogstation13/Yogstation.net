@@ -8,23 +8,6 @@ from yogsite.util import query_server_status
 
 blueprint = Blueprint("api", __name__)
 
-@blueprint.route("/api/stats")
-def page_api_stats():
-	server_stats = []
-
-	for server_id in cfg.get("servers"):
-		stats = query_server_status(server_id)
-
-		if stats == None: continue
-
-		server_stats.append({
-			"info": cfg.get("servers")[server_id],
-			"stats": stats
-		})
-
-	return jsonify(server_stats)
-
-
 @blueprint.route("/api/stats/<string:server_id>")
 def page_api_stats_server_id(server_id):
 	if server_id not in cfg.get("servers"):
