@@ -21,10 +21,10 @@ def page_api_stats():
 
 		server_stats.append({
 			"info": {
-        name: server_info.name,
-        host: server_info.host,
-        port: server_info.port
-      },
+			    "name": server_info.name,
+			    "host": server_info.host,
+			    "port": server_info.port
+		        },
 			"stats": stats
 		})
 
