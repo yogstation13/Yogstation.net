@@ -172,7 +172,7 @@ donation:
       details: "You get to select a fancy new HUD. That's pretty cool I guess..."
 
 replay_viewer:
-  origin: "https://yogstation13.github.io"
+  origin: "https://replays.yogstation.net"
   max_cache_age: "31536000"
 
 activity_tracker:
