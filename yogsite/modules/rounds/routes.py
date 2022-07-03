@@ -146,7 +146,8 @@ def page_round_replay(round_id):
 
 	if demo_file.endswith(".gz"):
 		response.headers.add("Content-Encoding", "gzip")
-	else:
+	
+	if demo_file.endswith(".txt"):
 		response.headers.add("X-Allow-SS13-Replay-Streaming", "true")
 	
 	if not round.in_progress():
