@@ -57,7 +57,8 @@ class RoundLogs():
 
 		if "demo.txt.gz" in files:
 			return os.path.join(directory, "demo.txt.gz")
-
+		elif "demo.txt.xz" in files:
+			return os.path.join(directory, "demo.txt.xz")
 		elif "demo.txt" in files:
 			return os.path.join(directory, "demo.txt")
 		
