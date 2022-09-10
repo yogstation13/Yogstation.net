@@ -109,7 +109,8 @@ roles: [
   "Appearance",
   "Emote",
   "OOC",
-  "Voice Announcements"
+  "Voice Announcements",
+  "Network Admin"
 ]
 
 library:
