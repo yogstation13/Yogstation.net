@@ -57,6 +57,7 @@ roles: [
   "Chaplain",
   "Station Engineer",
   "Atmospheric Technician",
+  "Network Admin",
   "Medical Doctor",
   "Chemist",
   "Geneticist",
@@ -109,8 +110,7 @@ roles: [
   "Appearance",
   "Emote",
   "OOC",
-  "Voice Announcements",
-  "Network Admin"
+  "Voice Announcements"
 ]
 
 library:
