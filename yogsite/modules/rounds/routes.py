@@ -4,6 +4,7 @@ from flask import abort, Blueprint, g, jsonify, render_template, request, Respon
 import math
 
 from sqlalchemy import or_
+from sqlalchemy import extract
 from werkzeug.utils import secure_filename
 
 from yogsite.config import cfg
@@ -33,7 +34,8 @@ def page_rounds():
 			or_(
 				db.Round.id.like(search_query),
 				db.Round.game_mode.like(search_query),
-				db.Round.map_name.like(search_query)
+				db.Round.map_name.like(search_query),
+				db.Round.id.like(extract("id", db.game_db.query(db.Connection_Log).filter(db.Connection_Log.ckey.like(search_query))))
 			)
 		)
 	
