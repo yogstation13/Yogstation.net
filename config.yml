@@ -150,7 +150,7 @@ donation:
       months: 1
     - amount: 14.00
       months: 3
-  
+
   benefits:
     - caption: "Hats"
       details: "When creating a character, you get a choice of hats in the creation menu which you spawn with every time until your donorship expires."
@@ -172,6 +172,8 @@ donation:
       details: "You have the option to spawn with purrbation enabled, which gives you cat ears and a tail. Why you would want this? Well, who knows, but we threw it in anyway."
     - caption: "New HUDs"
       details: "You get to select a fancy new HUD. That's pretty cool I guess..."
+    - caption: "EORG Item"
+      details: "You can select a syndicate item to spawn with when the round ends."
 
 replay_viewer:
   origin: "https://replays.yogstation.net"
