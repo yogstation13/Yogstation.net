@@ -26,6 +26,8 @@ logs:
   directory: $GAME_LOGS_DIR
 
 links:
+  byond: "https://www.byond.com/" # change to opendream
+  discord: "https://discord.com/invite/0keg6hQH05Ha8OfO"
   forums: "https://forums.yogstation.net/"
   wiki: "https://wiki.yogstation.net/"
 
