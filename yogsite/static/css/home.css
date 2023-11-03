@@ -19,6 +19,18 @@ body {
 	background-color: #2a282f33;
 }
 
+.quick-links-card {
+	background-color: #2a282f33;
+}
+
+.quick-link-content {
+	padding: 0.5rem;
+}
+
+.quick-link {
+	font-weight: bold;
+}
+
 footer {
 	background-color: transparent !important;
 }
