@@ -173,7 +173,8 @@ donation:
     - caption: "New HUDs"
       details: "You get to select a fancy new HUD. That's pretty cool I guess..."
     - caption: "EORG Item"
-      details: "You can select a syndicate item to spawn with when the round ends."
+      details: "You can select an item from the Syndicate Uplink to spawn with when the round ends."
+
 
 replay_viewer:
   origin: "https://replays.yogstation.net"
